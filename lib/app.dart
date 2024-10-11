@@ -6,6 +6,7 @@ import 'package:muslim/generated/l10n.dart';
 import 'package:muslim/scroll_behavior.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/extension_platform.dart';
+import 'package:muslim/src/core/functions/print.dart';
 import 'package:muslim/src/core/values/constant.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/awesome_notification_manager.dart';
 import 'package:muslim/src/features/alarms_manager/data/repository/alarm_database_helper.dart';
@@ -25,10 +26,9 @@ import 'package:muslim/src/features/ui/presentation/components/desktop_window_wr
 
 class App extends StatefulWidget {
   static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState>();
 
   const App({super.key});
-
 
   @override
   AppState createState() => AppState();
@@ -38,7 +38,11 @@ class AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    sl<AwesomeNotificationManager>().listen();
+    try {
+      sl<AwesomeNotificationManager>().listen();
+    } catch (e) {
+      hisnPrint(e);
+    }
   }
 
   @override
