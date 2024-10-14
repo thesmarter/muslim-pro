@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/l10n.dart';
 import 'package:muslim/src/features/share_as_image/presentation/components/dialogs/image_width_dialog.dart';
 import 'package:muslim/src/features/share_as_image/presentation/controller/cubit/share_image_cubit.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ShareImageBottomBar extends StatelessWidget {
   const ShareImageBottomBar({super.key});

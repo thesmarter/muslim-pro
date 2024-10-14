@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 import 'package:muslim/generated/l10n.dart';
 import 'package:muslim/src/core/models/editor_result.dart';
 import 'package:muslim/src/core/shared/widgets/round_tag.dart';
@@ -8,7 +9,6 @@ import 'package:muslim/src/features/alarms_manager/data/models/alarm.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/alarm_repeat_type.dart';
 import 'package:muslim/src/features/alarms_manager/presentation/components/alarm_editor.dart';
 import 'package:muslim/src/features/alarms_manager/presentation/controller/bloc/alarms_bloc.dart';
-import 'package:intl/intl.dart';
 
 class AlarmCard extends StatelessWidget {
   final DbAlarm dbAlarm;

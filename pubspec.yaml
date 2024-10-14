@@ -3,7 +3,7 @@ description: muslim-pro start kit app.
 
 publish_to: "none"
 
-version: 2.3.0+15
+version: 2.3.1+17
 
 environment:
   sdk: ">=3.4.3 <4.0.0"
@@ -43,6 +43,7 @@ dependencies:
   path: ^1.9.0
   path_provider: ^2.1.4
   rxdart: ^0.28.0
+  scrollable_positioned_list: ^0.3.8
   share_plus: ^10.0.2
   shared_preferences: ^2.3.2
   sleek_circular_slider: ^2.0.1
@@ -61,8 +62,8 @@ dev_dependencies:
 
 flutter_native_splash:
   android: true
-#  ios: true
-#  web: true
+  #  ios: true
+  #  web: true
   color: "#303030"
 
 flutter:
@@ -128,6 +129,13 @@ flutter:
     - family: Rakkas
       fonts:
         - asset: assets/fonts/Rakkas-Regular.ttf
+    - family: quran
+      fonts:
+        - asset: assets/fonts/HafsSmart_08.ttf
+    - family: me_quran
+      fonts:
+        - asset: assets/fonts/me_quran.ttf
+
 
 flutter_intl:
   enabled: true

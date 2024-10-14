@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/l10n.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
 import 'package:muslim/src/features/fake_hadith/presentation/screens/fake_hadith_dashboard_screen.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/shared.dart';
 import 'package:muslim/src/features/quran/data/models/surah_name_enum.dart';
 import 'package:muslim/src/features/quran/presentation/screens/quran_read_screen.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class QuranSection extends StatelessWidget {
   const QuranSection({

@@ -1,13 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/l10n.dart';
 import 'package:muslim/src/core/functions/open_url.dart';
 import 'package:muslim/src/core/shared/widgets/empty.dart';
 import 'package:muslim/src/core/utils/volume_button_manager.dart';
 import 'package:muslim/src/core/values/constant.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 part 'onboard_state.dart';
 

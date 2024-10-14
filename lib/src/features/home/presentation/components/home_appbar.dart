@@ -1,13 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/l10n.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/features/home/data/data_source/app_dashboard_tabs.dart';
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
 import 'package:muslim/src/features/home_search/presentation/components/home_search_box.dart';
 import 'package:muslim/src/features/home_search/presentation/controller/cubit/search_cubit.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomeAppBar extends StatelessWidget {
   final TabController tabController;

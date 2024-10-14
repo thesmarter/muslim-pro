@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/l10n.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/footer_section.dart';
@@ -8,7 +9,6 @@ import 'package:muslim/src/features/home/presentation/components/side_menu/quran
 import 'package:muslim/src/features/home/presentation/components/side_menu/shared.dart';
 import 'package:muslim/src/features/settings/presentation/screens/settings_screen.dart';
 import 'package:muslim/src/features/tally/presentation/screens/tally_dashboard_screen.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({

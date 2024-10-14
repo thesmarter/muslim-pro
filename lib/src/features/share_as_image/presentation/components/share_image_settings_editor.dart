@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/l10n.dart';
 import 'package:muslim/src/core/shared/widgets/loading.dart';
 import 'package:muslim/src/core/values/constant.dart';
 import 'package:muslim/src/features/share_as_image/presentation/components/widgets/color_swatch_builder.dart';
 import 'package:muslim/src/features/share_as_image/presentation/controller/cubit/share_image_cubit.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ShareImageSettingsEditor extends StatelessWidget {
   final BuildContext context;

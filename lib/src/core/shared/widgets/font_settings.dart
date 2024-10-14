@@ -2,10 +2,10 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/l10n.dart';
 import 'package:muslim/src/core/extensions/string_extension.dart';
 import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class FontSettingsIconButton extends StatelessWidget {
   const FontSettingsIconButton({super.key});

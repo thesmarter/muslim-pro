@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/l10n.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
 import 'package:muslim/src/core/extensions/extension_platform.dart';
@@ -18,7 +19,6 @@ import 'package:muslim/src/features/localization/presentation/screens/app_langua
 import 'package:muslim/src/features/settings/presentation/components/rearrange_dashboard/rearrange_dashboard_page.dart';
 import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
 import 'package:muslim/src/features/themes/presentation/screens/themes_manager_screen.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});

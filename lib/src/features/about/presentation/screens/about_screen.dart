@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/l10n.dart';
 import 'package:muslim/src/core/functions/open_url.dart';
 import 'package:muslim/src/core/values/constant.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:muslim/generated/l10n.dart';
 import 'package:muslim/src/core/extensions/extension_object.dart';
 import 'package:muslim/src/core/models/editor_result.dart';
@@ -7,7 +8,6 @@ import 'package:muslim/src/core/shared/dialogs/yes_no_dialog.dart';
 import 'package:muslim/src/features/tally/data/models/tally.dart';
 import 'package:muslim/src/features/tally/presentation/components/dialogs/tally_editor.dart';
 import 'package:muslim/src/features/tally/presentation/controller/bloc/tally_bloc.dart';
-import 'package:intl/intl.dart';
 
 class TallyCard extends StatelessWidget {
   final DbTally dbTally;

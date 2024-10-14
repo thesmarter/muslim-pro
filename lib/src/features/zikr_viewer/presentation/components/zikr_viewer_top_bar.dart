@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/l10n.dart';
 import 'package:muslim/src/core/extensions/extension_object.dart';
 import 'package:muslim/src/core/extensions/extension_platform.dart';
@@ -7,7 +8,6 @@ import 'package:muslim/src/features/home/presentation/components/side_menu/toggl
 import 'package:muslim/src/features/zikr_viewer/data/models/zikr_content.dart';
 import 'package:muslim/src/features/zikr_viewer/presentation/components/commentary_dialog.dart';
 import 'package:muslim/src/features/zikr_viewer/presentation/controller/bloc/zikr_viewer_bloc.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ZikrViewerTopBar extends StatelessWidget {
   final DbContent dbContent;
