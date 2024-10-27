@@ -23,10 +23,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-              'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -66,4 +63,14 @@ class DefaultFirebaseOptions {
     projectId: 'mymus-pro',
     storageBucket: 'mymus-pro.appspot.com',
   );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyAOULIioOBh7-AmaUj9o3dtxxvzz_peSCY',
+    appId: '1:313973393470:ios:20ec58b6544257cee7e96f',
+    messagingSenderId: '313973393470',
+    projectId: 'mymus-pro',
+    storageBucket: 'mymus-pro.appspot.com',
+    iosBundleId: 'com.detatech.muslim',
+  );
+
 }
