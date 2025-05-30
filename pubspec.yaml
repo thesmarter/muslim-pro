@@ -102,6 +102,7 @@ flutter:
     - assets/quran/
     - assets/sounds/
     - assets/db/
+    - assets/data/
 
   fonts:
     - family: Uthmanic

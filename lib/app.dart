@@ -15,7 +15,6 @@ import 'package:muslim/src/features/azkar_filters/presentation/controller/cubit/
 import 'package:muslim/src/features/fake_hadith/data/repository/fake_hadith_database_helper.dart';
 import 'package:muslim/src/features/home/data/repository/hisn_db_helper.dart';
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
-import 'package:muslim/src/features/home/presentation/screens/home_screen.dart';
 import 'package:muslim/src/features/home/presentation/screens/main_app_screen.dart';
 import 'package:muslim/src/features/home_search/presentation/controller/cubit/search_cubit.dart';
 import 'package:muslim/src/features/onboarding/presentation/screens/onboarding_screen.dart';

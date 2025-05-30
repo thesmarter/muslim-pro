@@ -5,7 +5,6 @@ import 'package:muslim/src/core/shared/widgets/empty.dart';
 import 'package:muslim/src/features/home/presentation/components/pages/titles_list_view.dart';
 import 'package:muslim/src/features/home/presentation/components/widgets/titles_freq_filters_card.dart';
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
-import 'package:muslim/src/features/themes/data/models/app_colors.dart';
 
 class TitlesScreen extends StatelessWidget {
   const TitlesScreen({super.key});

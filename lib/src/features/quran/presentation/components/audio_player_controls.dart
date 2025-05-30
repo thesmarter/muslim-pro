@@ -7,108 +7,94 @@ class AudioPlayerControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<QuranAudioCubit, QuranAudioState>(
-      builder: (context, state) {
-        return Container(
-          padding: const EdgeInsets.all(24),
-          child: Column(
+    return Container(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        children: [
+          // Main Controls
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              // Progress Bar
-              if (state is QuranAudioPlaying) ...[
-                _buildProgressBar(context, state),
-                const SizedBox(height: 24),
-              ],
-              
-              // Main Controls
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // Previous Surah
-                  IconButton(
-                    onPressed: state is QuranAudioPlaying
-                        ? () => context.read<QuranAudioCubit>().previousSurah()
-                        : null,
-                    icon: const Icon(Icons.skip_previous),
-                    iconSize: 32,
-                  ),
-                  
-                  // Seek Backward
-                  IconButton(
-                    onPressed: state is QuranAudioPlaying
-                        ? () => _seekBackward(context, state)
-                        : null,
-                    icon: const Icon(Icons.replay_10),
-                    iconSize: 28,
-                  ),
-                  
-                  // Play/Pause
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      onPressed: state is QuranAudioPlaying
-                          ? () => context.read<QuranAudioCubit>().togglePlayPause()
-                          : null,
-                      icon: Icon(
-                        state is QuranAudioPlaying && state.isPlaying
-                            ? Icons.pause
-                            : Icons.play_arrow,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                      iconSize: 40,
-                    ),
-                  ),
-                  
-                  // Seek Forward
-                  IconButton(
-                    onPressed: state is QuranAudioPlaying
-                        ? () => _seekForward(context, state)
-                        : null,
-                    icon: const Icon(Icons.forward_10),
-                    iconSize: 28,
-                  ),
-                  
-                  // Next Surah
-                  IconButton(
-                    onPressed: state is QuranAudioPlaying
-                        ? () => context.read<QuranAudioCubit>().nextSurah()
-                        : null,
-                    icon: const Icon(Icons.skip_next),
-                    iconSize: 32,
-                  ),
-                ],
+              // Previous Surah
+              IconButton(
+                onPressed: null,
+                icon: const Icon(Icons.skip_previous),
+                iconSize: 32,
               ),
-              
-              const SizedBox(height: 16),
-              
-              // Secondary Controls
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // Speed Control
-                  if (state is QuranAudioPlaying)
-                    _buildSpeedControl(context, state),
-                  
-                  // Volume Control
-                  if (state is QuranAudioPlaying)
-                    _buildVolumeControl(context, state),
-                  
-                  // Stop
-                  IconButton(
-                    onPressed: state is QuranAudioPlaying
-                        ? () => context.read<QuranAudioCubit>().stop()
-                        : null,
-                    icon: const Icon(Icons.stop),
-                    tooltip: 'Stop',
+
+              // Seek Backward
+              IconButton(
+                onPressed: null,
+                icon: const Icon(Icons.replay_10),
+                iconSize: 28,
+              ),
+
+              // Play/Pause
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('اختر سورة للتشغيل')),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.play_arrow,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
-                ],
+                  iconSize: 40,
+                ),
+              ),
+
+              // Seek Forward
+              IconButton(
+                onPressed: null,
+                icon: const Icon(Icons.forward_10),
+                iconSize: 28,
+              ),
+
+              // Next Surah
+              IconButton(
+                onPressed: null,
+                icon: const Icon(Icons.skip_next),
+                iconSize: 32,
               ),
             ],
           ),
-        );
-      },
+
+          const SizedBox(height: 16),
+
+          // Secondary Controls
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // Speed Control
+              IconButton(
+                onPressed: null,
+                icon: const Icon(Icons.speed),
+                tooltip: 'سرعة التشغيل',
+              ),
+
+              // Volume Control
+              IconButton(
+                onPressed: null,
+                icon: const Icon(Icons.volume_up),
+                tooltip: 'مستوى الصوت',
+              ),
+
+              // Stop
+              IconButton(
+                onPressed: null,
+                icon: const Icon(Icons.stop),
+                tooltip: 'إيقاف',
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -216,15 +202,15 @@ class AudioPlayerControls extends StatelessWidget {
   void _seekBackward(BuildContext context, QuranAudioPlaying state) {
     final newPosition = state.position - const Duration(seconds: 10);
     context.read<QuranAudioCubit>().seek(
-      newPosition.isNegative ? Duration.zero : newPosition,
-    );
+          newPosition.isNegative ? Duration.zero : newPosition,
+        );
   }
 
   void _seekForward(BuildContext context, QuranAudioPlaying state) {
     final newPosition = state.position + const Duration(seconds: 10);
     context.read<QuranAudioCubit>().seek(
-      newPosition > state.duration ? state.duration : newPosition,
-    );
+          newPosition > state.duration ? state.duration : newPosition,
+        );
   }
 
   String _formatDuration(Duration duration) {

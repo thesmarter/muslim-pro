@@ -16,6 +16,22 @@ class QuranBookmarksScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(S.of(context).bookmarks),
           elevation: 0,
+          backgroundColor: Colors.transparent,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                  Theme.of(context)
+                      .colorScheme
+                      .secondary
+                      .withValues(alpha: 0.05),
+                ],
+              ),
+            ),
+          ),
         ),
         body: BlocBuilder<QuranReaderCubit, QuranReaderState>(
           builder: (context, state) {

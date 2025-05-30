@@ -42,6 +42,32 @@ class _QuranSearchScreenState extends State<QuranSearchScreen> {
         appBar: AppBar(
           title: Text(S.of(context).searchInQuran),
           elevation: 0,
+          backgroundColor: Colors.transparent,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                  Theme.of(context)
+                      .colorScheme
+                      .secondary
+                      .withValues(alpha: 0.05),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                _searchController.clear();
+                context.read<QuranReaderCubit>().clearSearch();
+              },
+              icon: const Icon(Icons.clear_rounded),
+              tooltip: 'مسح البحث',
+            ),
+          ],
         ),
         body: Column(
           children: [

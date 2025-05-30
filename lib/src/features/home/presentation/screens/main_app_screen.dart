@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/features/home/presentation/screens/home_screen.dart';
 import 'package:muslim/src/features/home/presentation/components/widgets/modern_bottom_nav_bar.dart';
+import 'package:muslim/src/features/quran/presentation/screens/quran_main_screen.dart';
+import 'package:muslim/src/features/quran/presentation/controller/cubit/quran_reader_cubit.dart';
+import 'package:muslim/src/features/quran/presentation/controller/cubit/quran_audio_cubit.dart';
 
 class MainAppScreen extends StatefulWidget {
   const MainAppScreen({super.key});
@@ -13,12 +18,25 @@ class _MainAppScreenState extends State<MainAppScreen> {
   int _currentIndex = 0;
   final PageController _pageController = PageController();
 
-  final List<Widget> _screens = [
-    const HomeScreen(), // الأذكار
-    const HomeScreen(), // القرآن (سيتم تحديثه لاحقاً)
-    const HomeScreen(), // المفضلة
-    const HomeScreen(), // الإعدادات
-  ];
+  late final List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = [
+      const HomeScreen(), // الأذكار
+      MultiBlocProvider(
+        // القرآن
+        providers: [
+          BlocProvider(create: (context) => sl<QuranReaderCubit>()),
+          BlocProvider(create: (context) => sl<QuranAudioCubit>()),
+        ],
+        child: const QuranMainScreen(),
+      ),
+      const HomeScreen(), // المفضلة
+      const HomeScreen(), // الإعدادات
+    ];
+  }
 
   @override
   void dispose() {
@@ -30,23 +48,11 @@ class _MainAppScreenState extends State<MainAppScreen> {
     setState(() {
       _currentIndex = index;
     });
-    
-    // التنقل حسب الفهرس
-    switch (index) {
-      case 0:
-        // الأذكار - البقاء في الشاشة الحالية
-        break;
-      case 1:
-        // القرآن
-        Navigator.of(context).pushNamed('/quran');
-        break;
-      case 2:
-        // المفضلة - تبديل إلى تاب المفضلة
-        break;
-      case 3:
-        // الإعدادات
-        break;
-    }
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
@@ -54,9 +60,17 @@ class _MainAppScreenState extends State<MainAppScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // المحتوى الرئيسي
-          const HomeScreen(),
-          
+          // المحتوى الرئيسي مع PageView
+          PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            children: _screens,
+          ),
+
           // شريط التنقل السفلي
           Positioned(
             bottom: 0,
@@ -69,7 +83,9 @@ class _MainAppScreenState extends State<MainAppScreen> {
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.9),
+                    Theme.of(context)
+                        .scaffoldBackgroundColor
+                        .withValues(alpha: 0.9),
                     Theme.of(context).scaffoldBackgroundColor,
                   ],
                 ),

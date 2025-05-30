@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:muslim/src/features/quran/data/models/surah_model.dart';
 import 'package:muslim/src/features/quran/presentation/components/surah_card.dart';
+import 'package:muslim/src/features/quran/presentation/screens/quran_reader_screen.dart';
 
 class SurahsList extends StatelessWidget {
   final List<Surah> surahs;
@@ -26,11 +27,10 @@ class SurahsList extends StatelessWidget {
   }
 
   void _navigateToSurah(BuildContext context, Surah surah) {
-    // Navigate to surah reading screen
-    // This would be implemented to navigate to the detailed surah view
-    Navigator.of(context).pushNamed(
-      '/quran/surah',
-      arguments: surah.number,
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => QuranReaderScreen(surahNumber: surah.number),
+      ),
     );
   }
 }

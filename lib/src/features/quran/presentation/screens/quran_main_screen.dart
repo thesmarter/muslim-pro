@@ -8,9 +8,12 @@ import 'package:muslim/src/features/quran/presentation/components/quran_app_bar.
 import 'package:muslim/src/features/quran/presentation/components/quran_search_bar.dart';
 import 'package:muslim/src/features/quran/presentation/components/quick_access_section.dart';
 import 'package:muslim/src/features/quran/presentation/components/surahs_list.dart';
+import 'package:muslim/src/features/quran/presentation/controller/cubit/quran_audio_cubit.dart';
 import 'package:muslim/src/features/quran/presentation/controller/cubit/quran_reader_cubit.dart';
+import 'package:muslim/src/features/quran/presentation/screens/offline_downloads_screen.dart';
 import 'package:muslim/src/features/quran/presentation/screens/quran_audio_player_screen.dart';
 import 'package:muslim/src/features/quran/presentation/screens/quran_bookmarks_screen.dart';
+import 'package:muslim/src/features/quran/presentation/screens/quran_reader_screen.dart';
 import 'package:muslim/src/features/quran/presentation/screens/quran_search_screen.dart';
 
 class QuranMainScreen extends StatefulWidget {
@@ -29,6 +32,10 @@ class _QuranMainScreenState extends State<QuranMainScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
+    // تحميل البيانات عند بدء الشاشة
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<QuranReaderCubit>().loadSurahs();
+    });
   }
 
   @override
@@ -40,138 +47,133 @@ class _QuranMainScreenState extends State<QuranMainScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<QuranReaderCubit>()..loadSurahs(),
-      child: Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              QuranAppBar(
-                title: S.of(context).quran,
-                onSearchTap: () => _navigateToSearch(context),
-                onAudioTap: () => _navigateToAudioPlayer(context),
+    return Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            QuranAppBar(
+              title: S.of(context).quran,
+              onSearchTap: () => _navigateToSearch(context),
+              onAudioTap: () => _navigateToAudioPlayer(context),
+            ),
+          ];
+        },
+        body: Column(
+          children: [
+            // Search Bar
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: QuranSearchBar(
+                controller: _searchController,
+                onTap: () => _navigateToSearch(context),
               ),
-            ];
-          },
-          body: Column(
-            children: [
-              // Search Bar
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: QuranSearchBar(
-                  controller: _searchController,
-                  onTap: () => _navigateToSearch(context),
-                ),
-              ),
+            ),
 
-              // Last Read Card
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: LastReadCard(),
-              ),
+            // Last Read Card
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: LastReadCard(),
+            ),
 
-              // Quick Access Section
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: QuickAccessSection(),
-              ),
+            // Quick Access Section
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: QuickAccessSection(),
+            ),
 
-              // Tab Bar
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            // Tab Bar
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: TabBar(
+                controller: _tabController,
+                indicator: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: TabBar(
-                  controller: _tabController,
-                  indicator: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(12),
+                labelColor: Theme.of(context).colorScheme.onPrimary,
+                unselectedLabelColor:
+                    Theme.of(context).colorScheme.onSurfaceVariant,
+                dividerColor: Colors.transparent,
+                tabs: [
+                  Tab(text: S.of(context).surahs),
+                  Tab(text: S.of(context).juz),
+                  Tab(text: S.of(context).page),
+                  Tab(text: S.of(context).bookmarks),
+                ],
+              ),
+            ),
+
+            // Tab Bar View
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  // Surahs Tab
+                  BlocBuilder<QuranReaderCubit, QuranReaderState>(
+                    builder: (context, state) {
+                      if (state is QuranReaderLoading) {
+                        return const Loading();
+                      } else if (state is QuranReaderSurahsLoaded) {
+                        return SurahsList(surahs: state.surahs);
+                      } else if (state is QuranReaderError) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.error_outline,
+                                size: 64,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                S.of(context).error,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                state.message,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.read<QuranReaderCubit>().loadSurahs();
+                                },
+                                child: Text(S.of(context).retry),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      return const SizedBox();
+                    },
                   ),
-                  labelColor: Theme.of(context).colorScheme.onPrimary,
-                  unselectedLabelColor:
-                      Theme.of(context).colorScheme.onSurfaceVariant,
-                  dividerColor: Colors.transparent,
-                  tabs: [
-                    Tab(text: S.of(context).surahs),
-                    Tab(text: S.of(context).juz),
-                    Tab(text: S.of(context).page),
-                    Tab(text: S.of(context).bookmarks),
-                  ],
-                ),
+
+                  // Juz Tab
+                  _buildJuzTab(),
+
+                  // Page Tab
+                  _buildPageTab(),
+
+                  // Bookmarks Tab
+                  _buildBookmarksTab(),
+                ],
               ),
-
-              // Tab Bar View
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    // Surahs Tab
-                    BlocBuilder<QuranReaderCubit, QuranReaderState>(
-                      builder: (context, state) {
-                        if (state is QuranReaderLoading) {
-                          return const Loading();
-                        } else if (state is QuranReaderSurahsLoaded) {
-                          return SurahsList(surahs: state.surahs);
-                        } else if (state is QuranReaderError) {
-                          return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.error_outline,
-                                  size: 64,
-                                  color: Theme.of(context).colorScheme.error,
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  S.of(context).error,
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  state.message,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 16),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    context
-                                        .read<QuranReaderCubit>()
-                                        .loadSurahs();
-                                  },
-                                  child: Text(S.of(context).retry),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                        return const SizedBox();
-                      },
-                    ),
-
-                    // Juz Tab
-                    _buildJuzTab(),
-
-                    // Page Tab
-                    _buildPageTab(),
-
-                    // Bookmarks Tab
-                    _buildBookmarksTab(),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => _navigateToAudioPlayer(context),
-          icon: const Icon(Icons.play_arrow),
-          label: Text(S.of(context).listen),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _navigateToAudioPlayer(context),
+        icon: const Icon(Icons.play_arrow),
+        label: Text(S.of(context).listen),
       ),
     );
   }
@@ -288,7 +290,13 @@ class _QuranMainScreenState extends State<QuranMainScreen>
   void _navigateToAudioPlayer(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const QuranAudioPlayerScreen(),
+        builder: (context) => MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: context.read<QuranReaderCubit>()),
+            BlocProvider.value(value: context.read<QuranAudioCubit>()),
+          ],
+          child: const QuranAudioPlayerScreen(),
+        ),
       ),
     );
   }
@@ -297,6 +305,22 @@ class _QuranMainScreenState extends State<QuranMainScreen>
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const QuranBookmarksScreen(),
+      ),
+    );
+  }
+
+  void _navigateToSurahReader(BuildContext context, int surahNumber) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => QuranReaderScreen(surahNumber: surahNumber),
+      ),
+    );
+  }
+
+  void _navigateToOfflineDownloads(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const OfflineDownloadsScreen(),
       ),
     );
   }

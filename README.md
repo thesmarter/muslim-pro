@@ -20,3 +20,45 @@ samples, guidance on mobile development, and a full API reference.
 # install
 - after clone project https://github.com/thesmarter/muslim-pro.git
 - open Terminal or Bash or CMD and Run ( flutter pub get . )
+
+```mermaid
+graph TD
+    A[بداية التطبيق] --> B{هل يحتاج Onboarding؟}
+    B -->|نعم - تثبيت جديد/تحديث| C[شاشة Onboarding]
+    B -->|لا - مستخدم قديم| D[الشاشة الرئيسية]
+    
+    C --> C1[صفحة الترحيب]
+    C --> C2[ميزات القرآن]
+    C --> C3[مشغل الصوت]
+    C --> C4[البحث المتقدم]
+    C --> C5[التحسينات]
+    
+    C1 --> E[زر تخطي متاح دائماً]
+    C2 --> E
+    C3 --> E
+    C4 --> E
+    C5 --> F[زر البدء]
+    
+    E --> D
+    F --> D
+    
+    D[MainAppScreen] --> G[شريط التنقل السفلي]
+    
+    G --> H1[الأذكار]
+    G --> H2[القرآن]
+    G --> H3[المفضلة]
+    G --> H4[الاستماع]
+    
+    H1 --> I1[قائمة الأذكار]
+    H2 --> I2[قسم القرآن]
+    H3 --> I3[المحتوى المفضل]
+    H4 --> I4[مشغل الصوت]
+    
+    style A fill:#2E7D32,stroke:#fff,color:#fff
+    style D fill:#1565C0,stroke:#fff,color:#fff
+    style G fill:#FF6F00,stroke:#fff,color:#fff
+    style H1 fill:#4CAF50,stroke:#fff,color:#fff
+    style H2 fill:#4CAF50,stroke:#fff,color:#fff
+    style H3 fill:#4CAF50,stroke:#fff,color:#fff
+    style H4 fill:#4CAF50,stroke:#fff,color:#fff
+```

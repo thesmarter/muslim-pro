@@ -6,52 +6,102 @@ import 'package:muslim/src/features/quran/presentation/components/audio_player_c
 import 'package:muslim/src/features/quran/presentation/components/reciter_selector.dart';
 import 'package:muslim/src/features/quran/presentation/controller/cubit/quran_audio_cubit.dart';
 import 'package:muslim/src/features/quran/presentation/controller/cubit/quran_reader_cubit.dart';
+import 'package:muslim/src/features/quran/presentation/screens/surah_selector_screen.dart';
+import 'package:muslim/src/features/quran/data/repository/quran_repository.dart';
 
 class QuranAudioPlayerScreen extends StatelessWidget {
   const QuranAudioPlayerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => sl<QuranAudioCubit>()),
-        BlocProvider(
-          create: (context) => sl<QuranReaderCubit>()..loadReciters(),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(S.of(context).audioPlayer),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                Theme.of(context).colorScheme.secondary.withValues(alpha: 0.05),
+              ],
+            ),
+          ),
         ),
-      ],
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(S.of(context).audioPlayer),
-          elevation: 0,
-          actions: [
-            IconButton(
+        actions: [
+          Container(
+            margin: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color:
+                  Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withValues(alpha: 0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: IconButton(
               onPressed: () => _showReciterSelector(context),
-              icon: const Icon(Icons.person),
+              icon: Icon(
+                Icons.person_rounded,
+                color: Theme.of(context).colorScheme.primary,
+              ),
               tooltip: S.of(context).selectReciter,
             ),
-          ],
-        ),
-        body: BlocBuilder<QuranAudioCubit, QuranAudioState>(
-          builder: (context, audioState) {
-            return Column(
-              children: [
-                // Current Playing Info
-                Expanded(
-                  flex: 2,
-                  child: _buildCurrentPlayingInfo(context, audioState),
+          ),
+          Container(
+            margin: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color:
+                  Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withValues(alpha: 0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
                 ),
-
-                // Audio Controls
-                const AudioPlayerControls(),
-
-                // Reciter Info
-                _buildReciterInfo(context, audioState),
-
-                const SizedBox(height: 20),
               ],
-            );
-          },
-        ),
+            ),
+            child: IconButton(
+              onPressed: () => _showSurahSelector(context),
+              icon: Icon(
+                Icons.library_music_rounded,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              tooltip: 'اختيار سورة',
+            ),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          // Current Playing Info
+          Expanded(
+            flex: 2,
+            child: _buildCurrentPlayingInfo(context, QuranAudioInitial()),
+          ),
+
+          // Audio Controls
+          const AudioPlayerControls(),
+
+          // Reciter Info
+          _buildReciterInfo(context, QuranAudioInitial()),
+
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }
@@ -254,12 +304,49 @@ class QuranAudioPlayerScreen extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => const ReciterSelector(),
+      builder: (modalContext) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => sl<QuranReaderCubit>()..loadReciters(),
+          ),
+          BlocProvider.value(
+            value: context.read<QuranAudioCubit>(),
+          ),
+        ],
+        child: const ReciterSelector(),
+      ),
     );
   }
 
   void _showSurahSelector(BuildContext context) {
-    // This would show a surah selector dialog or navigate to surah list
-    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => BlocProvider(
+          create: (context) => sl<QuranReaderCubit>()..loadSurahs(),
+          child: SurahSelectorScreen(
+            onSurahSelected: (surah) {
+              // Get current reciter or use default
+              final repository = sl<QuranRepository>();
+
+              // Get default reciter if none selected
+              final reciters = repository.getReciters();
+              final defaultReciter =
+                  reciters.isNotEmpty ? reciters.first : null;
+
+              if (defaultReciter != null) {
+                // Navigate back and show success message
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('تم اختيار ${surah.name} للتشغيل'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              }
+            },
+          ),
+        ),
+      ),
+    );
   }
 }
