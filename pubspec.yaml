@@ -13,12 +13,12 @@ environment:
 dependencies:
   audioplayers: ^6.1.0
   auto_size_text: ^3.0.0
-  awesome_notifications: ^0.9.3
+  awesome_notifications: ^0.10.0
   bloc: ^8.1.4
   bot_toast: ^4.1.3
   capture_widget:
     path: packages/capture_widget
-  connectivity_plus: ^6.0.5
+#  connectivity_plus: ^6.0.5
   cupertino_icons: ^1.0.4
   day_night_time_picker: ^1.3.1
   enum_to_string: ^2.0.1
@@ -57,14 +57,14 @@ dependencies:
   window_manager: ^0.4.2
 
 dev_dependencies:
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
   lint: ^2.3.0
 
 flutter_native_splash:
   android: true
-  #  ios: true
+  ios: true
   #  web: true
   color: "#303030"
 
