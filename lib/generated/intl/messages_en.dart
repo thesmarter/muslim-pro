@@ -34,6 +34,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "activeTally": MessageLookupByLibrary.simpleMessage("Active tally"),
     "add": MessageLookupByLibrary.simpleMessage("Add"),
+    "addBookmarksHint": MessageLookupByLibrary.simpleMessage(
+      "Tap the bookmark icon on any ayah to add it to bookmarks",
+    ),
+    "addFavoritesHint": MessageLookupByLibrary.simpleMessage(
+      "Tap the heart icon on any ayah to add it to favorites",
+    ),
     "addNameToCounter": MessageLookupByLibrary.simpleMessage(
       "Add a name to your counter",
     ),
@@ -53,11 +59,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "appLanguage": MessageLookupByLibrary.simpleMessage("App Language"),
     "appTitle": MessageLookupByLibrary.simpleMessage("Elmoslem Pro App"),
     "areYouSure": MessageLookupByLibrary.simpleMessage("Are you sure?"),
+    "audioPlayer": MessageLookupByLibrary.simpleMessage("Audio Player"),
+    "audioRecitations": MessageLookupByLibrary.simpleMessage(
+      "Audio Recitations",
+    ),
+    "ayahs": MessageLookupByLibrary.simpleMessage("Ayahs"),
     "azkarFilters": MessageLookupByLibrary.simpleMessage("Azkar Filters"),
     "backgroundColor": MessageLookupByLibrary.simpleMessage("Background color"),
     "bookmark": MessageLookupByLibrary.simpleMessage("Bookmark"),
+    "bookmarks": MessageLookupByLibrary.simpleMessage("Bookmarks"),
+    "browseSurahs": MessageLookupByLibrary.simpleMessage("Browse Surahs"),
+    "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "cardIndex": MessageLookupByLibrary.simpleMessage("Card index"),
     "cardMode": MessageLookupByLibrary.simpleMessage("Card Mode"),
+    "changeReciter": MessageLookupByLibrary.simpleMessage("Change Reciter"),
     "channelInAppName": MessageLookupByLibrary.simpleMessage(
       "In App Notification",
     ),
@@ -89,6 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "commentarySharh": MessageLookupByLibrary.simpleMessage("Commentary"),
     "contact": MessageLookupByLibrary.simpleMessage("Contact"),
     "contactDev": MessageLookupByLibrary.simpleMessage("Contact to Dev"),
+    "continueReading": MessageLookupByLibrary.simpleMessage("Continue Reading"),
     "copiedToClipboard": MessageLookupByLibrary.simpleMessage(
       "Copied to clipboard",
     ),
@@ -114,6 +130,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "deactivate": MessageLookupByLibrary.simpleMessage("Deactivate"),
     "decreae": MessageLookupByLibrary.simpleMessage("Decreae"),
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteBookmark": MessageLookupByLibrary.simpleMessage("Delete Bookmark"),
+    "deleteBookmarkConfirmation": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this bookmark?",
+    ),
     "digitalCopyOfElmoslemPro": MessageLookupByLibrary.simpleMessage(
       "A digital copy of Elmoslem Pro was used from the Aloka Network.",
     ),
@@ -137,6 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "endSuraAliImran": MessageLookupByLibrary.simpleMessage(
       "End of Surah Ali \'Imran",
     ),
+    "error": MessageLookupByLibrary.simpleMessage("Error"),
     "everyFriday": MessageLookupByLibrary.simpleMessage("Every Friday"),
     "everyMonday": MessageLookupByLibrary.simpleMessage("Every Monday"),
     "everySaturday": MessageLookupByLibrary.simpleMessage("Every Saturday"),
@@ -148,11 +169,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "fastingMondaysThursdaysReminder": MessageLookupByLibrary.simpleMessage(
       "Fasting Mondays and Thursdays Reminder",
     ),
+    "favoriteAyahs": MessageLookupByLibrary.simpleMessage("favorite ayahs"),
+    "favorites": MessageLookupByLibrary.simpleMessage("Favorites"),
     "favoritesContent": MessageLookupByLibrary.simpleMessage("favorites"),
     "favoritesZikr": MessageLookupByLibrary.simpleMessage("Favourite Zikr"),
     "featuresToBeAdded": MessageLookupByLibrary.simpleMessage(
       "Features I hope to be added:",
     ),
+    "findAyahs": MessageLookupByLibrary.simpleMessage("Find Ayahs"),
     "fixedSizeMode": MessageLookupByLibrary.simpleMessage("Fixed size mode"),
     "fontDecreaeSize": MessageLookupByLibrary.simpleMessage(
       "Decreae font size",
@@ -188,11 +212,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "imageQuality": MessageLookupByLibrary.simpleMessage("Image quality"),
     "imageWidth": MessageLookupByLibrary.simpleMessage("Image width"),
     "index": MessageLookupByLibrary.simpleMessage("Index"),
+    "juz": MessageLookupByLibrary.simpleMessage("Juz"),
+    "lastRead": MessageLookupByLibrary.simpleMessage("Last Read"),
     "later": MessageLookupByLibrary.simpleMessage("Later"),
     "lightTheme": MessageLookupByLibrary.simpleMessage("Light Theme"),
     "likeAboutApp": MessageLookupByLibrary.simpleMessage(
       "I like about this app:",
     ),
+    "listen": MessageLookupByLibrary.simpleMessage("Listen"),
+    "markedPages": MessageLookupByLibrary.simpleMessage("Marked Pages"),
+    "meccan": MessageLookupByLibrary.simpleMessage("Meccan"),
+    "medinan": MessageLookupByLibrary.simpleMessage("Medinan"),
     "message": MessageLookupByLibrary.simpleMessage("Message"),
     "misspelled": MessageLookupByLibrary.simpleMessage("Misspelled"),
     "moreApps": MessageLookupByLibrary.simpleMessage("More apps"),
@@ -205,9 +235,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "noAlarmSetForAnyZikr": MessageLookupByLibrary.simpleMessage(
       "No alarm has been set for any zikr If you want to set an alarm, click on the alarm sign next to the zikr title",
     ),
+    "noBookmarksYet": MessageLookupByLibrary.simpleMessage("No bookmarks yet"),
+    "noFavoritesYet": MessageLookupByLibrary.simpleMessage("No favorites yet"),
+    "noLastRead": MessageLookupByLibrary.simpleMessage("No last read"),
     "noRemindersFound": MessageLookupByLibrary.simpleMessage(
       "No reminders found",
     ),
+    "noResultsFor": MessageLookupByLibrary.simpleMessage("No results for"),
+    "noResultsFound": MessageLookupByLibrary.simpleMessage("No results found"),
     "noTitleMarkedAsFavorite": MessageLookupByLibrary.simpleMessage(
       "No title from the index is marked as a favourite. Click on the Favorites icon at any index title",
     ),
@@ -233,6 +268,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Optimized Light Theme",
     ),
     "ourProducts": MessageLookupByLibrary.simpleMessage("Our Products"),
+    "page": MessageLookupByLibrary.simpleMessage("Page"),
     "pageMode": MessageLookupByLibrary.simpleMessage("Page Mode"),
     "phoneVibrationAtEveryPraise": MessageLookupByLibrary.simpleMessage(
       "Phone vibration at every praise",
@@ -259,6 +295,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "prophetSaidLiesIntentional": MessageLookupByLibrary.simpleMessage(
       "The Prophet (may Allah’s peace and blessings be upon him) said: \"Whoever tells lies about me intentionally should take his seat in Hellfire.\"",
     ),
+    "quickAccess": MessageLookupByLibrary.simpleMessage("Quick Access"),
+    "quran": MessageLookupByLibrary.simpleMessage("Quran"),
     "quranPagesFromAndroidQuran": MessageLookupByLibrary.simpleMessage(
       "Quran pages are from android quran",
     ),
@@ -285,10 +323,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "Reset all counters?",
     ),
     "resetZikr": MessageLookupByLibrary.simpleMessage("Reset Zikr"),
+    "resultsFound": MessageLookupByLibrary.simpleMessage("results found"),
+    "retry": MessageLookupByLibrary.simpleMessage("Retry"),
+    "revelation": MessageLookupByLibrary.simpleMessage("Revelation"),
     "reviewIndexOfBook": MessageLookupByLibrary.simpleMessage(
       "Please review the index of the book",
     ),
+    "savedAyahs": MessageLookupByLibrary.simpleMessage("Saved Ayahs"),
     "search": MessageLookupByLibrary.simpleMessage("Search"),
+    "searchHint": MessageLookupByLibrary.simpleMessage(
+      "Enter Arabic text to search in the Quran",
+    ),
+    "searchInQuran": MessageLookupByLibrary.simpleMessage("Search in Quran"),
+    "searchSuggestions": MessageLookupByLibrary.simpleMessage(
+      "Search Suggestions",
+    ),
     "select": MessageLookupByLibrary.simpleMessage("Select"),
     "selectAzkarHokmFilters": MessageLookupByLibrary.simpleMessage(
       "Select hokm of Azakr",
@@ -297,6 +346,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Select source of Azkar",
     ),
     "selectColor": MessageLookupByLibrary.simpleMessage("Select color"),
+    "selectReciter": MessageLookupByLibrary.simpleMessage("Select Reciter"),
+    "selectSurahToPlay": MessageLookupByLibrary.simpleMessage(
+      "Select a surah to play",
+    ),
     "sendEmail": MessageLookupByLibrary.simpleMessage("Send Email"),
     "setMessageForYou": MessageLookupByLibrary.simpleMessage(
       "Set message for yourself",
@@ -362,6 +415,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "There is a spelling error in",
     ),
     "start": MessageLookupByLibrary.simpleMessage("Start"),
+    "startReading": MessageLookupByLibrary.simpleMessage("Start Reading"),
+    "startReadingQuran": MessageLookupByLibrary.simpleMessage(
+      "Start reading the Quran",
+    ),
     "subject": MessageLookupByLibrary.simpleMessage("Subject"),
     "subtitleColor": MessageLookupByLibrary.simpleMessage("Subtitle color"),
     "suraAlKahf": MessageLookupByLibrary.simpleMessage("Surah Al-Kahf"),
@@ -370,6 +427,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "suraAlMulk": MessageLookupByLibrary.simpleMessage("Surah Al-Mulk"),
     "suraAsSajdah": MessageLookupByLibrary.simpleMessage("Surah As-Sajdah"),
+    "surahNumber": MessageLookupByLibrary.simpleMessage("Surah Number"),
+    "surahs": MessageLookupByLibrary.simpleMessage("Surahs"),
     "tally": MessageLookupByLibrary.simpleMessage("Tally"),
     "tallyEditor": MessageLookupByLibrary.simpleMessage("Tally Editor"),
     "text": MessageLookupByLibrary.simpleMessage("Text"),
@@ -393,6 +452,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "updatesHistory": MessageLookupByLibrary.simpleMessage("Updates History"),
     "useHindiDigits": MessageLookupByLibrary.simpleMessage("Use Hindi Digits"),
     "version": MessageLookupByLibrary.simpleMessage("Version"),
+    "viewBookmarks": MessageLookupByLibrary.simpleMessage("View Bookmarks"),
     "yes": MessageLookupByLibrary.simpleMessage("Yes"),
     "zikrIndex": MessageLookupByLibrary.simpleMessage("Zikr Index"),
     "zikrViewerRestoreSessionMsg": MessageLookupByLibrary.simpleMessage(

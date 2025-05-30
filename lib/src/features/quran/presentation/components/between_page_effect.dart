@@ -20,8 +20,8 @@ class BetweenPageEffect extends StatelessWidget {
             end: index.isOdd ? Alignment.centerLeft : Alignment.centerRight,
             colors: [
               Colors.transparent,
-              Colors.black.withOpacity(.05),
-              Colors.black.withOpacity(.1),
+              Colors.black.withValues(alpha: 0.05),
+              Colors.black.withValues(alpha: 0.1),
             ],
           ),
         ),

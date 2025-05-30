@@ -19,8 +19,12 @@ import 'package:muslim/src/features/home/data/repository/hisn_db_helper.dart';
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
 import 'package:muslim/src/features/home_search/presentation/controller/cubit/search_cubit.dart';
 import 'package:muslim/src/features/onboarding/presentation/controller/cubit/onboard_cubit.dart';
+import 'package:muslim/src/features/quran/data/datasources/quran_api_service.dart';
+import 'package:muslim/src/features/quran/data/repository/quran_repository.dart';
 import 'package:muslim/src/features/quran/data/repository/uthmani_repository.dart';
+import 'package:muslim/src/features/quran/presentation/controller/cubit/quran_audio_cubit.dart';
 import 'package:muslim/src/features/quran/presentation/controller/cubit/quran_cubit.dart';
+import 'package:muslim/src/features/quran/presentation/controller/cubit/quran_reader_cubit.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
 import 'package:muslim/src/features/settings/data/repository/zikr_text_repo.dart';
 import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
@@ -60,6 +64,10 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => FakeHadithDBHelper(sl()));
   sl.registerLazySingleton(() => CommentaryDBHelper());
 
+  ///MARK: Init Quran Services
+  sl.registerLazySingleton(() => QuranApiService());
+  sl.registerLazySingleton<QuranRepository>(() => QuranRepositoryImpl(sl()));
+
   ///MARK: Init Manager
   sl.registerFactory(() => EffectsManager(sl()));
   sl.registerFactory(() => AwesomeNotificationManager());
@@ -83,4 +91,8 @@ Future<void> initSL() async {
   sl.registerFactory(() => QuranCubit(sl()));
   sl.registerFactory(() => FakeHadithBloc(sl()));
   sl.registerFactory(() => ZikrViewerBloc(sl(), sl(), sl(), sl(), sl(), sl()));
+
+  /// Quran BLoCs
+  sl.registerFactory(() => QuranReaderCubit(sl()));
+  sl.registerFactory(() => QuranAudioCubit(sl()));
 }

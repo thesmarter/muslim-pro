@@ -115,16 +115,16 @@ class TallyCounterView extends StatelessWidget {
                                 trackColor: Theme.of(context)
                                     .colorScheme
                                     .primary
-                                    .withOpacity(.1),
+                                    .withValues(alpha: 0.1),
                                 progressBarColors: [
                                   Theme.of(context)
                                       .colorScheme
                                       .primary
-                                      .withOpacity(.7),
+                                      .withValues(alpha: 0.7),
                                   Theme.of(context)
                                       .colorScheme
                                       .primary
-                                      .withOpacity(.7),
+                                      .withValues(alpha: 0.7),
                                 ],
                               ),
                             ),

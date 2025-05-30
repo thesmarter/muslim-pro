@@ -34,6 +34,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "activeTally": MessageLookupByLibrary.simpleMessage("التسبيح"),
     "add": MessageLookupByLibrary.simpleMessage("إضافة"),
+    "addBookmarksHint": MessageLookupByLibrary.simpleMessage(
+      "اضغط على أيقونة العلامة المرجعية في أي آية لإضافتها",
+    ),
+    "addFavoritesHint": MessageLookupByLibrary.simpleMessage(
+      "اضغط على أيقونة القلب في أي آية لإضافتها للمفضلة",
+    ),
     "addNameToCounter": MessageLookupByLibrary.simpleMessage(
       "أدخل اسم العداد مثال\nسبحان الله وبحمده سبحان الله العظيم",
     ),
@@ -53,11 +59,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "appLanguage": MessageLookupByLibrary.simpleMessage("لغة التطبيق"),
     "appTitle": MessageLookupByLibrary.simpleMessage("المسلم برو"),
     "areYouSure": MessageLookupByLibrary.simpleMessage("متأكد من ذلك؟"),
+    "audioPlayer": MessageLookupByLibrary.simpleMessage("مشغل الصوت"),
+    "audioRecitations": MessageLookupByLibrary.simpleMessage(
+      "التلاوات الصوتية",
+    ),
+    "ayahs": MessageLookupByLibrary.simpleMessage("آيات"),
     "azkarFilters": MessageLookupByLibrary.simpleMessage("تصفية الأذكار"),
     "backgroundColor": MessageLookupByLibrary.simpleMessage("لون الخلفية"),
     "bookmark": MessageLookupByLibrary.simpleMessage("أضف للمفضلة"),
+    "bookmarks": MessageLookupByLibrary.simpleMessage("العلامات المرجعية"),
+    "browseSurahs": MessageLookupByLibrary.simpleMessage("تصفح السور"),
+    "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "cardIndex": MessageLookupByLibrary.simpleMessage("البطاقة رقم"),
     "cardMode": MessageLookupByLibrary.simpleMessage("وضعية البطاقات"),
+    "changeReciter": MessageLookupByLibrary.simpleMessage("تغيير القارئ"),
     "channelInAppName": MessageLookupByLibrary.simpleMessage(
       "الإشعارات الداخلية",
     ),
@@ -87,6 +102,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "commentarySharh": MessageLookupByLibrary.simpleMessage("الشرح"),
     "contact": MessageLookupByLibrary.simpleMessage("التواصل"),
     "contactDev": MessageLookupByLibrary.simpleMessage("تواصل مع المطور"),
+    "continueReading": MessageLookupByLibrary.simpleMessage("متابعة القراءة"),
     "copiedToClipboard": MessageLookupByLibrary.simpleMessage(
       "تم النسخ إلى الحافظة",
     ),
@@ -112,6 +128,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "deactivate": MessageLookupByLibrary.simpleMessage("الغاء تفعيل"),
     "decreae": MessageLookupByLibrary.simpleMessage("نقص"),
     "delete": MessageLookupByLibrary.simpleMessage("حذف"),
+    "deleteBookmark": MessageLookupByLibrary.simpleMessage(
+      "حذف العلامة المرجعية",
+    ),
+    "deleteBookmarkConfirmation": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد من حذف هذه العلامة المرجعية؟",
+    ),
     "digitalCopyOfElmoslemPro": MessageLookupByLibrary.simpleMessage(
       "تم الاستعانة بنسخة رقمية من كتاب المسلم برو من شبكة الألوكة",
     ),
@@ -133,6 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "enableWakeLock": MessageLookupByLibrary.simpleMessage("إبقاء الشاشة نشطة"),
     "endSuraAliImran": MessageLookupByLibrary.simpleMessage("أواخر آل عمران"),
+    "error": MessageLookupByLibrary.simpleMessage("خطأ"),
     "everyFriday": MessageLookupByLibrary.simpleMessage("كل جمعة"),
     "everyMonday": MessageLookupByLibrary.simpleMessage("كل إثنين"),
     "everySaturday": MessageLookupByLibrary.simpleMessage("كل سبت"),
@@ -144,11 +167,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "fastingMondaysThursdaysReminder": MessageLookupByLibrary.simpleMessage(
       "منبه صيام الاثنين والخميس",
     ),
+    "favoriteAyahs": MessageLookupByLibrary.simpleMessage("آيات مفضلة"),
+    "favorites": MessageLookupByLibrary.simpleMessage("المفضلة"),
     "favoritesContent": MessageLookupByLibrary.simpleMessage("المفضلة"),
     "favoritesZikr": MessageLookupByLibrary.simpleMessage("مفضلة الأذكار"),
     "featuresToBeAdded": MessageLookupByLibrary.simpleMessage(
       "ميزات تتمنى وجودها:",
     ),
+    "findAyahs": MessageLookupByLibrary.simpleMessage("البحث عن الآيات"),
     "fixedSizeMode": MessageLookupByLibrary.simpleMessage("حجم خط ثابت"),
     "fontDecreaeSize": MessageLookupByLibrary.simpleMessage("قلل حجم الخط"),
     "fontIncreaeSize": MessageLookupByLibrary.simpleMessage("زيادة حجم الخط"),
@@ -182,11 +208,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "imageQuality": MessageLookupByLibrary.simpleMessage("جودة الصورة"),
     "imageWidth": MessageLookupByLibrary.simpleMessage("عرض الصورة"),
     "index": MessageLookupByLibrary.simpleMessage("الفهرس"),
+    "juz": MessageLookupByLibrary.simpleMessage("الجزء"),
+    "lastRead": MessageLookupByLibrary.simpleMessage("آخر قراءة"),
     "later": MessageLookupByLibrary.simpleMessage("ذكرني لاحقًا"),
     "lightTheme": MessageLookupByLibrary.simpleMessage("الوضع الفاتح"),
     "likeAboutApp": MessageLookupByLibrary.simpleMessage(
       "ما أعجبك في التطبيق:",
     ),
+    "listen": MessageLookupByLibrary.simpleMessage("استمع"),
+    "markedPages": MessageLookupByLibrary.simpleMessage("الصفحات المعلمة"),
+    "meccan": MessageLookupByLibrary.simpleMessage("مكية"),
+    "medinan": MessageLookupByLibrary.simpleMessage("مدنية"),
     "message": MessageLookupByLibrary.simpleMessage("رسالة"),
     "misspelled": MessageLookupByLibrary.simpleMessage("خطأ إملائي"),
     "moreApps": MessageLookupByLibrary.simpleMessage("المزيد من تطبيقاتنا"),
@@ -197,8 +229,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "noAlarmSetForAnyZikr": MessageLookupByLibrary.simpleMessage(
       "لم يتم تعيين منبه لأي ذكر\nإذا أردت تعيين منبه قم بالضغط على علامة المنبه ⏰ بجوار عنوان الذكر",
     ),
+    "noBookmarksYet": MessageLookupByLibrary.simpleMessage(
+      "لا توجد علامات مرجعية بعد",
+    ),
+    "noFavoritesYet": MessageLookupByLibrary.simpleMessage("لا توجد مفضلة بعد"),
+    "noLastRead": MessageLookupByLibrary.simpleMessage("لا توجد قراءة سابقة"),
     "noRemindersFound": MessageLookupByLibrary.simpleMessage(
       "لا يوجد أي منبهات",
+    ),
+    "noResultsFor": MessageLookupByLibrary.simpleMessage("لا توجد نتائج لـ"),
+    "noResultsFound": MessageLookupByLibrary.simpleMessage(
+      "لم يتم العثور على نتائج",
     ),
     "noTitleMarkedAsFavorite": MessageLookupByLibrary.simpleMessage(
       "لم يتم تحديد أي عنوان من الفهرس كمفضل قم بالضغط على علامة المفضلة عند أي عنوان فهرس",
@@ -225,6 +266,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "الوضع الفاتح المحسن",
     ),
     "ourProducts": MessageLookupByLibrary.simpleMessage("إصداراتنا"),
+    "page": MessageLookupByLibrary.simpleMessage("الصفحة"),
     "pageMode": MessageLookupByLibrary.simpleMessage("وضعية الصفحات"),
     "phoneVibrationAtEveryPraise": MessageLookupByLibrary.simpleMessage(
       "اهتزاز الهاتف عند كل تسبيحة",
@@ -251,6 +293,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "prophetSaidLiesIntentional": MessageLookupByLibrary.simpleMessage(
       "قال رسول الله صلى الله عليه وسلم: «من كذب علي متعمدا فليتبوأ مقعده من النار»",
     ),
+    "quickAccess": MessageLookupByLibrary.simpleMessage("الوصول السريع"),
+    "quran": MessageLookupByLibrary.simpleMessage("القرآن"),
     "quranPagesFromAndroidQuran": MessageLookupByLibrary.simpleMessage(
       "صفحات المصحف من خلال موقع android quran",
     ),
@@ -275,10 +319,19 @@ class MessageLookup extends MessageLookupByLibrary {
       "إعادة ضبط جميع العدادات؟",
     ),
     "resetZikr": MessageLookupByLibrary.simpleMessage("إعادة تعيين الذكر"),
+    "resultsFound": MessageLookupByLibrary.simpleMessage("نتيجة موجودة"),
+    "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
+    "revelation": MessageLookupByLibrary.simpleMessage("الوحي"),
     "reviewIndexOfBook": MessageLookupByLibrary.simpleMessage(
       "برجاء قم بمراجعة فهرس الكتاب",
     ),
+    "savedAyahs": MessageLookupByLibrary.simpleMessage("الآيات المحفوظة"),
     "search": MessageLookupByLibrary.simpleMessage("البحث"),
+    "searchHint": MessageLookupByLibrary.simpleMessage(
+      "أدخل نصاً عربياً للبحث في القرآن",
+    ),
+    "searchInQuran": MessageLookupByLibrary.simpleMessage("البحث في القرآن"),
+    "searchSuggestions": MessageLookupByLibrary.simpleMessage("اقتراحات البحث"),
     "select": MessageLookupByLibrary.simpleMessage("تحديد"),
     "selectAzkarHokmFilters": MessageLookupByLibrary.simpleMessage(
       "اختيار حكم الأذكار",
@@ -287,6 +340,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "اختيار مصدر الأذكار",
     ),
     "selectColor": MessageLookupByLibrary.simpleMessage("اختر هذا اللون"),
+    "selectReciter": MessageLookupByLibrary.simpleMessage("اختر القارئ"),
+    "selectSurahToPlay": MessageLookupByLibrary.simpleMessage(
+      "اختر سورة للتشغيل",
+    ),
     "sendEmail": MessageLookupByLibrary.simpleMessage("راسلنا"),
     "setMessageForYou": MessageLookupByLibrary.simpleMessage("ضع رسالة لنفسك"),
     "settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),
@@ -340,6 +397,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "يوجد خطأ إملائي في",
     ),
     "start": MessageLookupByLibrary.simpleMessage("البدء"),
+    "startReading": MessageLookupByLibrary.simpleMessage("ابدأ القراءة"),
+    "startReadingQuran": MessageLookupByLibrary.simpleMessage(
+      "ابدأ قراءة القرآن",
+    ),
     "subject": MessageLookupByLibrary.simpleMessage("الموضوع"),
     "subtitleColor": MessageLookupByLibrary.simpleMessage("لون النص الملحق"),
     "suraAlKahf": MessageLookupByLibrary.simpleMessage("سورة الكهف"),
@@ -348,6 +409,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "suraAlMulk": MessageLookupByLibrary.simpleMessage("سورة الملك"),
     "suraAsSajdah": MessageLookupByLibrary.simpleMessage("سورة السجدة"),
+    "surahNumber": MessageLookupByLibrary.simpleMessage("رقم السورة"),
+    "surahs": MessageLookupByLibrary.simpleMessage("السور"),
     "tally": MessageLookupByLibrary.simpleMessage("السبحة"),
     "tallyEditor": MessageLookupByLibrary.simpleMessage("محرر السبحة"),
     "text": MessageLookupByLibrary.simpleMessage("النص"),
@@ -377,6 +440,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "استخدام الأرقام الهندية",
     ),
     "version": MessageLookupByLibrary.simpleMessage("الإصدار"),
+    "viewBookmarks": MessageLookupByLibrary.simpleMessage(
+      "عرض العلامات المرجعية",
+    ),
     "yes": MessageLookupByLibrary.simpleMessage("نعم"),
     "zikrIndex": MessageLookupByLibrary.simpleMessage("الذكر رقم"),
     "zikrViewerRestoreSessionMsg": MessageLookupByLibrary.simpleMessage(

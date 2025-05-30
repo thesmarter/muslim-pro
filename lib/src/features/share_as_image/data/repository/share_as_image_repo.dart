@@ -16,10 +16,10 @@ class ShareAsImageRepo {
 
   Color get shareImageTitleTextColor => Color(
         box.read<int?>(_shareImageTitleTextBoxKey) ??
-            kShareImageTitleTextColor.value,
+            kShareImageTitleTextColor.toARGB32(),
       );
   Future<void> shareImageUpdateTitleColor(Color color) async {
-    await box.write(_shareImageTitleTextBoxKey, color.value);
+    await box.write(_shareImageTitleTextBoxKey, color.toARGB32());
   }
 
   ///
@@ -28,11 +28,11 @@ class ShareAsImageRepo {
 
   Color get shareImageBodyTextColor => Color(
         box.read<int?>(_shareImageBodyTextColorBoxKey) ??
-            kShareImageBodyTextColor.value,
+            kShareImageBodyTextColor.toARGB32(),
       );
 
   Future<void> shareImageUpdateTextColor(Color color) async {
-    await box.write(_shareImageBodyTextColorBoxKey, color.value);
+    await box.write(_shareImageBodyTextColorBoxKey, color.toARGB32());
   }
 
   ///
@@ -41,10 +41,10 @@ class ShareAsImageRepo {
 
   Color get shareImageAdditionalTextColor => Color(
         box.read<int?>(_shareImageAdditionalTextColorBoxKey) ??
-            kShareImageAdditionalTextColor.value,
+            kShareImageAdditionalTextColor.toARGB32(),
       );
   Future<void> updateAdditionalTextColor(Color color) async {
-    await box.write(_shareImageAdditionalTextColorBoxKey, color.value);
+    await box.write(_shareImageAdditionalTextColorBoxKey, color.toARGB32());
   }
 
   ///
@@ -53,10 +53,10 @@ class ShareAsImageRepo {
 
   Color get shareImageBackgroundColor => Color(
         box.read<int?>(_shareImageBackgroundColorBoxKey) ??
-            kShareImageBackgroundColor.value,
+            kShareImageBackgroundColor.toARGB32(),
       );
   Future<void> updateBackgroundColor(Color color) async {
-    await box.write(_shareImageBackgroundColorBoxKey, color.value);
+    await box.write(_shareImageBackgroundColorBoxKey, color.toARGB32());
   }
 
   ///MARK: Font

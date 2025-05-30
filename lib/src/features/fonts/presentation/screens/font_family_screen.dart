@@ -27,7 +27,10 @@ class FontFamilyScreen extends StatelessWidget {
               final font = fontFamilies[index];
               return ListTile(
                 tileColor: state.fontFamily == font
-                    ? Theme.of(context).colorScheme.primary.withOpacity(.2)
+                    ? Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withValues(alpha: 0.2)
                     : null,
                 subtitle: Text(
                   font,

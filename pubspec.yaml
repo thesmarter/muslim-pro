@@ -3,64 +3,88 @@ description: muslim-pro start kit app.
 
 publish_to: "none"
 
-version: 2.3.1+17
+version: 2.4.0+18
 
 environment:
-  sdk: ">=3.4.3 <4.0.0"
+  sdk: ">=3.5.0 <4.0.0"
   flutter: 3.24.3
 
 
 dependencies:
-  audioplayers: ^6.1.0
+  # UI Components
+  arabic_numbers: ^1.0.0
+
+  # Audio & Media
+  audioplayers: ^6.4.0
   auto_size_text: ^3.0.0
+  day_night_time_picker: ^1.3.1
+  flutter_colorpicker: ^1.1.0
+  flutter_slidable: ^4.0.0
+  scrollable_positioned_list: ^0.3.8
+  sleek_circular_slider: ^2.0.1
+
+  # State Management
+  bloc: ^9.0.0
+  equatable: ^2.0.7
+  flutter_bloc: ^9.1.1
+  rxdart: ^0.28.0
+
+  # Notifications
   awesome_notifications: ^0.10.0
-  bloc: ^8.1.4
+  flutter_local_notifications: ^19.2.1
+
+  # UI & Navigation
   bot_toast: ^4.1.3
+  flutter_zoom_drawer: ^3.2.0
   capture_widget:
     path: packages/capture_widget
-#  connectivity_plus: ^6.0.5
-  cupertino_icons: ^1.0.4
-  day_night_time_picker: ^1.3.1
-  enum_to_string: ^2.0.1
-  equatable: ^2.0.5
-  file_picker: ^8.1.2
-  firebase_core: ^3.6.0
-  firebase_messaging: ^15.1.3
+
+  # Network & HTTP
+  dio: ^5.7.0
+  http: ^1.4.0
+
+  # Core Flutter
+  cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.6
-  flutter_colorpicker: ^1.1.0
-  flutter_local_notifications: ^17.2.1
   flutter_localizations:
     sdk: flutter
-  flutter_native_splash: ^2.4.1
-  flutter_slidable: ^3.1.1
-  flutter_zoom_drawer: ^3.2.0
-  fluttertoast: ^8.2.8
-  font_awesome_flutter: ^10.7.0
-  get_it: ^8.0.0
+  flutter_native_splash: ^2.4.6
+
+  # Utilities
+  enum_to_string: ^2.2.1
+  file_picker: ^10.1.9
+  fluttertoast: ^8.2.12
+  font_awesome_flutter: ^10.8.0
+  get_it: ^8.0.2
   get_storage: ^2.1.1
-  intl: ^0.19.0
+  intl: ^0.20.2
   material_design_icons_flutter: ^7.0.7296
   path: ^1.9.0
-  path_provider: ^2.1.4
-  rxdart: ^0.28.0
-  scrollable_positioned_list: ^0.3.8
-  share_plus: ^10.0.2
-  shared_preferences: ^2.3.2
-  sleek_circular_slider: ^2.0.1
-  sqflite: ^2.3.3
-  sqflite_common_ffi: ^2.3.3
-  url_launcher: ^6.3.0
-  vibration: ^2.0.1
-  wakelock_plus: ^1.2.8
-  window_manager: ^0.4.2
+  path_provider: ^2.1.5
+  share_plus: ^11.0.0
+  shared_preferences: ^2.5.3
+  url_launcher: ^6.3.1
+  vibration: ^3.1.3
+  wakelock_plus: ^1.3.2
+  window_manager: ^0.5.0
+
+  # Database
+  sqflite: ^2.4.2
+  sqflite_common_ffi: ^2.3.5
+
+  # Firebase
+  firebase_core: ^3.13.1
+  firebase_messaging: ^15.2.6
+
+  # Quran specific dependencies
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
-  lint: ^2.3.0
+  lint: ^2.8.0
 
 flutter_native_splash:
   android: true

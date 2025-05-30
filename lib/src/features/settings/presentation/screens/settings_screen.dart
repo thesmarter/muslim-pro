@@ -152,8 +152,8 @@ class SettingsGeneralSection extends StatelessWidget {
                 title: Text(S.of(context).pageMode),
                 onTap: () {
                   context.read<SettingsCubit>().toggleIsCardReadMode(
-                    activate: true,
-                  );
+                        activate: true,
+                      );
                 },
               )
             else
@@ -162,8 +162,8 @@ class SettingsGeneralSection extends StatelessWidget {
                 title: Text(S.of(context).cardMode),
                 onTap: () {
                   context.read<SettingsCubit>().toggleIsCardReadMode(
-                    activate: false,
-                  );
+                        activate: false,
+                      );
                 },
               ),
             SwitchListTile(
@@ -173,8 +173,8 @@ class SettingsGeneralSection extends StatelessWidget {
               subtitle: Text(S.of(context).prefPraiseWithVolumeKeysDesc),
               onChanged: (value) {
                 context.read<SettingsCubit>().togglePraiseWithVolumeKeys(
-                  use: !state.praiseWithVolumeKeys,
-                );
+                      use: !state.praiseWithVolumeKeys,
+                    );
               },
             ),
             SwitchListTile(
@@ -183,8 +183,8 @@ class SettingsGeneralSection extends StatelessWidget {
               title: Text(S.of(context).enableWakeLock),
               onChanged: (value) {
                 context.read<SettingsCubit>().toggleWakeLock(
-                  use: !state.enableWakeLock,
-                );
+                      use: !state.enableWakeLock,
+                    );
               },
             ),
             SwitchListTile(
@@ -194,20 +194,20 @@ class SettingsGeneralSection extends StatelessWidget {
               subtitle: Text(S.of(context).allowZikrRestoreSessionDesc),
               onChanged: (value) {
                 context.read<SettingsCubit>().toggleAllowZikrSessionRestoration(
-                  allow: !state.allowZikrSessionRestoration,
-                );
+                      allow: !state.allowZikrSessionRestoration,
+                    );
               },
             ),
             SwitchListTile(
               secondary: const Icon(Icons.numbers),
-              tileColor: Colors.amber.withOpacity(.1),
+              tileColor: Colors.amber.withValues(alpha: 0.1),
               value: state.useHindiDigits,
               title: Text(S.of(context).useHindiDigits),
               subtitle: Text(S.of(context).requiresAppRestart),
               onChanged: (value) {
                 context.read<SettingsCubit>().toggleUseHiniDigits(
-                  use: !state.useHindiDigits,
-                );
+                      use: !state.useHindiDigits,
+                    );
               },
             ),
           ],

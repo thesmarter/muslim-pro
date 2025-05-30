@@ -32,15 +32,15 @@ class TallyCard extends StatelessWidget {
             ListTile(
               isThreeLine: true,
               tileColor: isActivated
-                  ? Theme.of(context).colorScheme.primary.withOpacity(.2)
+                  ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.2)
                   : null,
               onTap: () {
                 context.read<TallyBloc>().add(
-                  TallyToggleCounterActivationEvent(
-                    counter: dbTally,
-                    activate: !isActivated,
-                  ),
-                );
+                      TallyToggleCounterActivationEvent(
+                        counter: dbTally,
+                        activate: !isActivated,
+                      ),
+                    );
               },
               leading: Icon(
                 isActivated ? Icons.done_all_outlined : null,
@@ -63,7 +63,7 @@ class TallyCard extends StatelessWidget {
                         tooltip: S.of(context).edit,
                         onPressed: () async {
                           final EditorResult<DbTally>? result =
-                          await showTallyEditorDialog(
+                              await showTallyEditorDialog(
                             context: context,
                             dbTally: dbTally,
                           );
@@ -72,16 +72,16 @@ class TallyCard extends StatelessWidget {
                           switch (result.action) {
                             case EditorActionEnum.edit:
                               context.read<TallyBloc>().add(
-                                TallyEditCounterEvent(
-                                  counter: result.value,
-                                ),
-                              );
+                                    TallyEditCounterEvent(
+                                      counter: result.value,
+                                    ),
+                                  );
                             case EditorActionEnum.delete:
                               context.read<TallyBloc>().add(
-                                TallyDeleteCounterEvent(
-                                  counter: result.value,
-                                ),
-                              );
+                                    TallyDeleteCounterEvent(
+                                      counter: result.value,
+                                    ),
+                                  );
                             default:
                           }
                         },
@@ -104,10 +104,10 @@ class TallyCard extends StatelessWidget {
                           }
 
                           context.read<TallyBloc>().add(
-                            TallyDeleteCounterEvent(
-                              counter: dbTally,
-                            ),
-                          );
+                                TallyDeleteCounterEvent(
+                                  counter: dbTally,
+                                ),
+                              );
                         },
                         icon: const Icon(Icons.delete),
                       ),

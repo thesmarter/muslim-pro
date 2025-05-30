@@ -27,7 +27,7 @@ class ZikrViewerProgressBar extends StatelessWidget {
               backgroundColor: Colors.transparent,
               value: state.majorProgress,
               valueColor: AlwaysStoppedAnimation<Color>(
-                Theme.of(context).colorScheme.primary.withOpacity(.5),
+                Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
               ),
             ),
           ],

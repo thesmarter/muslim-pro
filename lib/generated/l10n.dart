@@ -1853,6 +1853,356 @@ class S {
       args: [],
     );
   }
+
+  /// `No results for`
+  String get noResultsFor {
+    return Intl.message(
+      'No results for',
+      name: 'noResultsFor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `results found`
+  String get resultsFound {
+    return Intl.message(
+      'results found',
+      name: 'resultsFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error`
+  String get error {
+    return Intl.message('Error', name: 'error', desc: '', args: []);
+  }
+
+  /// `Retry`
+  String get retry {
+    return Intl.message('Retry', name: 'retry', desc: '', args: []);
+  }
+
+  /// `Favorites`
+  String get favorites {
+    return Intl.message('Favorites', name: 'favorites', desc: '', args: []);
+  }
+
+  /// `No favorites yet`
+  String get noFavoritesYet {
+    return Intl.message(
+      'No favorites yet',
+      name: 'noFavoritesYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap the heart icon on any ayah to add it to favorites`
+  String get addFavoritesHint {
+    return Intl.message(
+      'Tap the heart icon on any ayah to add it to favorites',
+      name: 'addFavoritesHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `favorite ayahs`
+  String get favoriteAyahs {
+    return Intl.message(
+      'favorite ayahs',
+      name: 'favoriteAyahs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bookmarks`
+  String get bookmarks {
+    return Intl.message('Bookmarks', name: 'bookmarks', desc: '', args: []);
+  }
+
+  /// `No bookmarks yet`
+  String get noBookmarksYet {
+    return Intl.message(
+      'No bookmarks yet',
+      name: 'noBookmarksYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap the bookmark icon on any ayah to add it to bookmarks`
+  String get addBookmarksHint {
+    return Intl.message(
+      'Tap the bookmark icon on any ayah to add it to bookmarks',
+      name: 'addBookmarksHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Bookmark`
+  String get deleteBookmark {
+    return Intl.message(
+      'Delete Bookmark',
+      name: 'deleteBookmark',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this bookmark?`
+  String get deleteBookmarkConfirmation {
+    return Intl.message(
+      'Are you sure you want to delete this bookmark?',
+      name: 'deleteBookmarkConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
+  }
+
+  /// `Audio Player`
+  String get audioPlayer {
+    return Intl.message(
+      'Audio Player',
+      name: 'audioPlayer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Reciter`
+  String get selectReciter {
+    return Intl.message(
+      'Select Reciter',
+      name: 'selectReciter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Surah Number`
+  String get surahNumber {
+    return Intl.message(
+      'Surah Number',
+      name: 'surahNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ayahs`
+  String get ayahs {
+    return Intl.message('Ayahs', name: 'ayahs', desc: '', args: []);
+  }
+
+  /// `Revelation`
+  String get revelation {
+    return Intl.message('Revelation', name: 'revelation', desc: '', args: []);
+  }
+
+  /// `Select a surah to play`
+  String get selectSurahToPlay {
+    return Intl.message(
+      'Select a surah to play',
+      name: 'selectSurahToPlay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Browse Surahs`
+  String get browseSurahs {
+    return Intl.message(
+      'Browse Surahs',
+      name: 'browseSurahs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Reciter`
+  String get changeReciter {
+    return Intl.message(
+      'Change Reciter',
+      name: 'changeReciter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quran`
+  String get quran {
+    return Intl.message('Quran', name: 'quran', desc: '', args: []);
+  }
+
+  /// `Surahs`
+  String get surahs {
+    return Intl.message('Surahs', name: 'surahs', desc: '', args: []);
+  }
+
+  /// `Juz`
+  String get juz {
+    return Intl.message('Juz', name: 'juz', desc: '', args: []);
+  }
+
+  /// `Page`
+  String get page {
+    return Intl.message('Page', name: 'page', desc: '', args: []);
+  }
+
+  /// `Listen`
+  String get listen {
+    return Intl.message('Listen', name: 'listen', desc: '', args: []);
+  }
+
+  /// `View Bookmarks`
+  String get viewBookmarks {
+    return Intl.message(
+      'View Bookmarks',
+      name: 'viewBookmarks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search in Quran`
+  String get searchInQuran {
+    return Intl.message(
+      'Search in Quran',
+      name: 'searchInQuran',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last Read`
+  String get lastRead {
+    return Intl.message('Last Read', name: 'lastRead', desc: '', args: []);
+  }
+
+  /// `Enter Arabic text to search in the Quran`
+  String get searchHint {
+    return Intl.message(
+      'Enter Arabic text to search in the Quran',
+      name: 'searchHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue Reading`
+  String get continueReading {
+    return Intl.message(
+      'Continue Reading',
+      name: 'continueReading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No last read`
+  String get noLastRead {
+    return Intl.message('No last read', name: 'noLastRead', desc: '', args: []);
+  }
+
+  /// `Start reading the Quran`
+  String get startReadingQuran {
+    return Intl.message(
+      'Start reading the Quran',
+      name: 'startReadingQuran',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start Reading`
+  String get startReading {
+    return Intl.message(
+      'Start Reading',
+      name: 'startReading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quick Access`
+  String get quickAccess {
+    return Intl.message(
+      'Quick Access',
+      name: 'quickAccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saved Ayahs`
+  String get savedAyahs {
+    return Intl.message('Saved Ayahs', name: 'savedAyahs', desc: '', args: []);
+  }
+
+  /// `Marked Pages`
+  String get markedPages {
+    return Intl.message(
+      'Marked Pages',
+      name: 'markedPages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Audio Recitations`
+  String get audioRecitations {
+    return Intl.message(
+      'Audio Recitations',
+      name: 'audioRecitations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find Ayahs`
+  String get findAyahs {
+    return Intl.message('Find Ayahs', name: 'findAyahs', desc: '', args: []);
+  }
+
+  /// `Meccan`
+  String get meccan {
+    return Intl.message('Meccan', name: 'meccan', desc: '', args: []);
+  }
+
+  /// `Medinan`
+  String get medinan {
+    return Intl.message('Medinan', name: 'medinan', desc: '', args: []);
+  }
+
+  /// `Search Suggestions`
+  String get searchSuggestions {
+    return Intl.message(
+      'Search Suggestions',
+      name: 'searchSuggestions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No results found`
+  String get noResultsFound {
+    return Intl.message(
+      'No results found',
+      name: 'noResultsFound',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

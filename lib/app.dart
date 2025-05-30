@@ -26,7 +26,7 @@ import 'package:muslim/src/features/ui/presentation/components/desktop_window_wr
 
 class App extends StatefulWidget {
   static final GlobalKey<NavigatorState> navigatorKey =
-  GlobalKey<NavigatorState>();
+      GlobalKey<NavigatorState>();
 
   const App({super.key});
 
