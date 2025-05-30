@@ -11,6 +11,8 @@ import 'package:muslim/src/features/home/presentation/components/side_menu/side_
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
 import 'package:muslim/src/features/home_search/presentation/controller/cubit/search_cubit.dart';
 import 'package:muslim/src/features/home_search/presentation/screens/home_search_screen.dart';
+import 'package:muslim/src/features/themes/data/models/app_colors.dart';
+import 'package:muslim/src/features/home/presentation/components/widgets/modern_bottom_nav_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -25,19 +27,34 @@ class HomeScreen extends StatelessWidget {
           return const Loading();
         }
         return Scaffold(
-          body: ZoomDrawer(
-            isRtl: Bidi.isRtlLanguage(
-              Localizations.localeOf(context).languageCode,
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
+                  Theme.of(context).scaffoldBackgroundColor,
+                ],
+              ),
             ),
-            controller: sl<HomeBloc>().zoomDrawerController,
-            menuBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            menuScreen: const SideMenu(),
-            mainScreen: const DashboardScreen(),
-            borderRadius: 24.0,
-            showShadow: true,
-            angle: 0.0,
-            drawerShadowsBackgroundColor: Theme.of(context).colorScheme.primary,
-            slideWidth: 270,
+            child: ZoomDrawer(
+              isRtl: Bidi.isRtlLanguage(
+                Localizations.localeOf(context).languageCode,
+              ),
+              controller: sl<HomeBloc>().zoomDrawerController,
+              menuBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              menuScreen: const SideMenu(),
+              mainScreen: const DashboardScreen(),
+              borderRadius: 28.0,
+              showShadow: true,
+              angle: 0.0,
+              drawerShadowsBackgroundColor:
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+              slideWidth: 280,
+              mainScreenScale: 0.15,
+              menuScreenWidth: 280,
+            ),
           ),
         );
       },
@@ -71,30 +88,57 @@ class _DashboardScreenState extends State<DashboardScreen>
               return const Loading();
             }
             return Scaffold(
-              body: NestedScrollView(
-                physics: const BouncingScrollPhysics(),
-                floatHeaderSlivers: true,
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                  return [
-                    HomeAppBar(tabController: tabController),
-                  ];
-                },
-                body: state.isSearching &
-                        context.watch<SearchCubit>().state.searchText.isNotEmpty
-                    ? const HomeSearchScreen()
-                    : TabBarView(
-                        physics: const BouncingScrollPhysics(),
-                        controller: tabController,
-                        children: List.generate(
-                          appDashboardTabs.length,
-                          (index) {
-                            return appDashboardTabs[
-                                    state.dashboardArrangement[index]]
-                                .widget;
-                          },
-                        ),
-                      ),
+              backgroundColor: Colors.transparent,
+              body: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Theme.of(context).colorScheme.surface,
+                      Theme.of(context)
+                          .colorScheme
+                          .surface
+                          .withValues(alpha: 0.95),
+                    ],
+                  ),
+                ),
+                child: NestedScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  floatHeaderSlivers: true,
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return [
+                      HomeAppBar(tabController: tabController),
+                    ];
+                  },
+                  body: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: state.isSearching &
+                            context
+                                .watch<SearchCubit>()
+                                .state
+                                .searchText
+                                .isNotEmpty
+                        ? const HomeSearchScreen()
+                        : TabBarView(
+                            physics: const BouncingScrollPhysics(),
+                            controller: tabController,
+                            children: List.generate(
+                              appDashboardTabs.length,
+                              (index) {
+                                return Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: appDashboardTabs[
+                                          state.dashboardArrangement[index]]
+                                      .widget,
+                                );
+                              },
+                            ),
+                          ),
+                  ),
+                ),
               ),
             );
           },

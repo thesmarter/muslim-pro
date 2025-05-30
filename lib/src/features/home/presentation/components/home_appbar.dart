@@ -24,25 +24,190 @@ class HomeAppBar extends StatelessWidget {
           return const SizedBox();
         }
         return SliverAppBar(
-          leading: !state.isSearching
-              ? Padding(
-                  padding: const EdgeInsets.all(7),
-                  child: Image.asset(
-                    'assets/images/app_icon.png',
-                    fit: BoxFit.cover,
-                  ),
-                )
-              : IconButton(
-                  tooltip: S.of(context).close,
-                  padding: EdgeInsets.zero,
-                  icon: Icon(MdiIcons.close),
-                  onPressed: () {
-                    context
-                        .read<HomeBloc>()
-                        .add(const HomeToggleSearchEvent(isSearching: false));
-                  },
+          expandedHeight: state.isSearching ? 120 : 200,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          flexibleSpace: FlexibleSpaceBar(
+            background: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withValues(alpha: 0.1),
+                    Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withValues(alpha: 0.05),
+                  ],
                 ),
-          title: !state.isSearching ? null : const HomeSearchBox(),
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Top Row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // App Icon/Close Button
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .surface
+                                  .withValues(alpha: 0.9),
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withValues(alpha: 0.1),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: !state.isSearching
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Image.asset(
+                                      'assets/images/app_icon.png',
+                                      width: 32,
+                                      height: 32,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : IconButton(
+                                    tooltip: S.of(context).close,
+                                    icon: Icon(
+                                      MdiIcons.close,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                    onPressed: () {
+                                      context.read<HomeBloc>().add(
+                                          const HomeToggleSearchEvent(
+                                              isSearching: false));
+                                    },
+                                  ),
+                          ),
+
+                          // Action Buttons
+                          Row(
+                            children: [
+                              if (!state.isSearching) ...[
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .surface
+                                        .withValues(alpha: 0.9),
+                                    borderRadius: BorderRadius.circular(16),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withValues(alpha: 0.1),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: IconButton(
+                                    tooltip: S.of(context).search,
+                                    icon: Icon(
+                                      Icons.search_rounded,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                    onPressed: () {
+                                      context.read<HomeBloc>().add(
+                                          const HomeToggleSearchEvent(
+                                              isSearching: true));
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .surface
+                                        .withValues(alpha: 0.9),
+                                    borderRadius: BorderRadius.circular(16),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withValues(alpha: 0.1),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.menu_rounded,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                    onPressed: () {
+                                      sl<HomeBloc>()
+                                          .add(const HomeToggleDrawerEvent());
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      if (!state.isSearching) ...[
+                        const SizedBox(height: 24),
+                        // Welcome Text
+                        Text(
+                          _getGreeting(),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.7),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        // App Title
+                        Text(
+                          S.of(context).appTitle,
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      ] else ...[
+                        const SizedBox(height: 16),
+                        // Search Box
+                        const HomeSearchBox(),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
           pinned: true,
           floating: true,
           snap: true,
@@ -68,29 +233,19 @@ class HomeAppBar extends StatelessWidget {
                     ),
                   ),
                 ),
-          actions: [
-            if (!state.isSearching) ...[
-              IconButton(
-                tooltip: S.of(context).search,
-                padding: EdgeInsets.zero,
-                icon: const Icon(Icons.search),
-                onPressed: () {
-                  context
-                      .read<HomeBloc>()
-                      .add(const HomeToggleSearchEvent(isSearching: true));
-                },
-              ),
-              IconButton(
-                padding: EdgeInsets.zero,
-                icon: const Icon(Icons.vertical_split_rounded),
-                onPressed: () {
-                  sl<HomeBloc>().add(const HomeToggleDrawerEvent());
-                },
-              ),
-            ],
-          ],
         );
       },
     );
+  }
+
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'صباح الخير';
+    } else if (hour < 17) {
+      return 'مساء الخير';
+    } else {
+      return 'مساء الخير';
+    }
   }
 }

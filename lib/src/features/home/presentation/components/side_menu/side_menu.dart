@@ -7,6 +7,7 @@ import 'package:muslim/src/features/home/presentation/components/side_menu/heade
 import 'package:muslim/src/features/home/presentation/components/side_menu/more_section.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/quran_section.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/shared.dart';
+import 'package:muslim/src/features/quran/presentation/screens/quran_main_screen.dart';
 import 'package:muslim/src/features/settings/presentation/screens/settings_screen.dart';
 import 'package:muslim/src/features/tally/presentation/screens/tally_dashboard_screen.dart';
 
@@ -40,6 +41,20 @@ class SideMenu extends StatelessWidget {
                           onTap: () {
                             context.push(
                               const TallyDashboardScreen(),
+                            );
+                          },
+                        ),
+                      ),
+                      const DrawerDivider(),
+                      DrawerCard(
+                        child: ListTile(
+                          leading: Icon(
+                            MdiIcons.bookOpenPageVariant,
+                          ),
+                          title: Text(S.of(context).quran),
+                          onTap: () {
+                            context.push(
+                              const QuranMainScreen(),
                             );
                           },
                         ),

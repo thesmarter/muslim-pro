@@ -104,7 +104,7 @@ class PopularReciters {
       englishName: 'Abdul Basit Abdul Samad',
       language: 'Arabic',
       format: 'mp3',
-      baseUrl: 'https://server8.mp3quran.net/abd_basit/Alafasy_128_kbps/',
+      baseUrl: 'https://server8.mp3quran.net/abd_basit/',
       description: 'One of the most famous Quran reciters',
     ),
     Reciter(
@@ -115,6 +115,24 @@ class PopularReciters {
       format: 'mp3',
       baseUrl: 'https://server8.mp3quran.net/afs/',
       description: 'Popular contemporary reciter from Kuwait',
+    ),
+    Reciter(
+      id: 3,
+      name: 'ماهر المعيقلي',
+      englishName: 'Maher Al Muaiqly',
+      language: 'Arabic',
+      format: 'mp3',
+      baseUrl: 'https://server8.mp3quran.net/maher/',
+      description: 'Imam of the Grand Mosque in Mecca',
+    ),
+    Reciter(
+      id: 4,
+      name: 'سعد الغامدي',
+      englishName: 'Saad Al Ghamdi',
+      language: 'Arabic',
+      format: 'mp3',
+      baseUrl: 'https://server7.mp3quran.net/s_gmd/',
+      description: 'Popular Saudi reciter',
     ),
     Reciter(
       id: 3,

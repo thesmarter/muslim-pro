@@ -16,10 +16,32 @@ class HomeTitlesListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       itemBuilder: (context, index) {
-        return TitleCard(
-          dbTitle: titles[index],
-          dbAlarm: alarms[titles[index].id],
+        return AnimatedContainer(
+          duration: Duration(milliseconds: 200 + (index * 50)),
+          curve: Curves.easeOutBack,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withValues(alpha: 0.08),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: TitleCard(
+              dbTitle: titles[index],
+              dbAlarm: alarms[titles[index].id],
+            ),
+          ),
         );
       },
       itemCount: titles.length,
