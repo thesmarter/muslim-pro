@@ -21,7 +21,7 @@ dependencies:
   flutter_colorpicker: ^1.1.0
   flutter_slidable: ^4.0.0
   scrollable_positioned_list: ^0.3.8
-  sleek_circular_slider: ^2.0.1
+  sleek_circular_slider: ^2.1.0
 
   # State Management
   bloc: ^9.0.0

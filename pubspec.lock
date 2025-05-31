@@ -933,10 +933,10 @@ packages:
     dependency: "direct main"
     description:
       name: sleek_circular_slider
-      sha256: "8844d036269a13e60dda4e16534d30d27cacaff8d2f10d042d9d61d111468b13"
+      sha256: "89c7d0d37befc9818a2b53ef6ff126c43b70485dabb189b734d46106db190931"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1"
+    version: "2.1.0"
   source_span:
     dependency: transitive
     description:
