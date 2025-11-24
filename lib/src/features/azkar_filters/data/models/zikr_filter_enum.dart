@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 
 enum ZikrFilter {
   /// Source
@@ -66,7 +66,7 @@ extension ZikrFilterExt on ZikrFilter {
       case ZikrFilter.atTabarani:
         return S.of(context).sourceAtTabarani;
 
-    ///
+      ///
       case ZikrFilter.hokmQuran:
         return S.of(context).sourceQuran;
       case ZikrFilter.hokmSahih:

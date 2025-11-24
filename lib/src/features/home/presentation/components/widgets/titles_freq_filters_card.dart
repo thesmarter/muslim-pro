@@ -16,21 +16,19 @@ class TitleFreqFilterCard extends StatelessWidget {
         }
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: TitlesFreqEnum.values.map(
-            (e) {
-              return Padding(
-                padding: const EdgeInsets.all(5),
-                child: FilterChip(
-                  label: Text(e.localeName(context)),
-                  selected: state.freqFilters.contains(e),
-                  showCheckmark: false,
-                  onSelected: (bool value) {
-                    context.read<HomeBloc>().add(HomeToggleFilterEvent(e));
-                  },
-                ),
-              );
-            },
-          ).toList(),
+          children: TitlesFreqEnum.values.map((e) {
+            return Padding(
+              padding: const EdgeInsets.all(5),
+              child: FilterChip(
+                label: Text(e.localeName(context)),
+                selected: state.freqFilters.contains(e),
+                showCheckmark: false,
+                onSelected: (bool value) {
+                  context.read<HomeBloc>().add(HomeToggleFilterEvent(e));
+                },
+              ),
+            );
+          }).toList(),
         );
       },
     );

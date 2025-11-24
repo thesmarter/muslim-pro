@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/extension_platform.dart';
-
+import 'package:package_info_plus/package_info_plus.dart';
 
 //TODO App Version | Change every release
-const String kAppVersion = "2.9.01";
+String appVersion() {
+  return sl<PackageInfo>().version;
+}
 
-String kAppStorageKey =
-PlatformExtension.isDesktop ? "hisn_elmoslem_storage" : "GetStorage";
+String appVersionWithBuild() {
+  return "${sl<PackageInfo>().version} (${sl<PackageInfo>().buildNumber})";
+}
+
+String kAppStorageKey = PlatformExtension.isDesktop
+    ? "hisn_elmoslem_storage"
+    : "GetStorage";
 
 const double kFontChangeBy = .2;
 const double kFontDefault = 2.6;
@@ -14,36 +22,30 @@ const double kFontMin = 1.5;
 const double kFontMax = 4;
 
 //Invert Image Color
-const ColorFilter invert = ColorFilter.matrix(
-  <double>[
-    -1, 0, 0, 0, //
-    255, 0, -1, 0, 0, //
-    255, 0, 0, -1, 0, //
-    255, 0, 0, 0, 1, 0, //
-  ],
-);
+const ColorFilter invert = ColorFilter.matrix(<double>[
+  -1, 0, 0, 0, //
+  255, 0, -1, 0, 0, //
+  255, 0, 0, -1, 0, //
+  255, 0, 0, 0, 1, 0, //
+]);
 
 //Do nothing to Image Color
-const ColorFilter normal = ColorFilter.matrix(
-  <double>[
-    1, 0, 0, 0, 0, //
-    0, 1, 0, 0, 0, //
-    0, 0, 1, 0, 0, //
-    0, 0, 0, 1, 0, //
-  ],
-);
+const ColorFilter normal = ColorFilter.matrix(<double>[
+  1, 0, 0, 0, 0, //
+  0, 1, 0, 0, 0, //
+  0, 0, 1, 0, 0, //
+  0, 0, 0, 1, 0, //
+]);
 
 //GreyScale Image Color
-const ColorFilter greyScale = ColorFilter.matrix(
-  <double>[
-    0.33, 0.59, 0.11, 0, 0, //
-    0.33, 0.59, 0.11, 0, 0, //
-    0.33, 0.59, 0.11, 0, 0, //
-    0, 0, 0, 1, 0, //
-  ],
-);
+const ColorFilter greyScale = ColorFilter.matrix(<double>[
+  0.33, 0.59, 0.11, 0, 0, //
+  0.33, 0.59, 0.11, 0, 0, //
+  0.33, 0.59, 0.11, 0, 0, //
+  0, 0, 0, 1, 0, //
+]);
 
-const Iterable<int> arabicDiacriticsChar = [
+const Iterable<int> kArabicDiacriticsChar = [
   1617,
   124,
   1614,
@@ -76,7 +78,8 @@ final List<double> kShareImageQualityList = [1.0, 1.5, 2.0, 2.5, 3];
 
 const String kEstaaza = "أَعُوذُ بِاَللَّهِ مِنْ الشَّيْطَانِ الرَّجِيمِ";
 const String kArBasmallah = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
-const String kOrgEmail = "info@smart.sd";
-const String kOrgGithub = "https://github.com/thesmarter/muslim-pro";
-const String kOrgWebsite = "https://smart.sd/free-apps/";
-const String kOrgWebsiteHome = "https://smart.sd/free-apps/";
+const String kOrgEmail = "muslimpack.org@gmail.com";
+const String kOrgGithub = "https://github.com/muslimpack/ElmoslemPro_App";
+const String kOrgWebsite = "https://muslimpack.github.io/";
+
+const String kDateTimeHumanFormat = "EEEE,  d MMMM y  h:mm a";

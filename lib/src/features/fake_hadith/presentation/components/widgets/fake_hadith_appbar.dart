@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 
 class FakehadithAppBar extends StatelessWidget {
   const FakehadithAppBar({super.key});
@@ -17,16 +17,8 @@ class FakehadithAppBar extends StatelessWidget {
         preferredSize: const Size.fromHeight(50),
         child: TabBar(
           tabs: [
-            Tab(
-              child: Text(
-                S.of(context).newText,
-              ),
-            ),
-            Tab(
-              child: Text(
-                S.of(context).haveBeenRead,
-              ),
-            ),
+            Tab(child: Text(S.of(context).newText)),
+            Tab(child: Text(S.of(context).haveBeenRead)),
           ],
         ),
       ),

@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
 import 'package:muslim/src/core/functions/show_toast.dart';
@@ -14,10 +14,7 @@ import 'package:share_plus/share_plus.dart';
 
 class ZikrShareDialog extends StatefulWidget {
   final int contentId;
-  const ZikrShareDialog({
-    super.key,
-    required this.contentId,
-  });
+  const ZikrShareDialog({super.key, required this.contentId});
 
   @override
   State<ZikrShareDialog> createState() => _ZikrShareDialogState();
@@ -36,8 +33,9 @@ class _ZikrShareDialogState extends State<ZikrShareDialog> {
   }
 
   Future _load() async {
-    dbContent = await sl<HisnDBHelper>()
-        .getContentsByContentId(contentId: widget.contentId);
+    dbContent = await sl<HisnDBHelper>().getContentsByContentId(
+      contentId: widget.contentId,
+    );
 
     shareFadl = sl<ZikrViewerRepo>().shareFadl;
     shareSource = sl<ZikrViewerRepo>().shareSource;
@@ -69,13 +67,14 @@ class _ZikrShareDialogState extends State<ZikrShareDialog> {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(minWidth: 200),
+
       child: AlertDialog(
         scrollable: true,
         title: Text(S.of(context).shareZikr),
+        contentPadding: const EdgeInsets.all(16).copyWith(top: 0),
+        titlePadding: const EdgeInsets.all(16),
         content: isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
+            ? const Center(child: CircularProgressIndicator())
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
@@ -122,30 +121,23 @@ class _ZikrShareDialogState extends State<ZikrShareDialog> {
             tooltip: S.of(context).shareAsImage,
             icon: const Icon(Icons.camera_alt_outlined),
             onPressed: () {
-              context.push(
-                ShareAsImageScreen(
-                  dbContent: dbContent,
-                ),
-              );
+              context.push(ShareAsImageScreen(dbContent: dbContent));
             },
           ),
           IconButton(
             tooltip: S.of(context).copy,
             icon: const Icon(Icons.copy),
             onPressed: () async {
-              await Clipboard.setData(
-                ClipboardData(text: shareText),
-              );
-              showToast(
-                msg: S.current.copiedToClipboard,
-              );
+              await Clipboard.setData(ClipboardData(text: shareText));
+              if (!context.mounted) return;
+              showToast(msg: S.of(context).copiedToClipboard);
             },
           ),
           IconButton(
             tooltip: S.of(context).share,
             icon: const Icon(Icons.share),
             onPressed: () async {
-              await Share.share(shareText);
+              await SharePlus.instance.share(ShareParams(text: shareText));
             },
           ),
         ],

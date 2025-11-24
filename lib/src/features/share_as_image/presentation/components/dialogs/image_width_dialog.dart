@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/shared/custom_inputs/number_field.dart';
 
 class ImageWidthDialog extends StatelessWidget {
@@ -14,12 +14,11 @@ class ImageWidthDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController widthController =
-        TextEditingController(text: initialValue);
+    final TextEditingController widthController = TextEditingController(
+      text: initialValue,
+    );
     return AlertDialog(
-      title: Text(
-        S.of(context).editImageSize,
-      ),
+      title: Text(S.of(context).editImageSize),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -31,10 +30,7 @@ class ImageWidthDialog extends StatelessWidget {
       ),
       actions: [
         FilledButton(
-          child: Text(
-            S.of(context).done,
-            textAlign: TextAlign.center,
-          ),
+          child: Text(S.of(context).done, textAlign: TextAlign.center),
           onPressed: () {
             onSubmit(widthController.text);
             Navigator.pop<bool>(context, true);

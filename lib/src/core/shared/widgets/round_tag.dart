@@ -10,9 +10,7 @@ class RoundTagCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
       color: color,
       child: Container(
         padding: const EdgeInsets.all(10),

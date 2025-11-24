@@ -9,6 +9,7 @@ import 'package:muslim/src/features/alarms_manager/data/repository/alarms_repo.d
 import 'package:muslim/src/features/alarms_manager/presentation/controller/bloc/alarms_bloc.dart';
 import 'package:muslim/src/features/azkar_filters/data/repository/azakr_filters_repo.dart';
 import 'package:muslim/src/features/azkar_filters/presentation/controller/cubit/azkar_filters_cubit.dart';
+import 'package:muslim/src/features/bookmark/presentation/controller/bloc/bookmark_bloc.dart';
 import 'package:muslim/src/features/effects_manager/data/repository/effects_manager_repo.dart';
 import 'package:muslim/src/features/effects_manager/presentation/controller/effects_manager.dart';
 import 'package:muslim/src/features/fake_hadith/data/repository/fake_hadith_database_helper.dart';
@@ -17,14 +18,11 @@ import 'package:muslim/src/features/home/data/repository/commentary_db_helper.da
 import 'package:muslim/src/features/home/data/repository/data_database_helper.dart';
 import 'package:muslim/src/features/home/data/repository/hisn_db_helper.dart';
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
+import 'package:muslim/src/features/home_search/domain/repository/search_repo.dart';
 import 'package:muslim/src/features/home_search/presentation/controller/cubit/search_cubit.dart';
 import 'package:muslim/src/features/onboarding/presentation/controller/cubit/onboard_cubit.dart';
-import 'package:muslim/src/features/quran/data/datasources/quran_api_service.dart';
-import 'package:muslim/src/features/quran/data/repository/quran_repository.dart';
 import 'package:muslim/src/features/quran/data/repository/uthmani_repository.dart';
-import 'package:muslim/src/features/quran/presentation/controller/cubit/quran_audio_cubit.dart';
 import 'package:muslim/src/features/quran/presentation/controller/cubit/quran_cubit.dart';
-import 'package:muslim/src/features/quran/presentation/controller/cubit/quran_reader_cubit.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
 import 'package:muslim/src/features/settings/data/repository/zikr_text_repo.dart';
 import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
@@ -38,6 +36,7 @@ import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_c
 import 'package:muslim/src/features/ui/data/repository/local_repo.dart';
 import 'package:muslim/src/features/zikr_viewer/data/repository/zikr_viewer_repo.dart';
 import 'package:muslim/src/features/zikr_viewer/presentation/controller/bloc/zikr_viewer_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 final sl = GetIt.instance;
 
@@ -54,33 +53,33 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => ZikrViewerRepo(sl()));
   sl.registerLazySingleton(() => AzkarFiltersRepo(sl()));
   sl.registerLazySingleton(() => TallyRepo(sl()));
+  sl.registerLazySingleton(() => SearchRepo(sl()));
 
   ///MARK: Init Repo
   sl.registerLazySingleton(() => TallyDatabaseHelper());
   sl.registerLazySingleton(() => AlarmDatabaseHelper());
   sl.registerLazySingleton(() => UthmaniRepository());
   sl.registerLazySingleton(() => UserDataDBHelper());
-  sl.registerLazySingleton(() => HisnDBHelper(sl()));
+  sl.registerLazySingleton(() => HisnDBHelper());
   sl.registerLazySingleton(() => FakeHadithDBHelper(sl()));
   sl.registerLazySingleton(() => CommentaryDBHelper());
-
-  ///MARK: Init Quran Services
-  sl.registerLazySingleton(() => QuranApiService());
-  sl.registerLazySingleton<QuranRepository>(() => QuranRepositoryImpl(sl()));
 
   ///MARK: Init Manager
   sl.registerFactory(() => EffectsManager(sl()));
   sl.registerFactory(() => AwesomeNotificationManager());
   sl.registerFactory(() => AlarmManager(sl()));
   sl.registerFactory(() => VolumeButtonManager());
+  final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  sl.registerFactory<PackageInfo>(() => packageInfo);
 
   ///MARK: Init BLOC
 
   /// Singleton BLoC
   sl.registerLazySingleton(() => ThemeCubit(sl()));
   sl.registerLazySingleton(() => AlarmsBloc(sl(), sl(), sl(), sl()));
+  sl.registerLazySingleton(() => BookmarkBloc(sl(), sl()));
   sl.registerLazySingleton(() => HomeBloc(sl(), sl(), sl(), sl(), sl()));
-  sl.registerLazySingleton(() => SearchCubit(sl()));
+  sl.registerLazySingleton(() => SearchCubit(sl(), sl(), sl(), sl()));
   sl.registerLazySingleton(() => SettingsCubit(sl(), sl(), sl(), sl(), sl()));
   sl.registerLazySingleton(() => AzkarFiltersCubit(sl()));
 
@@ -90,9 +89,7 @@ Future<void> initSL() async {
   sl.registerFactory(() => ShareImageCubit(sl()));
   sl.registerFactory(() => QuranCubit(sl()));
   sl.registerFactory(() => FakeHadithBloc(sl()));
-  sl.registerFactory(() => ZikrViewerBloc(sl(), sl(), sl(), sl(), sl(), sl()));
-
-  /// Quran BLoCs
-  sl.registerFactory(() => QuranReaderCubit(sl()));
-  sl.registerFactory(() => QuranAudioCubit(sl()));
+  sl.registerFactory(
+    () => ZikrViewerBloc(sl(), sl(), sl(), sl(), sl(), sl(), sl()),
+  );
 }

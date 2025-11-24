@@ -32,9 +32,7 @@ class CommentaryDBHelper {
   /* ************* Functions ************* */
 
   /// Get Commentary by contentId
-  Future<Commentary> getCommentaryByContentId({
-    required int? contentId,
-  }) async {
+  Future<Commentary> getCommentaryByContentId({required int? contentId}) async {
     final Database db = await database;
 
     final List<Map<String, dynamic>> maps = await db.rawQuery(

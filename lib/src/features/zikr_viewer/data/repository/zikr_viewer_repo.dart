@@ -1,6 +1,6 @@
-import 'dart:convert';
-
 import 'package:get_storage/get_storage.dart';
+import 'package:muslim/src/core/functions/print.dart';
+import 'package:muslim/src/features/zikr_viewer/data/models/zikr_session.dart';
 
 class ZikrViewerRepo {
   final GetStorage box;
@@ -12,28 +12,22 @@ class ZikrViewerRepo {
   String sessionKey(int titleId) => "$_lastSessionPrefixKey$titleId";
 
   /// Map of {contentId: count}
-  Future<Map<int, int>?> getLastSession(int titleId) async {
+  ZikrSession? getLastSession(int titleId) {
     final String? data = box.read(sessionKey(titleId));
     if (data == null) return null;
 
-    /// convert string to map
-    final Map<String, dynamic> decoded =
-    json.decode(data) as Map<String, dynamic>;
-
-    /// convert map to map {int:int}
-    return decoded.map((key, value) => MapEntry(int.parse(key), value as int));
+    try {
+      hisnPrint(data);
+      return ZikrSession.fromJson(data);
+    } catch (e) {
+      hisnPrint(e.toString());
+    }
+    return null;
   }
 
   /// Map of {contentId: count}
-  Future saveSession(int titleId, Map<int, int> session) async {
-    /// convert map key to string
-    final Map<String, int> stringKeyedMap =
-    session.map((key, value) => MapEntry(key.toString(), value));
-
-    /// convert map to string
-    final String encoded = json.encode(stringKeyedMap);
-
-    await box.write(sessionKey(titleId), encoded);
+  Future saveSession(int titleId, ZikrSession session) async {
+    await box.write(sessionKey(titleId), session.toJson());
   }
 
   Future resetSession(int titleId) async {
@@ -45,19 +39,18 @@ class ZikrViewerRepo {
   ///
   static const String _shareFadlKey = "shareFadl";
   bool get shareFadl => box.read<bool?>(_shareFadlKey) ?? true;
-  Future toggleShareFadl(bool value) async => box.write(_shareFadlKey, value);
+  Future toggleShareFadl(bool value) => box.write(_shareFadlKey, value);
 
   ///
   static const String _shareSourceKey = "shareSource";
   bool get shareSource => box.read<bool?>(_shareSourceKey) ?? true;
-  Future toggleShareSource(bool value) async =>
-      box.write(_shareSourceKey, value);
+  Future toggleShareSource(bool value) => box.write(_shareSourceKey, value);
 
   ///MARK: Enable Disable the ability to restore session
   static const String _allowZikrSessionRestorationKey =
       "allowZikrSessionRestoration";
   bool get allowZikrSessionRestoration =>
       box.read<bool?>(_allowZikrSessionRestorationKey) ?? true;
-  Future toggleAllowZikrSessionRestoration(bool value) async =>
+  Future toggleAllowZikrSessionRestoration(bool value) =>
       box.write(_allowZikrSessionRestorationKey, value);
 }

@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
+import 'package:muslim/src/features/fake_hadith/presentation/screens/fake_hadith_dashboard_screen.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/footer_section.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/header_section.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/more_section.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/quran_section.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/shared.dart';
-import 'package:muslim/src/features/quran/presentation/screens/quran_main_screen.dart';
 import 'package:muslim/src/features/settings/presentation/screens/settings_screen.dart';
 import 'package:muslim/src/features/tally/presentation/screens/tally_dashboard_screen.dart';
 
 class SideMenu extends StatelessWidget {
-  const SideMenu({
-    super.key,
-  });
+  const SideMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,42 +32,30 @@ class SideMenu extends StatelessWidget {
                     children: [
                       DrawerCard(
                         child: ListTile(
-                          leading: Icon(
-                            MdiIcons.counter,
-                          ),
+                          leading: Icon(MdiIcons.counter),
                           title: Text(S.of(context).tally),
                           onTap: () {
-                            context.push(
-                              const TallyDashboardScreen(),
-                            );
-                          },
-                        ),
-                      ),
-                      const DrawerDivider(),
-                      DrawerCard(
-                        child: ListTile(
-                          leading: Icon(
-                            MdiIcons.bookOpenPageVariant,
-                          ),
-                          title: Text(S.of(context).quran),
-                          onTap: () {
-                            context.push(
-                              const QuranMainScreen(),
-                            );
+                            context.push(const TallyDashboardScreen());
                           },
                         ),
                       ),
                       const DrawerDivider(),
                       const QuranSection(),
                       const DrawerDivider(),
+                      ListTile(
+                        leading: const Icon(Icons.menu_book),
+                        title: Text(S.of(context).fakeHadith),
+                        onTap: () {
+                          context.push(const FakeHadithDashboardScreen());
+                        },
+                      ),
+                      const DrawerDivider(),
                       DrawerCard(
                         child: ListTile(
                           leading: const Icon(Icons.settings),
                           title: Text(S.of(context).settings),
                           onTap: () {
-                            context.push(
-                              const SettingsScreen(),
-                            );
+                            context.push(const SettingsScreen());
                           },
                         ),
                       ),

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/shared/dialogs/yes_no_dialog.dart';
 import 'package:muslim/src/features/tally/presentation/controller/bloc/tally_bloc.dart';
 
 class TallyCounterViewBottomBar extends StatelessWidget {
-  const TallyCounterViewBottomBar({
-    super.key,
-  });
+  const TallyCounterViewBottomBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +42,12 @@ class TallyCounterViewBottomBar extends StatelessWidget {
               },
             ),
             IconButton(
-              tooltip: S.of(context).decreae,
+              tooltip: S.of(context).decrease,
               icon: const Icon(Icons.remove),
               onPressed: () {
-                context
-                    .read<TallyBloc>()
-                    .add(TallyDecreaseActiveCounterEvent());
+                context.read<TallyBloc>().add(
+                  TallyDecreaseActiveCounterEvent(),
+                );
               },
             ),
             IconButton(

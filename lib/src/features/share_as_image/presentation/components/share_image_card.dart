@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/shared/widgets/loading.dart';
 import 'package:muslim/src/features/share_as_image/presentation/controller/cubit/share_image_cubit.dart';
 import 'package:muslim/src/features/zikr_viewer/presentation/components/zikr_content_builder.dart';
 
 class ShareImageCard extends StatelessWidget {
-  const ShareImageCard({
-    super.key,
-  });
+  const ShareImageCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +65,8 @@ class ShareImageCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: state.shareImageSettings.bodyTextColor,
-                          fontSize: state.shareImageSettings.fontSize *
+                          fontSize:
+                              state.shareImageSettings.fontSize *
                               state.fadlFactor,
                         ),
                       ),
@@ -83,7 +82,8 @@ class ShareImageCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: state.shareImageSettings.additionalTextColor,
-                          fontSize: state.shareImageSettings.fontSize *
+                          fontSize:
+                              state.shareImageSettings.fontSize *
                               state.fadlFactor,
                         ),
                       ),
@@ -99,7 +99,8 @@ class ShareImageCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: state.shareImageSettings.additionalTextColor,
-                          fontSize: state.shareImageSettings.fontSize *
+                          fontSize:
+                              state.shareImageSettings.fontSize *
                               state.sourceFactor,
                         ),
                       ),
@@ -124,7 +125,7 @@ class ShareImageCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 30),
                       Text(
-                        "تطبيق المسلم برو",
+                        "تطبيق حصن المسلم",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: state.shareImageSettings.titleTextColor,

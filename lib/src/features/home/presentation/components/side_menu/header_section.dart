@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/extensions/extension_platform.dart';
 import 'package:muslim/src/core/values/constant.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/toggle_brightness_btn.dart';
 
 class HeaderSection extends StatelessWidget {
-  const HeaderSection({
-    super.key,
-  });
+  const HeaderSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +20,14 @@ class HeaderSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                S.of(context).ElmoslemProApp,
+                S.of(context).elmoslemProApp,
                 style: Theme.of(context).textTheme.headlineSmall,
                 textAlign: TextAlign.center,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(
-                    "${S.of(context).version}: $kAppVersion",
-                  ),
+                  Text("${S.of(context).version}: ${appVersionWithBuild()}"),
                   if (!PlatformExtension.isDesktop)
                     const ToggleBrightnessButton(),
                 ],

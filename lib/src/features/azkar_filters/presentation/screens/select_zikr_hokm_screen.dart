@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/features/azkar_filters/data/models/zikr_filter_enum.dart';
 import 'package:muslim/src/features/azkar_filters/presentation/controller/cubit/azkar_filters_cubit.dart';
 
@@ -28,9 +28,9 @@ class _ZikrHokmFilterScreenState extends State<ZikrHokmFilterScreen> {
                 value: state.enableHokmFilters,
                 title: Text(S.of(context).enableAzkarFilters),
                 onChanged: (value) {
-                  context
-                      .read<AzkarFiltersCubit>()
-                      .toggleEnableHokmFilters(value);
+                  context.read<AzkarFiltersCubit>().toggleEnableHokmFilters(
+                    value,
+                  );
                 },
               ),
               const Divider(),
@@ -41,9 +41,9 @@ class _ZikrHokmFilterScreenState extends State<ZikrHokmFilterScreen> {
                   onChanged: !state.enableHokmFilters
                       ? null
                       : (value) {
-                          context
-                              .read<AzkarFiltersCubit>()
-                              .toggleFilter(filter);
+                          context.read<AzkarFiltersCubit>().toggleFilter(
+                            filter,
+                          );
                         },
                 );
               }),

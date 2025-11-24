@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/models/editor_result.dart';
 import 'package:muslim/src/core/shared/widgets/round_tag.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/alarm.dart';
@@ -23,7 +23,7 @@ class AlarmCard extends StatelessWidget {
         motion: const BehindMotion(),
         children: [
           SlidableAction(
-            backgroundColor: Colors.green.withValues(alpha: 0.5),
+            backgroundColor: Colors.green.withAlpha((.5 * 255).round()),
             onPressed: (val) async {
               final EditorResult<DbAlarm>? result = await showAlarmEditorDialog(
                 context: context,
@@ -38,9 +38,9 @@ class AlarmCard extends StatelessWidget {
                 case EditorActionEnum.edit:
                   context.read<AlarmsBloc>().add(AlarmsEditEvent(result.value));
                 case EditorActionEnum.delete:
-                  context
-                      .read<AlarmsBloc>()
-                      .add(AlarmsRemoveEvent(result.value));
+                  context.read<AlarmsBloc>().add(
+                    AlarmsRemoveEvent(result.value),
+                  );
                 default:
               }
             },
@@ -54,10 +54,10 @@ class AlarmCard extends StatelessWidget {
         motion: const BehindMotion(),
         children: [
           SlidableAction(
-            onPressed: (val) async {
+            onPressed: (val) {
               context.read<AlarmsBloc>().add(AlarmsRemoveEvent(dbAlarm));
             },
-            backgroundColor: Colors.red.withValues(alpha: 0.5),
+            backgroundColor: Colors.red.withAlpha((.5 * 255).round()),
             icon: Icons.delete,
             label: S.of(context).delete,
           ),
@@ -85,32 +85,27 @@ class AlarmCardBody extends StatelessWidget {
         SwitchListTile(
           secondary: const Icon(Icons.alarm),
           title: Text(dbAlarm.title),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          subtitle: Wrap(
             children: [
               if (dbAlarm.body.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: RoundTagCard(
-                    name: dbAlarm.body,
-                    color: Colors.brown.withValues(alpha: 0.5),
-                  ),
+                RoundTagCard(
+                  name: dbAlarm.body,
+                  color: Colors.brown.withAlpha((.5 * 255).round()),
                 ),
               Row(
                 children: [
                   Expanded(
                     child: RoundTagCard(
-                      name: DateFormat("hh:mm a").format(
-                        DateTime(1, 1, 1, dbAlarm.hour, dbAlarm.minute),
-                      ),
-                      color: Colors.green.withValues(alpha: 0.5),
+                      name: DateFormat(
+                        "hh:mm a",
+                      ).format(DateTime(1, 1, 1, dbAlarm.hour, dbAlarm.minute)),
+                      color: Colors.green.withAlpha((.5 * 255).round()),
                     ),
                   ),
-                  const SizedBox(width: 8),
                   Expanded(
                     child: RoundTagCard(
                       name: dbAlarm.repeatType.getUserFriendlyName(context),
-                      color: Colors.yellow.withValues(alpha: 0.5),
+                      color: Colors.yellow.withAlpha((.5 * 255).round()),
                     ),
                   ),
                 ],
@@ -120,10 +115,8 @@ class AlarmCardBody extends StatelessWidget {
           value: dbAlarm.isActive,
           onChanged: (value) {
             context.read<AlarmsBloc>().add(
-                  AlarmsEditEvent(
-                    dbAlarm.copyWith(isActive: value),
-                  ),
-                );
+              AlarmsEditEvent(dbAlarm.copyWith(isActive: value)),
+            );
           },
         ),
       ],

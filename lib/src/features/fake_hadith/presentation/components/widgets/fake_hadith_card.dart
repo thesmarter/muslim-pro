@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
 import 'package:muslim/src/core/shared/widgets/text_divider.dart';
 import 'package:muslim/src/features/fake_hadith/data/models/fake_haith.dart';
@@ -13,10 +13,7 @@ import 'package:muslim/src/features/zikr_viewer/data/models/zikr_content.dart';
 class FakeHadithCard extends StatelessWidget {
   final DbFakeHaith fakeHadith;
 
-  const FakeHadithCard({
-    super.key,
-    required this.fakeHadith,
-  });
+  const FakeHadithCard({super.key, required this.fakeHadith});
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +26,11 @@ class FakeHadithCard extends StatelessWidget {
           InkWell(
             onTap: () {
               context.read<FakeHadithBloc>().add(
-                    FakeHadithToggleHadithEvent(
-                      fakeHadith: fakeHadith,
-                      isRead: !fakeHadith.isRead,
-                    ),
-                  );
+                FakeHadithToggleHadithEvent(
+                  fakeHadith: fakeHadith,
+                  isRead: !fakeHadith.isRead,
+                ),
+              );
             },
             onLongPress: () {
               final snackBar = SnackBar(
@@ -67,9 +64,7 @@ class FakeHadithCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         softWrap: true,
                         textDirection: TextDirection.rtl,
-                        style: TextStyle(
-                          fontSize: state.fontSize * 10,
-                        ),
+                        style: TextStyle(fontSize: state.fontSize * 10),
                       ),
                       const SizedBox(height: 20),
                       const TextDivider(),
@@ -78,9 +73,7 @@ class FakeHadithCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                         softWrap: true,
-                        style: TextStyle(
-                          fontSize: state.fontSize * 10,
-                        ),
+                        style: TextStyle(fontSize: state.fontSize * 10),
                       ),
                     ],
                   ),
@@ -95,9 +88,7 @@ class FakeHadithCard extends StatelessWidget {
 }
 
 class _TopBar extends StatelessWidget {
-  const _TopBar({
-    required this.fakeHadith,
-  });
+  const _TopBar({required this.fakeHadith});
 
   final DbFakeHaith fakeHadith;
 
@@ -107,22 +98,16 @@ class _TopBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         if (!fakeHadith.isRead)
-          const Icon(
-            Icons.check,
-          )
+          const Icon(Icons.check)
         else
-          const Icon(
-            Icons.checklist,
-          ),
+          const Icon(Icons.checklist),
         IconButton(
           tooltip: S.of(context).copy,
-          icon: const Icon(
-            Icons.copy,
-          ),
-          onPressed: () async {
-            context
-                .read<FakeHadithBloc>()
-                .add(FakeHadithCopyHadithEvent(fakeHadith: fakeHadith));
+          icon: const Icon(Icons.copy),
+          onPressed: () {
+            context.read<FakeHadithBloc>().add(
+              FakeHadithCopyHadithEvent(fakeHadith: fakeHadith),
+            );
           },
         ),
         IconButton(
@@ -137,14 +122,11 @@ class _TopBar extends StatelessWidget {
               fadl: fakeHadith.darga,
               source: fakeHadith.source,
               count: 0,
-              favourite: false,
               hokm: "",
               search: "",
             );
 
-            context.push(
-              ShareAsImageScreen(dbContent: dbContent),
-            );
+            context.push(ShareAsImageScreen(dbContent: dbContent));
           },
         ),
         IconButton(
@@ -152,20 +134,17 @@ class _TopBar extends StatelessWidget {
           icon: const Icon(Icons.share),
           onPressed: () {
             context.read<FakeHadithBloc>().add(
-                  FakeHadithShareHadithEvent(fakeHadith: fakeHadith),
-                );
+              FakeHadithShareHadithEvent(fakeHadith: fakeHadith),
+            );
           },
         ),
         IconButton(
           tooltip: S.of(context).report,
-          icon: const Icon(
-            Icons.report_outlined,
-            color: Colors.orange,
-          ),
+          icon: const Icon(Icons.report_outlined, color: Colors.orange),
           onPressed: () {
             context.read<FakeHadithBloc>().add(
-                  FakeHadithReportHadithEvent(fakeHadith: fakeHadith),
-                );
+              FakeHadithReportHadithEvent(fakeHadith: fakeHadith),
+            );
           },
         ),
       ],

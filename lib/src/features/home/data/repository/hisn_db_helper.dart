@@ -2,16 +2,14 @@ import 'dart:async';
 
 import 'package:muslim/src/core/utils/db_helper.dart';
 import 'package:muslim/src/features/home/data/models/zikr_title.dart';
-import 'package:muslim/src/features/home/data/repository/data_database_helper.dart';
+import 'package:muslim/src/features/home_search/data/models/search_type.dart';
+import 'package:muslim/src/features/home_search/data/models/sql_query.dart';
 import 'package:muslim/src/features/zikr_viewer/data/models/zikr_content.dart';
 import 'package:sqflite/sqflite.dart';
 
 class HisnDBHelper {
-  final UserDataDBHelper userDataDBHelper;
-  /* ************* Variables ************* */
-
-  static const String dbName = "elmoslem.db";
-  static const int dbVersion = 6;
+  static const String dbName = "hisn_elmoslem.db";
+  static const int dbVersion = 8;
 
   /* ************* Singleton Constructor ************* */
 
@@ -19,13 +17,13 @@ class HisnDBHelper {
   static Database? _database;
   static late final DBHelper _dbHelper;
 
-  factory HisnDBHelper(UserDataDBHelper userDataDBHelper) {
+  factory HisnDBHelper() {
     _dbHelper = DBHelper(dbName: dbName, dbVersion: dbVersion);
-    _databaseHelper ??= HisnDBHelper._createInstance(userDataDBHelper);
+    _databaseHelper ??= HisnDBHelper._createInstance();
     return _databaseHelper!;
   }
 
-  HisnDBHelper._createInstance(this.userDataDBHelper);
+  HisnDBHelper._createInstance();
 
   Future<Database> get database async {
     _database ??= await _dbHelper.initDatabase();
@@ -46,33 +44,9 @@ class HisnDBHelper {
       '''SELECT * FROM titles ORDER by `order` ASC''',
     );
 
-    final List<DbTitle> titles = [];
-
-    final bookmarkedTitles = await userDataDBHelper.getAllFavoriteTitles();
-    final bookmarkedTitlesMap = {
-      for (final e in bookmarkedTitles) e.itemId: e.bookmarked,
-    };
-
-    for (int i = 0; i < maps.length; i++) {
-      final DbTitle dbTitle = DbTitle.fromMap(maps[i]);
-
-      titles.add(dbTitle.copyWith(favourite: bookmarkedTitlesMap[dbTitle.id]));
-    }
-
-    return titles;
-  }
-
-  /// Get all favourite titles
-  Future<List<DbTitle>> getAllFavoriteTitles() async {
-    final List<DbTitle> titles = [];
-    final bookmarkedTitles = await userDataDBHelper.getAllFavoriteTitles();
-
-    for (var i = 0; i < bookmarkedTitles.length; i++) {
-      final title = await getTitleById(id: bookmarkedTitles[i].itemId);
-      titles.add(title);
-    }
-
-    return titles;
+    return List.generate(maps.length, (i) {
+      return DbTitle.fromMap(maps[i]);
+    });
   }
 
   /// Get title by index
@@ -83,21 +57,20 @@ class HisnDBHelper {
       '''SELECT * FROM titles  WHERE id = ?''',
       [id],
     );
-    final DbTitle dbTitle = DbTitle.fromMap(maps[0]);
-    final bookmarked =
-        await userDataDBHelper.isTitleInFavorites(titleId: dbTitle.id);
-
-    return dbTitle.copyWith(favourite: bookmarked);
+    return DbTitle.fromMap(maps.first);
   }
 
-  /// Add title to favourite
-  Future<void> addTitleToFavourite({required DbTitle dbTitle}) async {
-    await userDataDBHelper.addTitleToFavourite(dbTitle: dbTitle);
-  }
+  /// get list of titles by ids
+  Future<List<DbTitle>> getTitlesByIds({required List<int> ids}) async {
+    final Database db = await database;
 
-  /// Remove title from favourite
-  Future<void> deleteTitleFromFavourite({required DbTitle dbTitle}) async {
-    await userDataDBHelper.deleteTitleFromFavourite(dbTitle: dbTitle);
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+      '''SELECT * FROM titles  WHERE id IN (${ids.join(",")})''',
+    );
+
+    return List.generate(maps.length, (i) {
+      return DbTitle.fromMap(maps[i]);
+    });
   }
 
   /**
@@ -111,18 +84,9 @@ class HisnDBHelper {
     final List<Map<String, dynamic>> maps = await db.rawQuery(
       '''SELECT * FROM contents ORDER by `order` ASC''',
     );
-
-    final List<DbContent> contents = [];
-
-    for (var i = 0; i < maps.length; i++) {
-      final DbContent dbContent = DbContent.fromMap(maps[i]);
-      final bookmarked = await userDataDBHelper.isContentInFavorites(
-        contentId: dbContent.id,
-      );
-      contents.add(dbContent.copyWith(favourite: bookmarked));
-    }
-
-    return contents;
+    return List.generate(maps.length, (i) {
+      return DbContent.fromMap(maps[i]);
+    });
   }
 
   /// Get content by title index
@@ -134,22 +98,13 @@ class HisnDBHelper {
       [titleId],
     );
 
-    final List<DbContent> contents = [];
-
-    for (var i = 0; i < maps.length; i++) {
-      final DbContent dbContent = DbContent.fromMap(maps[i]);
-      final bookmarked = await userDataDBHelper.isContentInFavorites(
-        contentId: dbContent.id,
-      );
-      contents.add(dbContent.copyWith(favourite: bookmarked));
-    }
-    return contents;
+    return List.generate(maps.length, (i) {
+      return DbContent.fromMap(maps[i]);
+    });
   }
 
   /// Get content by title index
-  Future<DbContent> getContentsByContentId({
-    required int? contentId,
-  }) async {
+  Future<DbContent> getContentsByContentId({required int? contentId}) async {
     final Database db = await database;
 
     final List<Map<String, dynamic>> maps = await db.rawQuery(
@@ -157,38 +112,148 @@ class HisnDBHelper {
       [contentId],
     );
     final DbContent dbContent = DbContent.fromMap(maps[0]);
-    final bookmarked = await userDataDBHelper.isContentInFavorites(
-      contentId: dbContent.id,
-    );
 
-    return dbContent.copyWith(favourite: bookmarked);
+    return dbContent;
   }
 
-  /// Get favourite content
-  Future<List<DbContent>> getFavouriteContents() async {
-    final List<DbContent> contents = [];
-    await userDataDBHelper.getFavouriteContents().then((value) async {
-      for (var i = 0; i < value.length; i++) {
-        await getContentsByContentId(contentId: value[i].itemId)
-            .then((title) => contents.add(title));
-      }
+  /// get list of contents by ids
+  Future<List<DbContent>> getContentsByIds({required List<int> ids}) async {
+    final Database db = await database;
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+      '''SELECT * FROM contents  WHERE id IN (${ids.join(",")})''',
+    );
+
+    return List.generate(maps.length, (i) {
+      return DbContent.fromMap(maps[i]);
+    });
+  }
+
+  ///MARK: New Search
+
+  SqlQuery _searchTitlesSearchType(
+    String searchText,
+    String property, {
+    required SearchType searchType,
+    required bool useFilters,
+  }) {
+    final SqlQuery sqlQuery = SqlQuery();
+
+    final List<String> splittedSearchWords = searchText.trim().split(' ');
+
+    switch (searchType) {
+      case SearchType.typical:
+        sqlQuery.query = 'WHERE $property LIKE ?';
+        sqlQuery.args.addAll(['%$searchText%']);
+
+      case SearchType.allWords:
+        final String allWordsQuery = splittedSearchWords
+            .map((word) => '$property LIKE ?')
+            .join(' AND ');
+        final List<String> params = splittedSearchWords
+            .map((word) => '%$word%')
+            .toList();
+        sqlQuery.query = 'WHERE ($allWordsQuery)';
+        sqlQuery.args.addAll([...params]);
+
+      case SearchType.anyWords:
+        final String allWordsQuery = splittedSearchWords
+            .map((word) => '$property LIKE ?')
+            .join(' OR ');
+        final List<String> params = splittedSearchWords
+            .map((word) => '%$word%')
+            .toList();
+        sqlQuery.query = 'WHERE ($allWordsQuery)';
+        sqlQuery.args.addAll([...params]);
+    }
+
+    return sqlQuery;
+  }
+
+  Future<(int, List<DbTitle>)> searchTitleByName({
+    required String searchText,
+    required SearchType searchType,
+    required int limit,
+    required int offset,
+  }) async {
+    if (searchText.isEmpty) return (0, <DbTitle>[]);
+
+    final Database db = await database;
+
+    final whereFilters = _searchTitlesSearchType(
+      searchText,
+      "search",
+      searchType: searchType,
+      useFilters: true,
+    );
+
+    /// Pagination
+    final String qurey =
+        '''SELECT * FROM titles ${whereFilters.query} ORDER BY `id` LIMIT ? OFFSET ?''';
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(qurey, [
+      ...whereFilters.args,
+      limit,
+      offset,
+    ]);
+
+    /// Total Count
+    final String totalCountQurey =
+        '''SELECT COUNT(*) as count FROM titles ${whereFilters.query} ''';
+    final List<Map<String, dynamic>> countResult = await db.rawQuery(
+      totalCountQurey,
+      [...whereFilters.args],
+    );
+    final int count = countResult.first["count"] as int? ?? 0;
+
+    final itemList = List.generate(maps.length, (i) {
+      return DbTitle.fromMap(maps[i]);
     });
 
-    return contents;
+    return (count, itemList);
   }
 
-  /// Add content to favourite
-  Future<void> addContentToFavourite({required DbContent dbContent}) async {
-    await userDataDBHelper.addContentToFavourite(dbContent: dbContent);
-  }
-
-  /// Remove Content from favourite
-  Future<void> removeContentFromFavourite({
-    required DbContent dbContent,
+  Future<(int, List<DbContent>)> searchContent({
+    required String searchText,
+    required SearchType searchType,
+    required int limit,
+    required int offset,
   }) async {
-    await userDataDBHelper.removeContentFromFavourite(
-      dbContent: dbContent,
+    if (searchText.isEmpty) return (0, <DbContent>[]);
+
+    final Database db = await database;
+
+    final whereFilters = _searchTitlesSearchType(
+      searchText,
+      "search",
+      searchType: searchType,
+      useFilters: true,
     );
+
+    /// Pagination
+    final String qurey =
+        '''SELECT * FROM contents ${whereFilters.query} ORDER BY `order` LIMIT ? OFFSET ?''';
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(qurey, [
+      ...whereFilters.args,
+      limit,
+      offset,
+    ]);
+
+    /// Total Count
+    final String totalCountQurey =
+        '''SELECT COUNT(*) as count FROM contents ${whereFilters.query} ''';
+    final List<Map<String, dynamic>> countResult = await db.rawQuery(
+      totalCountQurey,
+      [...whereFilters.args],
+    );
+    final int count = countResult.first["count"] as int? ?? 0;
+
+    final itemList = List.generate(maps.length, (i) {
+      return DbContent.fromMap(maps[i]);
+    });
+
+    return (count, itemList);
   }
 
   /// Close database
