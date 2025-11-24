@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:muslim/src/core/values/constant.dart';
 
-
 class Email extends Equatable {
   final String mailTo;
   final String subject;
@@ -13,11 +12,7 @@ class Email extends Equatable {
     required this.body,
   });
 
-  Email copyWith({
-    String? mailTo,
-    String? subject,
-    String? body,
-  }) {
+  Email copyWith({String? mailTo, String? subject, String? body}) {
     return Email(
       mailTo: mailTo ?? this.mailTo,
       subject: subject ?? this.subject,

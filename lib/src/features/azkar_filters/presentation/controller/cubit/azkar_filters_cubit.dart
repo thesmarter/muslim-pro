@@ -8,15 +8,14 @@ part 'azkar_filters_state.dart';
 
 class AzkarFiltersCubit extends Cubit<AzkarFiltersState> {
   final AzkarFiltersRepo azkarFiltersRepo;
-  AzkarFiltersCubit(
-    this.azkarFiltersRepo,
-  ) : super(
-          AzkarFiltersState(
-            filters: azkarFiltersRepo.getAllFilters,
-            enableFilters: azkarFiltersRepo.getEnableFiltersStatus,
-            enableHokmFilters: azkarFiltersRepo.getEnableHokmFiltersStatus,
-          ),
-        );
+  AzkarFiltersCubit(this.azkarFiltersRepo)
+    : super(
+        AzkarFiltersState(
+          filters: azkarFiltersRepo.getAllFilters,
+          enableFilters: azkarFiltersRepo.getEnableFiltersStatus,
+          enableHokmFilters: azkarFiltersRepo.getEnableHokmFiltersStatus,
+        ),
+      );
 
   Future toggleEnableFilters(bool enableFilters) async {
     azkarFiltersRepo.setEnableFiltersStatus(enableFilters);

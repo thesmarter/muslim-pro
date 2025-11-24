@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 
-enum TitlesFreqEnum {
-  daily,
-  week,
-  month,
-  year,
-}
+enum TitlesFreqEnum { daily, week, month, year }
 
 extension TitlesFreqEnumExt on TitlesFreqEnum {
   String localeName(BuildContext context) {

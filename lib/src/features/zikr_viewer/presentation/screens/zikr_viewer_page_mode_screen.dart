@@ -13,28 +13,19 @@ class _ZikrViewerPageModeScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(
-              state.title.name,
-            ),
+            title: Text(state.title.name),
             actions: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "${state.activeZikrIndex + 1} : ${state.azkarToView.length}"
-                      .toArabicNumber(),
-                ),
+              AnimatedZikrProgressCounter(
+                currentIndex: state.activeZikrIndex,
+                totalCount: state.azkarToView.length,
               ),
+              BookmarkTitleButton(titleId: state.title.id),
             ],
             bottom: state.activeZikr == null
                 ? null
-                : PreferredSize(
-                    preferredSize: const Size.fromHeight(50),
-                    child: Column(
-                      children: [
-                        ZikrViewerTopBar(dbContent: state.activeZikr!),
-                        const ZikrViewerProgressBar(),
-                      ],
-                    ),
+                : const PreferredSize(
+                    preferredSize: Size.fromHeight(10),
+                    child: Column(children: [ZikrViewerProgressBar()]),
                   ),
           ),
           body: PageView.builder(
@@ -42,14 +33,14 @@ class _ZikrViewerPageModeScreen extends StatelessWidget {
             controller: context.read<ZikrViewerBloc>().pageController,
             itemCount: state.azkarToView.length,
             itemBuilder: (context, index) {
-              return ZikrViewerPageBuilder(
-                dbContent: state.azkarToView[index],
-              );
+              return ZikrViewerPageBuilder(dbContent: state.azkarToView[index]);
             },
           ),
-          bottomNavigationBar: state.activeZikr == null
+
+          floatingActionButton: state.activeZikr == null
               ? null
-              : ZikrViewerPageModeBottomBar(dbContent: state.activeZikr!),
+              : ZikrViewerExpandingFab(dbContent: state.activeZikr!),
+          floatingActionButtonLocation: ExpandableFab.location,
         );
       },
     );

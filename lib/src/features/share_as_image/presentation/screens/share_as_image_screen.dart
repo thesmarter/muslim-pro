@@ -1,12 +1,11 @@
-import 'package:capture_widget/capture_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/shared/widgets/loading.dart';
 import 'package:muslim/src/features/share_as_image/presentation/components/share_image_bottom_bar.dart';
-import 'package:muslim/src/features/share_as_image/presentation/components/share_image_card.dart';
 import 'package:muslim/src/features/share_as_image/presentation/components/share_image_settings_editor.dart';
+import 'package:muslim/src/features/share_as_image/presentation/components/widgets/shareable_image_card.dart';
 import 'package:muslim/src/features/share_as_image/presentation/controller/cubit/share_image_cubit.dart';
 import 'package:muslim/src/features/zikr_viewer/data/models/zikr_content.dart';
 
@@ -28,49 +27,49 @@ class ShareAsImageScreen extends StatelessWidget {
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
               elevation: 0,
-              title: Text(
-                S.of(context).shareAsImage,
-              ),
+              title: Text(S.of(context).shareAsImage),
               centerTitle: true,
-              actions: const [
-                ShareImageBaractionButtons(),
-              ],
+              actions: const [ShareImageBaractionButtons()],
               bottom: PreferredSize(
-                preferredSize:
-                    Size.fromHeight(!state.showLoadingIndicator ? 0 : 20),
+                preferredSize: Size.fromHeight(
+                  !state.showLoadingIndicator ? 0 : 20,
+                ),
                 child: !state.showLoadingIndicator
                     ? const SizedBox()
                     : LinearProgressIndicator(
-                        backgroundColor:
-                            Theme.of(context).scaffoldBackgroundColor,
+                        backgroundColor: Theme.of(
+                          context,
+                        ).scaffoldBackgroundColor,
                         minHeight: 15,
                       ),
               ),
             ),
-            body: GestureDetector(
-              onDoubleTap: () {
-                context.read<ShareImageCubit>().fitImageToScreen(context);
-              },
-              child: Stack(
-                children: [
-                  InteractiveViewer(
-                    constrained: false,
-                    // clipBehavior: Clip.none,
-                    transformationController: context
-                        .read<ShareImageCubit>()
-                        .transformationController,
-                    minScale: 0.25,
-                    maxScale: 3,
-                    boundaryMargin: const EdgeInsets.all(5000),
-                    child: CaptureWidget(
-                      controller: context
-                          .read<ShareImageCubit>()
-                          .captureWidgetController,
-                      child: const ShareImageCard(),
+            body: PageView.builder(
+              controller: context.read<ShareImageCubit>().pageController,
+              itemCount: state.splittedMatn.length,
+              onPageChanged: context.read<ShareImageCubit>().onPageChanged,
+              itemBuilder: (context, index) {
+                return Stack(
+                  fit: StackFit.expand,
+                  alignment: Alignment.center,
+                  children: [
+                    FittedBox(
+                      child: RepaintBoundary(
+                        key: context.read<ShareImageCubit>().imageKeys[index],
+                        child: ShareableImageCard(
+                          zikr: state.content,
+                          zikrTitle: state.title,
+                          settings: state.settings,
+                          matnRange: state.splittedMatn[index],
+                          splittedLength: state.splittedMatn.length,
+                          splittedindex: index,
+                          shareImageSettings: state.shareImageSettings,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                );
+              },
             ),
             bottomSheet: const ShareImageBottomBar(),
           );
@@ -93,9 +92,7 @@ class ShareImageBaractionButtons extends StatelessWidget {
             await showDialog(
               context: context,
               builder: (_) {
-                return ShareImageSettingsEditor(
-                  context: context,
-                );
+                return ShareImageSettingsEditor(context: context);
               },
             );
           },
@@ -104,7 +101,7 @@ class ShareImageBaractionButtons extends StatelessWidget {
         IconButton(
           tooltip: S.of(context).share,
           onPressed: () async {
-            context.read<ShareImageCubit>().shareImage();
+            await context.read<ShareImageCubit>().shareImage();
           },
           icon: const Icon(Icons.share),
         ),

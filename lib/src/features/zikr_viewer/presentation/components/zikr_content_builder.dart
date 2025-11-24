@@ -57,11 +57,7 @@ class ZikrContentPlainText extends StatelessWidget {
       textAlign: TextAlign.center,
       softWrap: true,
       textDirection: TextDirection.rtl,
-      style: TextStyle(
-        fontSize: fontSize,
-        height: 2,
-        color: color,
-      ),
+      style: TextStyle(fontSize: fontSize, height: 2, color: color),
     );
   }
 }
@@ -107,9 +103,7 @@ class ZikrContentTextWithQuran extends StatelessWidget {
               text: enableDiacritics
                   ? verse.join()
                   : verse.join().removeDiacritics,
-              style: const TextStyle(
-                fontFamily: "Uthmanic2",
-              ),
+              style: const TextStyle(fontFamily: "Uthmanic2"),
             ),
           );
         }
@@ -118,9 +112,7 @@ class ZikrContentTextWithQuran extends StatelessWidget {
         }
       } else {
         spans.add(
-          TextSpan(
-            text: enableDiacritics ? line : line.removeDiacritics,
-          ),
+          TextSpan(text: enableDiacritics ? line : line.removeDiacritics),
         );
       }
     }

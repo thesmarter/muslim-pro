@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
 import 'package:muslim/src/core/functions/open_url.dart';
 import 'package:muslim/src/core/utils/email_manager.dart';
@@ -9,9 +9,7 @@ import 'package:muslim/src/features/about/presentation/screens/about_screen.dart
 import 'package:muslim/src/features/home/presentation/components/side_menu/shared.dart';
 
 class MoreSection extends StatelessWidget {
-  const MoreSection({
-    super.key,
-  });
+  const MoreSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +39,7 @@ class MoreSection extends StatelessWidget {
             leading: const Icon(Icons.info),
             title: Text(S.of(context).aboutUs),
             onTap: () {
-              context.push(
-                const AboutScreen(),
-              );
+              context.push(const AboutScreen());
             },
           ),
         ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/shared/widgets/empty.dart';
 import 'package:muslim/src/features/fake_hadith/data/models/fake_haith.dart';
 import 'package:muslim/src/features/fake_hadith/presentation/components/widgets/fake_hadith_card.dart';
@@ -23,9 +23,7 @@ class FakeHadithUnreadPage extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(top: 10),
               itemBuilder: (context, index) {
-                return FakeHadithCard(
-                  fakeHadith: hadithList[index],
-                );
+                return FakeHadithCard(fakeHadith: hadithList[index]);
               },
               itemCount: hadithList.length,
             ),

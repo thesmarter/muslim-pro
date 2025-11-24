@@ -59,9 +59,7 @@ class FakeHadithDBHelper {
   Future<void> markFakeHadithAsUnRead({
     required DbFakeHaith dbFakeHaith,
   }) async {
-    await userDataDBHelper.markFakeHadithAsUnRead(
-      dbFakeHaith: dbFakeHaith,
-    );
+    await userDataDBHelper.markFakeHadithAsUnRead(dbFakeHaith: dbFakeHaith);
   }
 
   // Close database

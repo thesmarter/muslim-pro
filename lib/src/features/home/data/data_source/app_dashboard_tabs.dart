@@ -1,6 +1,6 @@
-import 'package:muslim/generated/l10n.dart';
-import 'package:muslim/src/features/home/presentation/components/pages/azkar_bookmarks_screen.dart';
-import 'package:muslim/src/features/home/presentation/components/pages/titles_bookmarks_screen.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
+import 'package:muslim/src/features/bookmark/presentation/screens/azkar_bookmarks_screen.dart';
+import 'package:muslim/src/features/bookmark/presentation/screens/titles_bookmarks_screen.dart';
 import 'package:muslim/src/features/home/presentation/components/pages/titles_screen.dart';
 import 'package:muslim/src/features/settings/data/models/app_component.dart';
 

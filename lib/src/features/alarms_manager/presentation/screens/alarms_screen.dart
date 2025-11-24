@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/shared/widgets/empty.dart';
 import 'package:muslim/src/core/shared/widgets/loading.dart';
 import 'package:muslim/src/features/alarms_manager/presentation/components/alarm_card.dart';
@@ -20,9 +20,7 @@ class AlarmsScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(
-              S.of(context).remindersManager,
-            ),
+            title: Text(S.of(context).remindersManager),
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
           ),
@@ -37,9 +35,7 @@ class AlarmsScreen extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.only(top: 10),
                   itemBuilder: (context, index) {
-                    return AlarmCard(
-                      dbAlarm: state.alarms[index],
-                    );
+                    return AlarmCard(dbAlarm: state.alarms[index]);
                   },
                   itemCount: state.alarms.length,
                 ),

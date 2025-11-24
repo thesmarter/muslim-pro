@@ -16,7 +16,7 @@ class ZikrViewerLoadedState extends ZikrViewerState {
   final List<DbContent> azkarToView;
   final int activeZikrIndex;
   final ZikrViewerMode zikrViewerMode;
-  final Map<int, int> restoredSession;
+  final ZikrSession restoredSession;
   final bool askToRestoreSession;
 
   DbContent? get activeZikr {
@@ -30,7 +30,7 @@ class ZikrViewerLoadedState extends ZikrViewerState {
 
   double get manorProgress =>
       azkarToView.fold(0, (sum, curr) => sum + curr.count) /
-          azkar.fold(0, (sum, curr) => sum + curr.count);
+      azkar.fold(0, (sum, curr) => sum + curr.count);
 
   double singleProgress(DbContent content) =>
       content.count / azkar.where((x) => x.id == content.id).first.count;
@@ -51,7 +51,7 @@ class ZikrViewerLoadedState extends ZikrViewerState {
     List<DbContent>? azkarToView,
     int? activeZikrIndex,
     ZikrViewerMode? zikrViewerMode,
-    Map<int, int>? restoredSession,
+    ZikrSession? restoredSession,
     bool? askToRestoreSession,
   }) {
     return ZikrViewerLoadedState(

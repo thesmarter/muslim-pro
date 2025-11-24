@@ -6,10 +6,7 @@ import 'package:window_manager/window_manager.dart';
 
 class DesktopWindowWrapper extends StatefulWidget {
   final Widget? child;
-  const DesktopWindowWrapper({
-    super.key,
-    this.child,
-  });
+  const DesktopWindowWrapper({super.key, this.child});
 
   @override
   State<DesktopWindowWrapper> createState() => _DesktopWindowWrapperState();

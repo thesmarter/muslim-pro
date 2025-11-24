@@ -54,7 +54,7 @@ class SettingsState extends Equatable {
       showDiacritics: showDiacritics ?? this.showDiacritics,
       praiseWithVolumeKeys: praiseWithVolumeKeys ?? this.praiseWithVolumeKeys,
       allowZikrSessionRestoration:
-      allowZikrSessionRestoration ?? this.allowZikrSessionRestoration,
+          allowZikrSessionRestoration ?? this.allowZikrSessionRestoration,
     );
   }
 }

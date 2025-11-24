@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 
 enum TallyIterationMode { shuffle, circular, none }
 

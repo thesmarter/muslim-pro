@@ -51,17 +51,13 @@ extension DBContentExt on DbContent {
 
           if (i != verses.length - 1) verse.add("\n\n");
 
-          spans.add(
-            verse.join(),
-          );
+          spans.add(verse.join());
         }
         if (lineIndex != lines.length - 1) {
           spans.add("\n\n");
         }
       } else {
-        spans.add(
-          line,
-        );
+        spans.add(line);
       }
     }
     return spans;

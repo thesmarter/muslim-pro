@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:muslim/src/core/values/constant.dart';
@@ -17,32 +18,32 @@ class SettingsCubit extends Cubit<SettingsState> {
   final ZikrTextRepo zikrTextRepo;
   final ZikrViewerRepo zikrViewerRepo;
   SettingsCubit(
-      this.effectsManagerRepo,
-      this.appSettingsRepo,
-      this.effectsManager,
-      this.zikrTextRepo,
-      this.zikrViewerRepo,
-      ) : super(
-    SettingsState(
-      zikrEffects: ZikrEffects(
-        soundEffectVolume: effectsManagerRepo.soundEffectVolume,
-        soundEveryPraise: effectsManagerRepo.isPraiseSoundAllowed,
-        soundEveryZikr: effectsManagerRepo.isZikrSoundAllowed,
-        soundEveryTitle: effectsManagerRepo.isTitleSoundAllowed,
-        vibrateEveryPraise: effectsManagerRepo.isPraiseVibrationAllowed,
-        vibrateEveryZikr: effectsManagerRepo.isZikrVibrationAllowed,
-        vibrateEveryTitle: effectsManagerRepo.isTitleVibrationAllowed,
-      ),
-      enableWakeLock: appSettingsRepo.enableWakeLock,
-      isCardReadMode: appSettingsRepo.isCardReadMode,
-      useHindiDigits: appSettingsRepo.useHindiDigits,
-      fontSize: zikrTextRepo.fontSize,
-      showDiacritics: zikrTextRepo.showDiacritics,
-      praiseWithVolumeKeys: appSettingsRepo.praiseWithVolumeKeys,
-      allowZikrSessionRestoration:
-      zikrViewerRepo.allowZikrSessionRestoration,
-    ),
-  );
+    this.effectsManagerRepo,
+    this.appSettingsRepo,
+    this.effectsManager,
+    this.zikrTextRepo,
+    this.zikrViewerRepo,
+  ) : super(
+        SettingsState(
+          zikrEffects: ZikrEffects(
+            soundEffectVolume: effectsManagerRepo.soundEffectVolume,
+            soundEveryPraise: effectsManagerRepo.isPraiseSoundAllowed,
+            soundEveryZikr: effectsManagerRepo.isZikrSoundAllowed,
+            soundEveryTitle: effectsManagerRepo.isTitleSoundAllowed,
+            vibrateEveryPraise: effectsManagerRepo.isPraiseVibrationAllowed,
+            vibrateEveryZikr: effectsManagerRepo.isZikrVibrationAllowed,
+            vibrateEveryTitle: effectsManagerRepo.isTitleVibrationAllowed,
+          ),
+          enableWakeLock: appSettingsRepo.enableWakeLock,
+          isCardReadMode: appSettingsRepo.isCardReadMode,
+          useHindiDigits: appSettingsRepo.useHindiDigits,
+          fontSize: zikrTextRepo.fontSize,
+          showDiacritics: zikrTextRepo.showDiacritics,
+          praiseWithVolumeKeys: appSettingsRepo.praiseWithVolumeKeys,
+          allowZikrSessionRestoration:
+              zikrViewerRepo.allowZikrSessionRestoration,
+        ),
+      );
 
   ///MARK: General Settings
   Future toggleIsCardReadMode({required bool activate}) async {

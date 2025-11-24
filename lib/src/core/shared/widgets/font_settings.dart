@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/extensions/string_extension.dart';
 import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
 
@@ -16,7 +16,7 @@ class FontSettingsIconButton extends StatelessWidget {
       tooltip: S.of(context).fontSettings,
       padding: EdgeInsets.zero,
       icon: Icon(MdiIcons.formatQuoteOpen),
-      onPressed: () async {
+      onPressed: () {
         showDialog(
           context: context,
           builder: (context) {
@@ -41,10 +41,7 @@ class FontSettingsToolbox extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       mainAxisSize: MainAxisSize.min,
-      children: [
-        TextSample(),
-        FontSettingsBar(),
-      ],
+      children: [TextSample(), FontSettingsBar()],
     );
   }
 }
@@ -73,14 +70,14 @@ class FontSettingsBar extends StatelessWidget {
             },
           ),
           IconButton(
-            tooltip: S.of(context).fontIncreaeSize,
+            tooltip: S.of(context).fontIncreaseSize,
             icon: Icon(MdiIcons.formatFontSizeIncrease),
             onPressed: () {
               context.read<SettingsCubit>().increaseFontSize();
             },
           ),
           IconButton(
-            tooltip: S.of(context).fontDecreaeSize,
+            tooltip: S.of(context).fontDecreaseSize,
             icon: Icon(MdiIcons.formatFontSizeDecrease),
             onPressed: () {
               context.read<SettingsCubit>().decreaseFontSize();
@@ -94,9 +91,7 @@ class FontSettingsBar extends StatelessWidget {
               angle: context.watch<SettingsCubit>().state.showDiacritics
                   ? 0
                   : -math.pi / 8,
-              child: Icon(
-                MdiIcons.abjadArabic,
-              ),
+              child: Icon(MdiIcons.abjadArabic),
             ),
             onPressed: () {
               context.read<SettingsCubit>().toggleDiacriticsStatus();
@@ -127,9 +122,7 @@ class TextSample extends StatelessWidget {
                   textAlign: TextAlign.center,
                   softWrap: true,
                   textDirection: TextDirection.rtl,
-                  style: TextStyle(
-                    fontSize: state.fontSize * 10,
-                  ),
+                  style: TextStyle(fontSize: state.fontSize * 10),
                 ),
               ),
             ),

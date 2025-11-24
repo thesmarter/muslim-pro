@@ -2,11 +2,13 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:intl/intl.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart'
     as service_locator;
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/extension_platform.dart';
+import 'package:muslim/src/core/extensions/localization_extesion.dart';
 import 'package:muslim/src/core/functions/print.dart';
 import 'package:muslim/src/core/utils/app_bloc_observer.dart';
 import 'package:muslim/src/core/values/constant.dart';
@@ -75,5 +77,7 @@ Future loadLocalizations() async {
   Locale? localeToSet = sl<ThemeRepo>().appLocale;
   final languageCode = PlatformExtension.languageCode;
   localeToSet ??= Locale.fromSubtags(languageCode: languageCode ?? "en");
-  await S.load(localeToSet);
+  Intl.defaultLocale = localeToSet.languageCode;
+  final s = await S.delegate.load(localeToSet);
+  SX.init(s);
 }

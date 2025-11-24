@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muslim/generated/l10n.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/shared/widgets/loading.dart';
 import 'package:muslim/src/features/home/data/data_source/app_dashboard_tabs.dart';
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
@@ -18,9 +18,7 @@ class RearrangeDashboardPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(
-              S.of(context).dashboardArrangement,
-            ),
+            title: Text(S.of(context).dashboardArrangement),
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
           ),
@@ -29,8 +27,9 @@ class RearrangeDashboardPage extends StatelessWidget {
               return ListTile(
                 key: Key("$index"),
                 title: Text(
-                  appDashboardTabs[state.dashboardArrangement[index]]
-                      .title(context),
+                  appDashboardTabs[state.dashboardArrangement[index]].title(
+                    context,
+                  ),
                 ),
                 trailing: const Icon(Icons.horizontal_rule),
               );
@@ -38,11 +37,11 @@ class RearrangeDashboardPage extends StatelessWidget {
             itemCount: state.dashboardArrangement.length,
             onReorder: (oldIndex, newIndex) {
               context.read<HomeBloc>().add(
-                    HomeDashboardReorderedEvent(
-                      oldIndex: oldIndex,
-                      newIndex: newIndex,
-                    ),
-                  );
+                HomeDashboardReorderedEvent(
+                  oldIndex: oldIndex,
+                  newIndex: newIndex,
+                ),
+              );
             },
           ),
         );
