@@ -25,9 +25,6 @@ class SEn extends S {
   String get add => 'Add';
 
   @override
-  String get smartsite => 'Smart Team';
-
-  @override
   String get addNameToCounter => 'Add a name to your counter';
 
   @override
@@ -49,8 +46,7 @@ class SEn extends S {
   String get allowZikrRestoreSession => 'Allow Zikr session restoration';
 
   @override
-  String get allowZikrRestoreSessionDesc =>
-      'Popup menu to resume uncompleted Zikr session ';
+  String get allowZikrRestoreSessionDesc => 'Popup menu to resume uncompleted Zikr session ';
 
   @override
   String get allWords => 'All words';
@@ -152,12 +148,10 @@ class SEn extends S {
   String get count => 'Count';
 
   @override
-  String get counterCircleMustBeGreaterThanZero =>
-      'Counter circle must be higher than zero';
+  String get counterCircleMustBeGreaterThanZero => 'Counter circle must be higher than zero';
 
   @override
-  String get counterCircleSetToZero =>
-      'The counter circle is set to zero when reach this number';
+  String get counterCircleSetToZero => 'The counter circle is set to zero when reach this number';
 
   @override
   String get counterName => 'Counter name';
@@ -260,8 +254,13 @@ class SEn extends S {
   String get fakeHadith => 'Fake Hadith';
 
   @override
-  String get fastingMondaysThursdaysReminder =>
-      'Fasting Mondays and Thursdays Reminder';
+  String get fastingMondayReminder => 'Fasting tomorrow (Monday)';
+
+  @override
+  String get fastingThursdayReminder => 'Fasting tomorrow (Thursday)';
+
+  @override
+  String get fastingMondaysThursdaysReminder => 'Fasting Mondays and Thursdays Reminder';
 
   @override
   String get favoritesContent => 'favorites';
@@ -321,11 +320,13 @@ class SEn extends S {
   String get haveBeenRead => 'Read';
 
   @override
-  String get haveNotOpenedAppLongTime =>
-      'You haven\'t opened the app for a long time.';
+  String get haveNotOpenedAppLongTime => 'You haven\'t opened the app for a long time.';
 
   @override
   String get haveNotReadAnythingYet => 'You haven\'t read anything yet';
+
+  @override
+  String get smartsite => 'Smart Team';
 
   @override
   String get elmoslemPro => 'Elmoslem Pro';
@@ -356,6 +357,13 @@ class SEn extends S {
 
   @override
   String get imageWidth => 'Image width';
+
+  @override
+  String get ignoreNotificationPermission => 'Ignore Notification Permission';
+
+  @override
+  String get ignoreNotificationPermissionDesc =>
+      'Don\'t ask for notification permissions on app launch';
 
   @override
   String get index => 'Index';
@@ -437,12 +445,25 @@ class SEn extends S {
   String get phoneVibrationAtEveryPraise => 'Phone vibration at every praise';
 
   @override
-  String get phoneVibrationAtSingleZikrEnd =>
-      'Phone vibration at single zikr end';
+  String get phoneVibrationAtSingleZikrEnd => 'Phone vibration at single zikr end';
 
   @override
-  String get phoneVibrationWhenAllZikrEnd =>
-      'Phone vibration when all zikr end';
+  String get phoneVibrationWhenAllZikrEnd => 'Phone vibration when all zikr end';
+
+  @override
+  String get preciseTiming => 'Precise Timing';
+
+  @override
+  String get preciseTimingDesc => 'To ensure reminders arrive exactly on time (Android 13+).';
+
+  @override
+  String get permissionGranted => 'Granted';
+
+  @override
+  String get permissionDenied => 'Denied';
+
+  @override
+  String get permissionsRequired => 'Permissions Required';
 
   @override
   String get prayForUsAndParents => 'Pray for us and our parents.';
@@ -451,15 +472,13 @@ class SEn extends S {
   String get prefPraiseWithVolumeKeys => 'Praise with volume keys';
 
   @override
-  String get prefPraiseWithVolumeKeysDesc =>
-      'Praise with volume keys in page mode and tally';
+  String get prefPraiseWithVolumeKeysDesc => 'Praise with volume keys in page mode and tally';
 
   @override
   String get previous => 'Previous';
 
   @override
-  String get progressDeletedCannotUndo =>
-      'Your progress will be deleted and you can\'t undo that';
+  String get progressDeletedCannotUndo => 'Your progress will be deleted and you can\'t undo that';
 
   @override
   String get prophetSaidLiesIntentional =>
@@ -487,8 +506,7 @@ class SEn extends S {
   String get report => 'Report';
 
   @override
-  String get reportBugsRequestFeatures =>
-      'Report bugs and request new features';
+  String get reportBugsRequestFeatures => 'Report bugs and request new features';
 
   @override
   String get requiresAppRestart => 'Requires app restart';
@@ -727,4 +745,64 @@ class SEn extends S {
   @override
   String get zikrViewerRestoreSessionMsg =>
       'We found a previous session, would you like to restore it?';
+
+  @override
+  String get audioPlayerSpeed => 'Playback Speed';
+
+  @override
+  String get audioPlayerVolume => 'Volume';
+
+  @override
+  String get audioPlayerDelay => 'Delay Between Azkar';
+
+  @override
+  String get audioPlayerDelayNone => 'No Delay';
+
+  @override
+  String get audioPlayerDelayByPrevious => 'Same as Previous Zikr';
+
+  @override
+  String get audioPlayerDelayFixed => 'Fixed Time';
+
+  @override
+  String get audioPlayerDelaySeconds => 'Seconds';
+
+  @override
+  String get audioPlayerSettings => 'Audio Settings';
+
+  @override
+  String get vibrationDuration => 'Vibration duration (ms)';
+
+  @override
+  String get saveToGallery => 'Save to Gallery';
+
+  @override
+  String get imageSavedSuccessfully => 'Image saved successfully';
+
+  @override
+  String get backupAndRestore => 'Backup & Restore';
+
+  @override
+  String get backupData => 'Backup Data';
+
+  @override
+  String get restoreData => 'Restore Data';
+
+  @override
+  String get backupSuccess => 'Backup Success';
+
+  @override
+  String get restoreSuccessRestart => 'Restore Success. Please restart app.';
+
+  @override
+  String get backupFailed => 'Backup Failed';
+
+  @override
+  String get restoreFailed => 'Restore Failed';
+
+  @override
+  String get showAudioBar => 'Show Audio Bar';
+
+  @override
+  String get showAudioBarDesc => 'Show/hide audio control bar in Zikr viewer page';
 }

@@ -12,7 +12,11 @@ class Email extends Equatable {
     required this.body,
   });
 
-  Email copyWith({String? mailTo, String? subject, String? body}) {
+  Email copyWith({
+    String? mailTo,
+    String? subject,
+    String? body,
+  }) {
     return Email(
       mailTo: mailTo ?? this.mailTo,
       subject: subject ?? this.subject,

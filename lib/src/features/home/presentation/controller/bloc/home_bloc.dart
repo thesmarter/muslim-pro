@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'package:muslim/src/core/functions/print.dart';
 import 'package:muslim/src/features/azkar_filters/data/models/zikr_filter.dart';
 import 'package:muslim/src/features/azkar_filters/data/models/zikr_filter_list_extension.dart';
 import 'package:muslim/src/features/azkar_filters/presentation/controller/cubit/azkar_filters_cubit.dart';
@@ -23,7 +21,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final AzkarFiltersCubit zikrFiltersCubit;
   late final StreamSubscription filterSubscription;
   late final StreamSubscription bookmarkSubscription;
-  final ZoomDrawerController zoomDrawerController = ZoomDrawerController();
   final AppSettingsRepo appSettingsRepo;
   final HisnDBHelper hisnDBHelper;
   final UserDataDBHelper userDataDBHelper;
@@ -44,7 +41,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeStartEvent>(_start);
     on<HomeToggleSearchEvent>(_toggleSearch);
 
-    on<HomeToggleDrawerEvent>(_toggleDrawer);
     on<HomeDashboardReorderedEvent>(_onDashboardReorded);
 
     on<HomeToggleFilterEvent>(_onFilterToggled);
@@ -61,8 +57,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       zikrFilters: filters,
     );
 
-    final listDbContentFavourite = await userDataDBHelper
-        .getFavouriteContents();
+    final listDbContentFavourite = await userDataDBHelper.getFavouriteContents();
     final azkarFromDB = await hisnDBHelper.getContentsByIds(
       ids: listDbContentFavourite.map((e) => e.itemId).toList(),
     );
@@ -89,17 +84,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (state is! HomeLoadedState) return;
 
     emit(state.copyWith(isSearching: event.isSearching));
-  }
-
-  Future<void> _toggleDrawer(
-    HomeToggleDrawerEvent event,
-    Emitter<HomeState> emit,
-  ) async {
-    zoomDrawerController.toggle?.call(forceToggle: true);
-    final isOpen = zoomDrawerController.isOpen;
-    hisnPrint(isOpen?.call());
-    zoomDrawerController.open?.call();
-    hisnPrint(isOpen?.call());
   }
 
   Future<void> _onDashboardReorded(
@@ -187,8 +171,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       zikrFilters: event.filters,
     );
 
-    final listDbContentFavourite = await userDataDBHelper
-        .getFavouriteContents();
+    final listDbContentFavourite = await userDataDBHelper.getFavouriteContents();
     final azkarFromDB = await hisnDBHelper.getContentsByIds(
       ids: listDbContentFavourite.map((e) => e.itemId).toList(),
     );

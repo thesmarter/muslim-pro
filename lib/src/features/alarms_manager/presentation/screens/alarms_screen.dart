@@ -20,7 +20,9 @@ class AlarmsScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(S.of(context).remindersManager),
+            title: Text(
+              S.of(context).remindersManager,
+            ),
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
           ),
@@ -35,7 +37,9 @@ class AlarmsScreen extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.only(top: 10),
                   itemBuilder: (context, index) {
-                    return AlarmCard(dbAlarm: state.alarms[index]);
+                    return AlarmCard(
+                      dbAlarm: state.alarms[index],
+                    );
                   },
                   itemCount: state.alarms.length,
                 ),

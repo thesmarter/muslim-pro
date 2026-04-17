@@ -6,7 +6,9 @@ import 'package:muslim/src/features/share_as_image/presentation/controller/cubit
 import 'package:muslim/src/features/zikr_viewer/presentation/components/zikr_content_builder.dart';
 
 class ShareImageCard extends StatelessWidget {
-  const ShareImageCard({super.key});
+  const ShareImageCard({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +34,7 @@ class ShareImageCard extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: state.shareImageSettings.titleTextColor,
-                      fontSize:
-                          state.shareImageSettings.fontSize * state.titleFactor,
+                      fontSize: state.shareImageSettings.fontSize * state.titleFactor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -50,8 +51,7 @@ class ShareImageCard extends StatelessWidget {
                     /// Content
                     ZikrContentBuilder(
                       dbContent: dbContent,
-                      enableDiacritics:
-                          !state.shareImageSettings.removeDiacritics,
+                      enableDiacritics: !state.shareImageSettings.removeDiacritics,
                       fontSize: state.shareImageSettings.fontSize,
                       color: state.shareImageSettings.bodyTextColor,
                     ),
@@ -65,16 +65,13 @@ class ShareImageCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: state.shareImageSettings.bodyTextColor,
-                          fontSize:
-                              state.shareImageSettings.fontSize *
-                              state.fadlFactor,
+                          fontSize: state.shareImageSettings.fontSize * state.fadlFactor,
                         ),
                       ),
                     ],
 
                     /// Fadl
-                    if ((dbContent.fadl.isNotEmpty) &&
-                        state.shareImageSettings.showFadl) ...[
+                    if ((dbContent.fadl.isNotEmpty) && state.shareImageSettings.showFadl) ...[
                       const SizedBox(height: 25),
                       Text(
                         dbContent.fadl,
@@ -82,16 +79,13 @@ class ShareImageCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: state.shareImageSettings.additionalTextColor,
-                          fontSize:
-                              state.shareImageSettings.fontSize *
-                              state.fadlFactor,
+                          fontSize: state.shareImageSettings.fontSize * state.fadlFactor,
                         ),
                       ),
                     ],
 
                     /// Source
-                    if ((dbContent.source.isNotEmpty) &&
-                        state.shareImageSettings.showSource) ...[
+                    if ((dbContent.source.isNotEmpty) && state.shareImageSettings.showSource) ...[
                       const SizedBox(height: 25),
                       Text(
                         dbContent.source,
@@ -99,9 +93,7 @@ class ShareImageCard extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: state.shareImageSettings.additionalTextColor,
-                          fontSize:
-                              state.shareImageSettings.fontSize *
-                              state.sourceFactor,
+                          fontSize: state.shareImageSettings.fontSize * state.sourceFactor,
                         ),
                       ),
                     ],

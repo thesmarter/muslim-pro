@@ -22,6 +22,10 @@ class DbFakeHadithRead extends BookmarkedItem {
   }
 
   Map<String, dynamic> toMap() {
-    return {'_id': id, 'title_id': itemId, 'isRead': bookmarked};
+    return {
+      '_id': id,
+      'title_id': itemId,
+      'isRead': bookmarked,
+    };
   }
 }

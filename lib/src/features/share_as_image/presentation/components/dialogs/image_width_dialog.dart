@@ -6,11 +6,7 @@ class ImageWidthDialog extends StatelessWidget {
   final Function(String) onSubmit;
   final String initialValue;
 
-  const ImageWidthDialog({
-    super.key,
-    required this.onSubmit,
-    required this.initialValue,
-  });
+  const ImageWidthDialog({super.key, required this.onSubmit, required this.initialValue});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +21,7 @@ class ImageWidthDialog extends StatelessWidget {
           UserNumberField(
             controller: widthController,
             hintText: S.of(context).imageWidth,
+            textInputAction: TextInputAction.done,
           ),
         ],
       ),

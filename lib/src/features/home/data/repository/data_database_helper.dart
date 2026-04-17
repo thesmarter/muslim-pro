@@ -126,8 +126,8 @@ class UserDataDBHelper {
 
   /* ************* Functions ************* */
 
-  ///MARK: ElmoslemPro Titles
-  /* ************* ElmoslemPro Titles ************* */
+  ///MARK: muslim Titles
+  /* ************* muslim Titles ************* */
 
   /// Get all favourite titles
   Future<List<int>> getAllFavoriteTitles() async {
@@ -177,8 +177,8 @@ class UserDataDBHelper {
     );
   }
 
-  ///MARK: ElmoslemPro Contents
-  /* ************* ElmoslemPro Contents ************* */
+  ///MARK: muslim Contents
+  /* ************* muslim Contents ************* */
 
   /// Get favourite content
   Future<List<DbContentFavourite>> getFavouriteContents() async {
@@ -296,7 +296,9 @@ class UserDataDBHelper {
   }
 
   Future close() async {
-    final db = await database;
-    db.close();
+    if (_database != null) {
+      await _database!.close();
+      _database = null;
+    }
   }
 }

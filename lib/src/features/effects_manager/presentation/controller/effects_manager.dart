@@ -3,22 +3,28 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
 import 'package:muslim/src/core/functions/print.dart';
 import 'package:muslim/src/features/effects_manager/data/repository/effects_manager_repo.dart';
+import 'package:muslim/src/features/zikr_audio_player/presentation/controller/cubit/zikr_audio_player_cubit.dart';
 import 'package:vibration/vibration.dart';
 
 class EffectsManager {
-  final player = AudioPlayer();
+  final _player = AudioPlayer(playerId: "effectsManagerPlayer");
 
   final EffectsManagerRepo _effectsManagerRepo;
-  EffectsManager(this._effectsManagerRepo);
+  final ZikrAudioPlayerCubit _zikrAudioPlayerCubit;
+
+  DateTime _lastVibrationTime = DateTime.fromMillisecondsSinceEpoch(0);
+
+  EffectsManager(this._effectsManagerRepo, this._zikrAudioPlayerCubit);
 
   ///MARK: Play Sound
 
   Future _playSound(AssetSource source) async {
     try {
-      await player.stop();
-      await player.setSource(source);
-      await player.setVolume(_effectsManagerRepo.soundEffectVolume);
-      await player.resume();
+      if (_zikrAudioPlayerCubit.state.isPlaying) return;
+      hisnPrint(_player.playerId);
+      await _player.stop();
+      await _player.setVolume(_effectsManagerRepo.soundEffectVolume);
+      await _player.play(source);
     } catch (e) {
       hisnPrint(e);
     }
@@ -38,34 +44,52 @@ class EffectsManager {
 
   ///MARK: Play vibration
 
+  bool _canVibrate() {
+    final now = DateTime.now();
+    if (now.difference(_lastVibrationTime).inMilliseconds > 100) {
+      _lastVibrationTime = now;
+      return true;
+    }
+    return false;
+  }
+
   Future<void> playPraiseVibratation() async {
-    await Vibration.hasCustomVibrationsSupport().then(
-      (value) => {
-        if (value)
-          {Vibration.vibrate(duration: 100)}
-        else
-          {HapticFeedback.lightImpact()},
-      },
-    );
+    if (!_canVibrate()) return;
+    final value = await Vibration.hasCustomVibrationsSupport();
+
+    if (value) {
+      await Vibration.vibrate(
+        duration: _effectsManagerRepo.praiseVibrationDuration,
+      );
+    } else {
+      await HapticFeedback.lightImpact();
+    }
   }
 
   Future<void> playZikrVibratation() async {
-    await Vibration.hasCustomVibrationsSupport().then(
-      (value) => {
-        if (value)
-          {Vibration.vibrate(duration: 300)}
-        else
-          {HapticFeedback.mediumImpact()},
-      },
-    );
+    if (!_canVibrate()) return;
+    final value = await Vibration.hasCustomVibrationsSupport();
+
+    if (value) {
+      await Vibration.vibrate(
+        duration: _effectsManagerRepo.zikrVibrationDuration,
+      );
+    } else {
+      await HapticFeedback.mediumImpact();
+    }
   }
 
   Future<void> playTitleVibratation() async {
-    await Vibration.hasCustomVibrationsSupport().then(
-      (value) => {
-        if (value) {Vibration.vibrate()} else {HapticFeedback.heavyImpact()},
-      },
-    );
+    if (!_canVibrate()) return;
+    final value = await Vibration.hasCustomVibrationsSupport();
+
+    if (value) {
+      await Vibration.vibrate(
+        duration: _effectsManagerRepo.titleVibrationDuration,
+      );
+    } else {
+      await HapticFeedback.heavyImpact();
+    }
   }
 
   //////////////////////////////
@@ -94,5 +118,9 @@ class EffectsManager {
     if (_effectsManagerRepo.isTitleVibrationAllowed) {
       await playTitleVibratation();
     }
+  }
+
+  void dispose() {
+    _player.dispose();
   }
 }

@@ -88,6 +88,15 @@ class DbAlarm extends Equatable {
 
   @override
   List<Object> get props {
-    return [id, titleId, title, body, repeatType, hour, minute, isActive];
+    return [
+      id,
+      titleId,
+      title,
+      body,
+      repeatType,
+      hour,
+      minute,
+      isActive,
+    ];
   }
 }

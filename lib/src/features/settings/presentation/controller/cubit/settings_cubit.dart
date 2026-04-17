@@ -33,6 +33,9 @@ class SettingsCubit extends Cubit<SettingsState> {
             vibrateEveryPraise: effectsManagerRepo.isPraiseVibrationAllowed,
             vibrateEveryZikr: effectsManagerRepo.isZikrVibrationAllowed,
             vibrateEveryTitle: effectsManagerRepo.isTitleVibrationAllowed,
+            vibrateEveryPraiseDuration: effectsManagerRepo.praiseVibrationDuration,
+            vibrateEveryZikrDuration: effectsManagerRepo.zikrVibrationDuration,
+            vibrateEveryTitleDuration: effectsManagerRepo.titleVibrationDuration,
           ),
           enableWakeLock: appSettingsRepo.enableWakeLock,
           isCardReadMode: appSettingsRepo.isCardReadMode,
@@ -40,8 +43,9 @@ class SettingsCubit extends Cubit<SettingsState> {
           fontSize: zikrTextRepo.fontSize,
           showDiacritics: zikrTextRepo.showDiacritics,
           praiseWithVolumeKeys: appSettingsRepo.praiseWithVolumeKeys,
-          allowZikrSessionRestoration:
-              zikrViewerRepo.allowZikrSessionRestoration,
+          allowZikrSessionRestoration: zikrViewerRepo.allowZikrSessionRestoration,
+          ignoreNotificationPermission: appSettingsRepo.ignoreNotificationPermission,
+          showAudioBar: appSettingsRepo.showAudioBar,
         ),
       );
 
@@ -64,6 +68,18 @@ class SettingsCubit extends Cubit<SettingsState> {
   Future toggleAllowZikrSessionRestoration({required bool allow}) async {
     await zikrViewerRepo.toggleAllowZikrSessionRestoration(allow);
     emit(state.copyWith(allowZikrSessionRestoration: allow));
+  }
+
+  Future toggleIgnoreNotificationPermission({required bool ignore}) async {
+    await appSettingsRepo.changeIgnoreNotificationPermissionStatus(
+      value: ignore,
+    );
+    emit(state.copyWith(ignoreNotificationPermission: ignore));
+  }
+
+  Future toggleShowAudioBar({required bool show}) async {
+    await appSettingsRepo.changeShowAudioBarStatus(value: show);
+    emit(state.copyWith(showAudioBar: show));
   }
 
   ///MARK: praiseWithVolumeKeys
@@ -158,6 +174,39 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(
       state.copyWith(
         zikrEffects: state.zikrEffects.copyWith(vibrateEveryTitle: activate),
+      ),
+    );
+  }
+
+  Future zikrEffectChangePraiseVibrationDuration(int value) async {
+    await effectsManagerRepo.changePraiseVibrationDuration(value: value);
+    emit(
+      state.copyWith(
+        zikrEffects: state.zikrEffects.copyWith(
+          vibrateEveryPraiseDuration: value,
+        ),
+      ),
+    );
+  }
+
+  Future zikrEffectChangeZikrVibrationDuration(int value) async {
+    await effectsManagerRepo.changeZikrVibrationDuration(value: value);
+    emit(
+      state.copyWith(
+        zikrEffects: state.zikrEffects.copyWith(
+          vibrateEveryZikrDuration: value,
+        ),
+      ),
+    );
+  }
+
+  Future zikrEffectChangeTitleVibrationDuration(int value) async {
+    await effectsManagerRepo.changeTitleVibrationDuration(value: value);
+    emit(
+      state.copyWith(
+        zikrEffects: state.zikrEffects.copyWith(
+          vibrateEveryTitleDuration: value,
+        ),
       ),
     );
   }

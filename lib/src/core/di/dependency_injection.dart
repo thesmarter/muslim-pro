@@ -3,12 +3,14 @@ import 'package:get_storage/get_storage.dart';
 import 'package:muslim/src/core/utils/volume_button_manager.dart';
 import 'package:muslim/src/core/values/constant.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/alarm_manager.dart';
-import 'package:muslim/src/features/alarms_manager/data/models/awesome_notification_manager.dart';
+import 'package:muslim/src/features/alarms_manager/data/models/local_notification_manager.dart';
 import 'package:muslim/src/features/alarms_manager/data/repository/alarm_database_helper.dart';
 import 'package:muslim/src/features/alarms_manager/data/repository/alarms_repo.dart';
 import 'package:muslim/src/features/alarms_manager/presentation/controller/bloc/alarms_bloc.dart';
 import 'package:muslim/src/features/azkar_filters/data/repository/azakr_filters_repo.dart';
 import 'package:muslim/src/features/azkar_filters/presentation/controller/cubit/azkar_filters_cubit.dart';
+import 'package:muslim/src/features/backup_restore/data/repository/backup_restore_repo.dart';
+import 'package:muslim/src/features/backup_restore/presentation/controller/cubit/backup_restore_cubit.dart';
 import 'package:muslim/src/features/bookmark/presentation/controller/bloc/bookmark_bloc.dart';
 import 'package:muslim/src/features/effects_manager/data/repository/effects_manager_repo.dart';
 import 'package:muslim/src/features/effects_manager/presentation/controller/effects_manager.dart';
@@ -34,6 +36,8 @@ import 'package:muslim/src/features/tally/presentation/controller/bloc/tally_blo
 import 'package:muslim/src/features/themes/data/repository/theme_repo.dart';
 import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_cubit.dart';
 import 'package:muslim/src/features/ui/data/repository/local_repo.dart';
+import 'package:muslim/src/features/zikr_audio_player/data/repository/zikr_audio_player_repo.dart';
+import 'package:muslim/src/features/zikr_audio_player/presentation/controller/cubit/zikr_audio_player_cubit.dart';
 import 'package:muslim/src/features/zikr_viewer/data/repository/zikr_viewer_repo.dart';
 import 'package:muslim/src/features/zikr_viewer/presentation/controller/bloc/zikr_viewer_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -54,6 +58,7 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => AzkarFiltersRepo(sl()));
   sl.registerLazySingleton(() => TallyRepo(sl()));
   sl.registerLazySingleton(() => SearchRepo(sl()));
+  sl.registerLazySingleton(() => ZikrAudioPlayerRepo(sl()));
 
   ///MARK: Init Repo
   sl.registerLazySingleton(() => TallyDatabaseHelper());
@@ -63,12 +68,20 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => HisnDBHelper());
   sl.registerLazySingleton(() => FakeHadithDBHelper(sl()));
   sl.registerLazySingleton(() => CommentaryDBHelper());
+  sl.registerLazySingleton(
+    () => BackupRestoreRepo(
+      userDataDBHelper: sl(),
+      tallyDatabaseHelper: sl(),
+      alarmDatabaseHelper: sl(),
+      fakeHadithDBHelper: sl(),
+    ),
+  );
 
   ///MARK: Init Manager
-  sl.registerFactory(() => EffectsManager(sl()));
-  sl.registerFactory(() => AwesomeNotificationManager());
+  sl.registerLazySingleton(() => EffectsManager(sl(), sl()));
+  sl.registerLazySingleton(() => LocalNotificationManager());
   sl.registerFactory(() => AlarmManager(sl()));
-  sl.registerFactory(() => VolumeButtonManager());
+  sl.registerLazySingleton(() => VolumeButtonManager());
   final PackageInfo packageInfo = await PackageInfo.fromPlatform();
   sl.registerFactory<PackageInfo>(() => packageInfo);
 
@@ -82,6 +95,8 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => SearchCubit(sl(), sl(), sl(), sl()));
   sl.registerLazySingleton(() => SettingsCubit(sl(), sl(), sl(), sl(), sl()));
   sl.registerLazySingleton(() => AzkarFiltersCubit(sl()));
+  sl.registerLazySingleton(() => ZikrAudioPlayerCubit(sl()));
+  sl.registerLazySingleton(() => BackupRestoreCubit(repo: sl()));
 
   /// Factory BLoC
   sl.registerFactory(() => OnboardCubit(sl(), sl()));
@@ -90,6 +105,6 @@ Future<void> initSL() async {
   sl.registerFactory(() => QuranCubit(sl()));
   sl.registerFactory(() => FakeHadithBloc(sl()));
   sl.registerFactory(
-    () => ZikrViewerBloc(sl(), sl(), sl(), sl(), sl(), sl(), sl()),
+    () => ZikrViewerBloc(sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()),
   );
 }
