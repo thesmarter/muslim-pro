@@ -9,13 +9,13 @@ import 'package:sqflite/sqflite.dart';
 
 class HisnDBHelper {
   static const String dbName = "hisn_elmoslem.db";
-  static const int dbVersion = 8;
+  static const int dbVersion = 9;
 
   /* ************* Singleton Constructor ************* */
 
   static HisnDBHelper? _databaseHelper;
   static Database? _database;
-  static late final DBHelper _dbHelper;
+  static late DBHelper _dbHelper;
 
   factory HisnDBHelper() {
     _dbHelper = DBHelper(dbName: dbName, dbVersion: dbVersion);
@@ -150,9 +150,7 @@ class HisnDBHelper {
         final String allWordsQuery = splittedSearchWords
             .map((word) => '$property LIKE ?')
             .join(' AND ');
-        final List<String> params = splittedSearchWords
-            .map((word) => '%$word%')
-            .toList();
+        final List<String> params = splittedSearchWords.map((word) => '%$word%').toList();
         sqlQuery.query = 'WHERE ($allWordsQuery)';
         sqlQuery.args.addAll([...params]);
 
@@ -160,9 +158,7 @@ class HisnDBHelper {
         final String allWordsQuery = splittedSearchWords
             .map((word) => '$property LIKE ?')
             .join(' OR ');
-        final List<String> params = splittedSearchWords
-            .map((word) => '%$word%')
-            .toList();
+        final List<String> params = splittedSearchWords.map((word) => '%$word%').toList();
         sqlQuery.query = 'WHERE ($allWordsQuery)';
         sqlQuery.args.addAll([...params]);
     }
@@ -202,7 +198,9 @@ class HisnDBHelper {
         '''SELECT COUNT(*) as count FROM titles ${whereFilters.query} ''';
     final List<Map<String, dynamic>> countResult = await db.rawQuery(
       totalCountQurey,
-      [...whereFilters.args],
+      [
+        ...whereFilters.args,
+      ],
     );
     final int count = countResult.first["count"] as int? ?? 0;
 
@@ -245,7 +243,9 @@ class HisnDBHelper {
         '''SELECT COUNT(*) as count FROM contents ${whereFilters.query} ''';
     final List<Map<String, dynamic>> countResult = await db.rawQuery(
       totalCountQurey,
-      [...whereFilters.args],
+      [
+        ...whereFilters.args,
+      ],
     );
     final int count = countResult.first["count"] as int? ?? 0;
 
@@ -258,7 +258,9 @@ class HisnDBHelper {
 
   /// Close database
   Future close() async {
-    final db = await database;
-    db.close();
+    if (_database != null) {
+      await _database!.close();
+      _database = null;
+    }
   }
 }

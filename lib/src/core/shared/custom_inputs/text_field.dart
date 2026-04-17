@@ -1,44 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:muslim/src/core/shared/custom_inputs/custom_field_decoration.dart';
 
-class UserTextField extends StatelessWidget {
-  final bool autoFocus;
-  final TextEditingController controller;
-  final String hintText;
-  final Function(String)? onChange;
-
-  const UserTextField({
-    super.key,
-    required this.controller,
-    required this.hintText,
-    this.onChange,
-    this.autoFocus = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextField(
-        autofocus: autoFocus,
-        textAlign: TextAlign.center,
-        controller: controller,
-        onChanged: onChange,
-        decoration: customInputDecoration.copyWith(
-          hintText: hintText,
-          labelText: hintText,
-        ),
-      ),
-    );
-  }
-}
-
 class UserTextFormField extends StatelessWidget {
   final bool autoFocus;
   final TextEditingController controller;
   final String hintText;
+  final int? maxLines;
   final Function(String)? onChange;
   final String? Function(String?)? validator;
+  final TextInputAction? textInputAction;
 
   const UserTextFormField({
     super.key,
@@ -46,7 +16,9 @@ class UserTextFormField extends StatelessWidget {
     required this.hintText,
     this.onChange,
     this.validator,
+    this.maxLines,
     this.autoFocus = false,
+    this.textInputAction,
   });
 
   @override
@@ -58,10 +30,11 @@ class UserTextFormField extends StatelessWidget {
         textAlign: TextAlign.center,
         controller: controller,
         onChanged: onChange,
-        decoration: customInputDecoration.copyWith(
-          hintText: hintText,
-          labelText: hintText,
-        ),
+        textInputAction: textInputAction,
+        maxLines: maxLines,
+        decoration: customInputDecoration(
+          context,
+        ).copyWith(hintText: hintText, labelText: hintText),
         validator: validator,
       ),
     );

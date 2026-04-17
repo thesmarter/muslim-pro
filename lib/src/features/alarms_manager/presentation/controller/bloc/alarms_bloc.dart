@@ -7,8 +7,7 @@ import 'package:muslim/src/core/extensions/localization_extesion.dart';
 import 'package:muslim/src/core/functions/show_toast.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/alarm.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/alarm_manager.dart';
-import 'package:muslim/src/features/alarms_manager/data/models/awesome_day.dart';
-import 'package:muslim/src/features/alarms_manager/data/models/awesome_notification_manager.dart';
+import 'package:muslim/src/features/alarms_manager/data/models/local_notification_manager.dart';
 import 'package:muslim/src/features/alarms_manager/data/repository/alarm_database_helper.dart';
 import 'package:muslim/src/features/alarms_manager/data/repository/alarms_repo.dart';
 
@@ -19,12 +18,12 @@ class AlarmsBloc extends Bloc<AlarmsEvent, AlarmsState> {
   final AlarmDatabaseHelper alarmDatabaseHelper;
   final AlarmsRepo alarmsRepo;
   final AlarmManager alarmManager;
-  final AwesomeNotificationManager awesomeNotificationManager;
+  final LocalNotificationManager localNotificationManager;
   AlarmsBloc(
     this.alarmDatabaseHelper,
     this.alarmsRepo,
     this.alarmManager,
-    this.awesomeNotificationManager,
+    this.localNotificationManager,
   ) : super(AlarmsLoadingState()) {
     on<AlarmsStartEvent>(_start);
     on<AlarmsAddEvent>(_add);
@@ -37,6 +36,14 @@ class AlarmsBloc extends Bloc<AlarmsEvent, AlarmsState> {
   Future<void> _start(AlarmsStartEvent event, Emitter<AlarmsState> emit) async {
     final alarms = await alarmDatabaseHelper.getAlarms();
     await alarmManager.checkAllAlarmsInDb();
+
+    if (alarmsRepo.isCaveAlarmEnabled) {
+      await _activateCaveReminders(value: true, requestPermission: false);
+    }
+    if (alarmsRepo.isFastAlarmEnabled) {
+      await _activateFastReminders(value: true, requestPermission: false);
+    }
+
     emit(
       AlarmsLoadedState(
         alarms: alarms,
@@ -88,7 +95,7 @@ class AlarmsBloc extends Bloc<AlarmsEvent, AlarmsState> {
     final alarms = List<DbAlarm>.from(state.alarms);
     alarms.removeWhere((x) => x.id == event.alarm.id);
 
-    await awesomeNotificationManager.cancelNotificationById(
+    await localNotificationManager.cancelNotificationById(
       id: event.alarm.titleId,
     );
 
@@ -107,17 +114,15 @@ class AlarmsBloc extends Bloc<AlarmsEvent, AlarmsState> {
 
     if (event.enable) {
       showToast(
-        msg:
-            "${SX.current.activate}: ${SX.current.fastingMondaysThursdaysReminder}",
+        msg: "${SX.current.activate}: ${SX.current.fastingMondaysThursdaysReminder}",
       );
     } else {
       showToast(
-        msg:
-            "${SX.current.deactivate}: ${SX.current.fastingMondaysThursdaysReminder}",
+        msg: "${SX.current.deactivate}: ${SX.current.fastingMondaysThursdaysReminder}",
       );
     }
 
-    _activateFastAlarm(value: event.enable);
+    _activateFastReminders(value: event.enable);
 
     emit(state.copyWith(isFastAlarmEnabled: event.enable));
   }
@@ -141,52 +146,58 @@ class AlarmsBloc extends Bloc<AlarmsEvent, AlarmsState> {
       );
     }
 
-    await _activateCaveAlarm(value: event.enable);
+    await _activateCaveReminders(value: event.enable);
     emit(state.copyWith(isCaveAlarmEnabled: event.enable));
   }
 
-  Future _activateCaveAlarm({required bool value}) async {
+  Future _activateFastReminders({
+    required bool value,
+    bool requestPermission = true,
+  }) async {
     if (value) {
-      await awesomeNotificationManager.addCustomWeeklyReminder(
+      await localNotificationManager.addCustomWeeklyReminder(
         id: 555,
-        title: "صيام غدا الإثنين",
+        title: SX.current.fastingMondayReminder,
         body:
             "قال رسول الله صلى الله عليه وسلم :\n تُعرضُ الأعمالُ يومَ الإثنين والخميسِ فأُحِبُّ أن يُعرضَ عملي وأنا صائمٌ ",
         time: Time(20),
-        weekday: AwesomeDay.sunday.value,
+        weekday: DateTime.sunday,
         payload: "555",
-        needToOpen: false,
+        requestPermission: requestPermission,
       );
-      await awesomeNotificationManager.addCustomWeeklyReminder(
+      await localNotificationManager.addCustomWeeklyReminder(
         id: 666,
-        title: "صيام غدا الخميس",
+        title: SX.current.fastingThursdayReminder,
         body:
             "قال رسول الله صلى الله عليه وسلم :\n تُعرضُ الأعمالُ يومَ الإثنين والخميسِ فأُحِبُّ أن يُعرضَ عملي وأنا صائمٌ ",
         time: Time(20),
-        weekday: AwesomeDay.wednesday.value,
+        weekday: DateTime.wednesday,
         payload: "666",
-        needToOpen: false,
+        requestPermission: requestPermission,
       );
     } else {
-      await awesomeNotificationManager.cancelNotificationById(id: 555);
-      await awesomeNotificationManager.cancelNotificationById(id: 666);
+      await localNotificationManager.cancelNotificationById(id: 555);
+      await localNotificationManager.cancelNotificationById(id: 666);
     }
   }
 
-  Future _activateFastAlarm({required bool value}) async {
+  Future _activateCaveReminders({
+    required bool value,
+    bool requestPermission = true,
+  }) async {
     if (value) {
-      await awesomeNotificationManager.addCustomWeeklyReminder(
+      await localNotificationManager.addCustomWeeklyReminder(
         id: 777,
         title: SX.current.suraAlKahf,
         body:
             "روى الحاكم في المستدرك مرفوعا إن من قرأ سورة الكهف يوم الجمعة أضاء له من النور ما بين الجمعتين. وصححه الألباني",
         time: Time(9),
-        weekday: AwesomeDay.friday.value,
+        weekday: DateTime.friday,
         payload: "الكهف",
-        needToOpen: false,
+        requestPermission: requestPermission,
       );
     } else {
-      await awesomeNotificationManager.cancelNotificationById(id: 777);
+      await localNotificationManager.cancelNotificationById(id: 777);
     }
   }
 }

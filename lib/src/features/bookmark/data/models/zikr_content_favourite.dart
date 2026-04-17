@@ -22,6 +22,10 @@ class DbContentFavourite extends BookmarkedItem {
   }
 
   Map<String, dynamic> toMap() {
-    return {'_id': id, 'content_id': itemId, 'favourite': bookmarked};
+    return {
+      '_id': id,
+      'content_id': itemId,
+      'favourite': bookmarked,
+    };
   }
 }

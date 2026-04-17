@@ -23,7 +23,9 @@ class FakeHadithReadPage extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(top: 10),
               itemBuilder: (context, index) {
-                return FakeHadithCard(fakeHadith: hadithList[index]);
+                return FakeHadithCard(
+                  fakeHadith: hadithList[index],
+                );
               },
               itemCount: hadithList.length,
             ),

@@ -31,15 +31,11 @@ class ShareAsImageScreen extends StatelessWidget {
               centerTitle: true,
               actions: const [ShareImageBaractionButtons()],
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(
-                  !state.showLoadingIndicator ? 0 : 20,
-                ),
+                preferredSize: Size.fromHeight(!state.showLoadingIndicator ? 0 : 20),
                 child: !state.showLoadingIndicator
                     ? const SizedBox()
                     : LinearProgressIndicator(
-                        backgroundColor: Theme.of(
-                          context,
-                        ).scaffoldBackgroundColor,
+                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                         minHeight: 15,
                       ),
               ),
@@ -99,11 +95,22 @@ class ShareImageBaractionButtons extends StatelessWidget {
           icon: const Icon(Icons.style),
         ),
         IconButton(
-          tooltip: S.of(context).share,
+          tooltip: S.of(context).saveToGallery,
           onPressed: () async {
-            await context.read<ShareImageCubit>().shareImage();
+            await context.read<ShareImageCubit>().saveToGallery();
           },
-          icon: const Icon(Icons.share),
+          icon: const Icon(Icons.download),
+        ),
+        Builder(
+          builder: (context) {
+            return IconButton(
+              tooltip: S.of(context).share,
+              onPressed: () async {
+                await context.read<ShareImageCubit>().shareImage(context);
+              },
+              icon: const Icon(Icons.share),
+            );
+          },
         ),
       ],
     );

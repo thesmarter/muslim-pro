@@ -7,27 +7,24 @@ import 'package:muslim/scroll_behavior.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/extension_platform.dart';
 import 'package:muslim/src/core/functions/print.dart';
-import 'package:muslim/src/features/alarms_manager/data/models/awesome_notification_manager.dart';
-import 'package:muslim/src/features/alarms_manager/data/repository/alarm_database_helper.dart';
+import 'package:muslim/src/features/alarms_manager/data/models/local_notification_manager.dart';
 import 'package:muslim/src/features/alarms_manager/presentation/controller/bloc/alarms_bloc.dart';
 import 'package:muslim/src/features/azkar_filters/presentation/controller/cubit/azkar_filters_cubit.dart';
+import 'package:muslim/src/features/backup_restore/presentation/controller/cubit/backup_restore_cubit.dart';
 import 'package:muslim/src/features/bookmark/presentation/controller/bloc/bookmark_bloc.dart';
-import 'package:muslim/src/features/fake_hadith/data/repository/fake_hadith_database_helper.dart';
-import 'package:muslim/src/features/home/data/repository/hisn_db_helper.dart';
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
 import 'package:muslim/src/features/home/presentation/screens/home_screen.dart';
 import 'package:muslim/src/features/home_search/presentation/controller/cubit/search_cubit.dart';
 import 'package:muslim/src/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
 import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
-import 'package:muslim/src/features/tally/data/repository/tally_database_helper.dart';
 import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_cubit.dart';
 import 'package:muslim/src/features/ui/presentation/components/desktop_window_wrapper.dart';
+import 'package:muslim/src/features/zikr_audio_player/presentation/controller/cubit/zikr_audio_player_cubit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class App extends StatefulWidget {
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   const App({super.key});
 
@@ -39,20 +36,18 @@ class AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    try {
-      sl<AwesomeNotificationManager>().listen();
-    } catch (e) {
-      hisnPrint(e);
-    }
-  }
 
-  @override
-  Future<void> dispose() async {
-    await sl<HisnDBHelper>().close();
-    await sl<FakeHadithDBHelper>().close();
-    await sl<AlarmDatabaseHelper>().close();
-    await sl<TallyDatabaseHelper>().close();
-    super.dispose();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      try {
+        final isAllowed = await sl<LocalNotificationManager>().isPermissionGranted();
+        if (isAllowed) {
+          await sl<LocalNotificationManager>().appOpenNotification();
+        }
+        sl<LocalNotificationManager>().handleLaunchNotification();
+      } catch (e) {
+        hisnPrint(e);
+      }
+    });
   }
 
   @override
@@ -68,6 +63,8 @@ class AppState extends State<App> {
         ),
         BlocProvider(create: (_) => sl<HomeBloc>()..add(HomeStartEvent())),
         BlocProvider(create: (context) => sl<SearchCubit>()..start()),
+        BlocProvider(create: (_) => sl<ZikrAudioPlayerCubit>()),
+        BlocProvider(create: (_) => sl<BackupRestoreCubit>()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
@@ -100,9 +97,7 @@ class AppState extends State<App> {
               }
               return child ?? const SizedBox();
             },
-            home:
-                sl<AppSettingsRepo>().currentVersion !=
-                    sl<PackageInfo>().version
+            home: sl<AppSettingsRepo>().currentVersion != sl<PackageInfo>().version
                 ? const OnBoardingScreen()
                 : const HomeScreen(),
           );

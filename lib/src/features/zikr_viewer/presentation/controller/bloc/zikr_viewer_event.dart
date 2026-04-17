@@ -107,3 +107,13 @@ class ZikrViewerVolumeKeyPressedEvent extends ZikrViewerEvent {
   @override
   List<Object> get props => [];
 }
+
+class ZikrViewerAudioDelayStateChangedEvent extends ZikrViewerEvent {
+  final bool isDelaying;
+  const ZikrViewerAudioDelayStateChangedEvent(this.isDelaying);
+}
+
+class ZikrViewerAudioPlayingStateChangedEvent extends ZikrViewerEvent {
+  final bool isPlaying;
+  const ZikrViewerAudioPlayingStateChangedEvent(this.isPlaying);
+}

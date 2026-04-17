@@ -18,7 +18,9 @@ class RearrangeDashboardPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(S.of(context).dashboardArrangement),
+            title: Text(
+              S.of(context).dashboardArrangement,
+            ),
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
           ),

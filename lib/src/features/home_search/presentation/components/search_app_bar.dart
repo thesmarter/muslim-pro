@@ -32,7 +32,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         controller: context.read<SearchCubit>().searchController,
         autofocus: true,
         style: const TextStyle(fontSize: 18, fontFamily: "Kitab"),
-        decoration: customInputDecoration.copyWith(
+        decoration: customInputDecoration(context).copyWith(
           hintText: S.of(context).search,
           hintStyle: const TextStyle(fontSize: 18, fontFamily: "Kitab"),
           contentPadding: const EdgeInsets.symmetric(

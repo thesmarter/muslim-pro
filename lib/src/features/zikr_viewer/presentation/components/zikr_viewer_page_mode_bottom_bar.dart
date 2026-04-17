@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
+import 'package:muslim/src/features/zikr_audio_player/presentation/components/zikr_audio_player_bar.dart';
 import 'package:muslim/src/features/zikr_viewer/data/models/zikr_content.dart';
-import 'package:muslim/src/features/zikr_viewer/presentation/components/navigation_slider.dart';
 
 class ZikrViewerPageModeBottomBar extends StatelessWidget {
   final DbContent dbContent;
@@ -8,17 +10,29 @@ class ZikrViewerPageModeBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: NavigationSlider(),
-          ),
-        ],
-      ),
-    );
+    if (dbContent.audio.isNotEmpty) {
+      return BlocBuilder<SettingsCubit, SettingsState>(
+        builder: (context, state) {
+          if (!state.showAudioBar) return const SizedBox.shrink();
+          return Material(
+            elevation: 8,
+            color: Theme.of(context).colorScheme.surfaceContainer,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(8).copyWith(top: 16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    ZikrAudioPlayerBar(dbContent: dbContent),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+    return const SizedBox.shrink();
   }
 }

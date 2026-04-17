@@ -3,7 +3,6 @@ import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/extension_platform.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-//TODO App Version | Change every release
 String appVersion() {
   return sl<PackageInfo>().version;
 }
@@ -12,9 +11,7 @@ String appVersionWithBuild() {
   return "${sl<PackageInfo>().version} (${sl<PackageInfo>().buildNumber})";
 }
 
-String kAppStorageKey = PlatformExtension.isDesktop
-    ? "hisn_elmoslem_storage"
-    : "GetStorage";
+String kAppStorageKey = PlatformExtension.isDesktop ? "hisn_elmoslem_storage" : "GetStorage";
 
 const double kFontChangeBy = .2;
 const double kFontDefault = 2.6;
@@ -78,8 +75,8 @@ final List<double> kShareImageQualityList = [1.0, 1.5, 2.0, 2.5, 3];
 
 const String kEstaaza = "أَعُوذُ بِاَللَّهِ مِنْ الشَّيْطَانِ الرَّجِيمِ";
 const String kArBasmallah = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
-const String kOrgEmail = "muslimpack.org@gmail.com";
-const String kOrgGithub = "https://github.com/muslimpack/ElmoslemPro_App";
-const String kOrgWebsite = "https://muslimpack.github.io/";
+const String kOrgEmail = "elteyab@smart.sd";
+const String kOrgGithub = "https://github.com/thesmarter/muslim-pro";
+const String kOrgWebsite = "https://muslimpro.smart.sd/";
 
 const String kDateTimeHumanFormat = "EEEE,  d MMMM y  h:mm a";

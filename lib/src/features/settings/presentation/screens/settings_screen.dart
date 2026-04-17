@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
+import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
-import 'package:muslim/src/core/extensions/extension_platform.dart';
 import 'package:muslim/src/core/functions/open_url.dart';
+import 'package:muslim/src/core/functions/print.dart';
+import 'package:muslim/src/core/functions/show_toast.dart';
 import 'package:muslim/src/core/shared/widgets/font_settings.dart';
 import 'package:muslim/src/core/utils/email_manager.dart';
 import 'package:muslim/src/core/values/constant.dart';
@@ -13,6 +15,8 @@ import 'package:muslim/src/features/alarms_manager/presentation/controller/bloc/
 import 'package:muslim/src/features/alarms_manager/presentation/screens/alarms_screen.dart';
 import 'package:muslim/src/features/azkar_filters/presentation/screens/select_zikr_hokm_screen.dart';
 import 'package:muslim/src/features/azkar_filters/presentation/screens/select_zikr_source_screen.dart';
+import 'package:muslim/src/features/backup_restore/presentation/components/restart_widget.dart';
+import 'package:muslim/src/features/backup_restore/presentation/controller/cubit/backup_restore_cubit.dart';
 import 'package:muslim/src/features/effects_manager/presentation/screens/effects_manager_screen.dart';
 import 'package:muslim/src/features/fonts/presentation/screens/font_family_screen.dart';
 import 'package:muslim/src/features/localization/presentation/screens/app_language_screen.dart';
@@ -104,11 +108,12 @@ class SettingsScreen extends StatelessWidget {
           Title(title: S.of(context).fontSettings),
           const FontSettingsToolbox(),
 
-          ///TODO remove when desktop notification is ready
-          if (!PlatformExtension.isDesktop) ...[
-            const Divider(),
-            const _SettingsAlarmsSection(),
-          ],
+          const Divider(),
+          const _SettingsAlarmsSection(),
+
+          const Divider(),
+          const _SettingsBackupRestoreSection(),
+
           const Divider(),
           const _SettingsContactSection(),
         ],
@@ -126,26 +131,18 @@ class SettingsGeneralSection extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            if (!state.isCardReadMode)
-              ListTile(
-                leading: Icon(MdiIcons.bookOpenPageVariant),
-                title: Text(S.of(context).pageMode),
-                onTap: () {
-                  context.read<SettingsCubit>().toggleIsCardReadMode(
-                    activate: true,
-                  );
-                },
-              )
-            else
-              ListTile(
-                leading: Icon(MdiIcons.card),
-                title: Text(S.of(context).cardMode),
-                onTap: () {
-                  context.read<SettingsCubit>().toggleIsCardReadMode(
-                    activate: false,
-                  );
-                },
+            SwitchListTile(
+              secondary: Icon(
+                !state.isCardReadMode ? MdiIcons.bookOpenPageVariant : MdiIcons.card,
               ),
+              value: !state.isCardReadMode,
+              title: Text(S.of(context).pageMode),
+              onChanged: (value) {
+                context.read<SettingsCubit>().toggleIsCardReadMode(
+                  activate: !value,
+                );
+              },
+            ),
             SwitchListTile(
               secondary: const Icon(Icons.volume_down),
               value: state.praiseWithVolumeKeys,
@@ -168,6 +165,17 @@ class SettingsGeneralSection extends StatelessWidget {
               },
             ),
             SwitchListTile(
+              secondary: const Icon(Icons.music_note),
+              value: state.showAudioBar,
+              title: Text(S.of(context).showAudioBar),
+              subtitle: Text(S.of(context).showAudioBarDesc),
+              onChanged: (value) {
+                context.read<SettingsCubit>().toggleShowAudioBar(
+                  show: !state.showAudioBar,
+                );
+              },
+            ),
+            SwitchListTile(
               secondary: const Icon(Icons.restore),
               value: state.allowZikrSessionRestoration,
               title: Text(S.of(context).allowZikrRestoreSession),
@@ -175,6 +183,17 @@ class SettingsGeneralSection extends StatelessWidget {
               onChanged: (value) {
                 context.read<SettingsCubit>().toggleAllowZikrSessionRestoration(
                   allow: !state.allowZikrSessionRestoration,
+                );
+              },
+            ),
+            SwitchListTile(
+              secondary: const Icon(Icons.notifications_off),
+              value: state.ignoreNotificationPermission,
+              title: Text(S.of(context).ignoreNotificationPermission),
+              subtitle: Text(S.of(context).ignoreNotificationPermissionDesc),
+              onChanged: (value) {
+                context.read<SettingsCubit>().toggleIgnoreNotificationPermission(
+                  ignore: !state.ignoreNotificationPermission,
                 );
               },
             ),
@@ -277,6 +296,80 @@ class _SettingsContactSection extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+}
+
+class _SettingsBackupRestoreSection extends StatelessWidget {
+  const _SettingsBackupRestoreSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<BackupRestoreCubit, BackupRestoreState>(
+      listener: (context, state) async {
+        if (state is BackupRestoreSuccess) {
+          showToast(
+            msg: state.isExport ? S.of(context).backupSuccess : S.of(context).restoreSuccessRestart,
+            type: ToastType.success,
+          );
+          if (!state.isExport) {
+            try {
+              await sl.reset();
+              await initSL();
+              if (context.mounted) {
+                RestartWidget.restartApp(context);
+              }
+            } catch (e) {
+              hisnPrint(e.toString());
+            }
+          }
+        } else if (state is BackupRestoreFailure) {
+          showToast(
+            msg: state.isExport ? S.of(context).backupFailed : S.of(context).restoreFailed,
+            type: ToastType.error,
+          );
+        }
+      },
+      builder: (context, state) {
+        final isLoading = state is BackupRestoreLoading;
+        return Column(
+          children: [
+            Title(title: S.of(context).backupAndRestore),
+            ListTile(
+              title: Text(S.of(context).backupData),
+              leading: const Icon(Icons.backup),
+              trailing: isLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : null,
+              onTap: isLoading
+                  ? null
+                  : () {
+                      context.read<BackupRestoreCubit>().exportData();
+                    },
+            ),
+            ListTile(
+              title: Text(S.of(context).restoreData),
+              leading: const Icon(Icons.settings_backup_restore),
+              trailing: isLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : null,
+              onTap: isLoading
+                  ? null
+                  : () {
+                      context.read<BackupRestoreCubit>().importData();
+                    },
+            ),
+          ],
+        );
+      },
     );
   }
 }

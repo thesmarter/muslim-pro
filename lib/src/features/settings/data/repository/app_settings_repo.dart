@@ -30,8 +30,7 @@ class AppSettingsRepo {
   /// If it is true then
   /// page mode will be card mode
   /// if not page mode will be page
-  Future<void> changeReadModeStatus({required bool value}) =>
-      box.write(isCardReadModeKey, value);
+  Future<void> changeReadModeStatus({required bool value}) => box.write(isCardReadModeKey, value);
 
   ///
   void toggleReadModeStatus() {
@@ -57,8 +56,7 @@ class AppSettingsRepo {
   static const String _enableWakeLockKey = "enableWakeLock";
   bool get enableWakeLock => box.read(_enableWakeLockKey) ?? false;
 
-  Future<void> changeEnableWakeLock({required bool use}) =>
-      box.write(_enableWakeLockKey, use);
+  Future<void> changeEnableWakeLock({required bool use}) => box.write(_enableWakeLockKey, use);
 
   void toggleEnableWakeLock() {
     changeEnableWakeLock(use: !enableWakeLock);
@@ -100,6 +98,16 @@ class AppSettingsRepo {
   Future<void> changePraiseWithVolumeKeysStatus({required bool value}) =>
       box.write(praiseWithVolumeKeysKey, value);
 
+  ///MARK:Ignore Notification Permission
+  /* ******* Ignore Notification Permission ******* */
+  static const ignoreNotificationPermissionKey = 'ignoreNotificationPermission';
+
+  bool get ignoreNotificationPermission => box.read(ignoreNotificationPermissionKey) ?? false;
+
+  Future<void> changeIgnoreNotificationPermissionStatus({
+    required bool value,
+  }) => box.write(ignoreNotificationPermissionKey, value);
+
   ///MARK:Titles Freq filters
   /* ******* Titles Freq filters ******* */
   static const String _titlesFreqFilter = "titlesFreqFilter";
@@ -120,4 +128,12 @@ class AppSettingsRepo {
   Future setTitlesFreqFilterStatus(List<TitlesFreqEnum> freqList) {
     return box.write(_titlesFreqFilter, freqList.toJson());
   }
+
+  ///MARK:Show Audio Bar
+  /* ******* Show Audio Bar ******* */
+  static const showAudioBarKey = 'showAudioBar';
+
+  bool get showAudioBar => box.read(showAudioBarKey) ?? true;
+
+  Future<void> changeShowAudioBarStatus({required bool value}) => box.write(showAudioBarKey, value);
 }

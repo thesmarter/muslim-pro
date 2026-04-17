@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -13,27 +14,27 @@ class OnboardCubit extends Cubit<OnboardState> {
   final AppSettingsRepo appSettingsRepo;
   final VolumeButtonManager volumeButtonManager;
   PageController pageController = PageController();
-  OnboardCubit(this.appSettingsRepo, this.volumeButtonManager)
-    : super(OnboardLoadingState()) {
+  OnboardCubit(this.appSettingsRepo, this.volumeButtonManager) : super(OnboardLoadingState()) {
     _init();
   }
 
+  StreamSubscription? _volumeSubscription;
   void _init() {
     volumeButtonManager.toggleActivation(activate: true);
-    volumeButtonManager.listen(
-      onVolumeDownPressed: () {
-        pageController.nextPage(
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeIn,
-        );
-      },
-      onVolumeUpPressed: () {
+    _volumeSubscription = volumeButtonManager.stream.listen((event) {
+      if (event == VolumeButtonEvent.volumeUpDown || event == VolumeButtonEvent.volumeUpUp) {
         pageController.previousPage(
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeIn,
         );
-      },
-    );
+      } else if (event == VolumeButtonEvent.volumeDownDown ||
+          event == VolumeButtonEvent.volumeDownUp) {
+        pageController.nextPage(
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeIn,
+        );
+      }
+    });
 
     pageController.addListener(() {
       final int index = pageController.page!.round();
@@ -44,23 +45,15 @@ class OnboardCubit extends Cubit<OnboardState> {
   ///TODO: Change every release
   List<Empty> get pageData {
     return [
-      //       const Empty(
-      //         title: "حصن المسلم الإصدار $kAppVersion",
-      //         description: '''
-      // السلام عليكم ورحمة الله وبركاته
-      // أهلاً وسهلاً بك في تحديث جديد من تطبيق حصن المسلم
-      // يمكنك سحب الشاشة لتقليب الصفحات،
-      // أو استخدام مفاتيح الصوت لاستعراض الميزات الجديدة.
-
-      // جزى الله خيراً كل من قدّم رأيه أو بلّغ عن مشكلة ساعدتنا على التطوير 💚
-      // ''',
-      //       ),
       const Empty(
         title: "الجديد في هذا الإصدار",
         isImage: false,
         isItemList: true,
         description: """
-حل مشكلة ظهور علامات على شاشة السبحة وشاشة الأذكار في وضع الصفحات
+تحديثات الأذكار: أعدنا إضافة ذكر "أستغفر الله وأتوب إليه" لجدول أذكاركم المسائية.
+لمستك الخاصة: أضفنا خياراً جديداً في الإعدادات يتيح لك تخصيص شاشة الأذكار عبر إظهار أو إخفاء شريط الصوت.
+دقة أكبر في التسبيح: طورنا استجابة أزرار الصوت لتكون أكثر إحكاماً؛ حيث تمنع الضغطة المطولة التكرار غير المقصود، لتجربة ذكر هادئة ومركزة.
+تنبيهات أفضل: أصلحنا الخلل في نظام الإشعارات لضمان تنبيهك بالأذكار بانتظام.
 """,
       ),
     ];
@@ -84,6 +77,7 @@ class OnboardCubit extends Cubit<OnboardState> {
 
   Future done() async {
     await appSettingsRepo.changCurrentVersion(value: sl<PackageInfo>().version);
+    _volumeSubscription?.cancel();
     volumeButtonManager.dispose();
     emit(OnboardDoneState());
   }
@@ -91,6 +85,7 @@ class OnboardCubit extends Cubit<OnboardState> {
   @override
   Future<void> close() {
     pageController.dispose();
+    _volumeSubscription?.cancel();
     volumeButtonManager.dispose();
     return super.close();
   }

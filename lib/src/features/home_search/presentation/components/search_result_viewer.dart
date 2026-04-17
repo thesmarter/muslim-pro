@@ -20,22 +20,25 @@ class SearchResultViewer<T> extends StatelessWidget {
       builder: (context, state) {
         if (state is! SearchLoadedState) return const SizedBox.shrink();
 
-        return PagedListView<int, T>(
-          pagingController: pagingController,
-          // padding: const EdgeInsets.all(15),
-          builderDelegate: PagedChildBuilderDelegate<T>(
-            animateTransitions: true,
-            transitionDuration: const Duration(milliseconds: 500),
-            itemBuilder: (context, item, index) =>
-                itemBuilder(context, item, index),
-            newPageProgressIndicatorBuilder: (context) => const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: LinearProgressIndicator(),
+        return PagingListener<int, T>(
+          controller: pagingController,
+          builder: (context, pagingState, fetchNextPage) => PagedListView<int, T>(
+            state: pagingState,
+            fetchNextPage: fetchNextPage,
+            // padding: const EdgeInsets.all(15),
+            builderDelegate: PagedChildBuilderDelegate<T>(
+              animateTransitions: true,
+              transitionDuration: const Duration(milliseconds: 500),
+              itemBuilder: (context, item, index) => itemBuilder(context, item, index),
+              newPageProgressIndicatorBuilder: (context) => const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: LinearProgressIndicator(),
+              ),
+              noMoreItemsIndicatorBuilder: (context) => const NoMoreItemsIndicatorBuilder(),
+              noItemsFoundIndicatorBuilder: (context) => NoItemsFoundIndicatorBuilder(
+                searchText: state.searchText,
+              ),
             ),
-            noMoreItemsIndicatorBuilder: (context) =>
-                const NoMoreItemsIndicatorBuilder(),
-            noItemsFoundIndicatorBuilder: (context) =>
-                NoItemsFoundIndicatorBuilder(searchText: state.searchText),
           ),
         );
       },

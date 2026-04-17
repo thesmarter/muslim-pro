@@ -18,6 +18,8 @@ class ZikrViewerLoadedState extends ZikrViewerState {
   final ZikrViewerMode zikrViewerMode;
   final ZikrSession restoredSession;
   final bool askToRestoreSession;
+  final bool isAudioDelaying;
+  final bool isAudioPlaying;
 
   DbContent? get activeZikr {
     if (azkarToView.isEmpty) return null;
@@ -25,43 +27,45 @@ class ZikrViewerLoadedState extends ZikrViewerState {
     return azkarToView[activeZikrIndex];
   }
 
-  double get majorProgress =>
-      azkarToView.where((x) => x.count == 0).length / azkarToView.length;
+  double get majorProgress => azkarToView.where((x) => x.count == 0).length / azkarToView.length;
 
   double get manorProgress =>
       azkarToView.fold(0, (sum, curr) => sum + curr.count) /
       azkar.fold(0, (sum, curr) => sum + curr.count);
 
-  double singleProgress(DbContent content) =>
-      content.count / azkar.where((x) => x.id == content.id).first.count;
-
   const ZikrViewerLoadedState({
     required this.title,
     required this.azkar,
     required this.azkarToView,
-    required this.activeZikrIndex,
     required this.zikrViewerMode,
+    required this.activeZikrIndex,
     required this.restoredSession,
     required this.askToRestoreSession,
+    this.isAudioDelaying = false,
+    this.isAudioPlaying = false,
   });
 
   ZikrViewerLoadedState copyWith({
     DbTitle? title,
     List<DbContent>? azkar,
     List<DbContent>? azkarToView,
-    int? activeZikrIndex,
     ZikrViewerMode? zikrViewerMode,
+    int? activeZikrIndex,
     ZikrSession? restoredSession,
     bool? askToRestoreSession,
+    bool? isAudioDelaying,
+    bool? isAudioPlaying,
   }) {
     return ZikrViewerLoadedState(
       title: title ?? this.title,
       azkar: azkar ?? this.azkar,
       azkarToView: azkarToView ?? this.azkarToView,
-      activeZikrIndex: activeZikrIndex ?? this.activeZikrIndex,
       zikrViewerMode: zikrViewerMode ?? this.zikrViewerMode,
+      activeZikrIndex: activeZikrIndex ?? this.activeZikrIndex,
       restoredSession: restoredSession ?? this.restoredSession,
       askToRestoreSession: askToRestoreSession ?? this.askToRestoreSession,
+      isAudioDelaying: isAudioDelaying ?? this.isAudioDelaying,
+      isAudioPlaying: isAudioPlaying ?? this.isAudioPlaying,
     );
   }
 
@@ -70,9 +74,11 @@ class ZikrViewerLoadedState extends ZikrViewerState {
     title,
     azkar,
     azkarToView,
-    activeZikrIndex,
     zikrViewerMode,
+    activeZikrIndex,
     restoredSession,
     askToRestoreSession,
+    isAudioDelaying,
+    isAudioPlaying,
   ];
 }

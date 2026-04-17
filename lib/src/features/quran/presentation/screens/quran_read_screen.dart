@@ -28,18 +28,20 @@ class QuranReadScreen extends StatelessWidget {
             appBar: AppBar(
               elevation: 0,
               centerTitle: true,
-              title: Text(() {
-                switch (state.surahName) {
-                  case SurahNameEnum.alKahf:
-                    return S.of(context).suraAlKahf;
-                  case SurahNameEnum.alMulk:
-                    return S.of(context).suraAlMulk;
-                  case SurahNameEnum.assajdah:
-                    return S.of(context).suraAsSajdah;
-                  case SurahNameEnum.endofAliImran:
-                    return S.of(context).endSuraAliImran;
-                }
-              }()),
+              title: Text(
+                () {
+                  switch (state.surahName) {
+                    case SurahNameEnum.alKahf:
+                      return S.of(context).suraAlKahf;
+                    case SurahNameEnum.alMulk:
+                      return S.of(context).suraAlMulk;
+                    case SurahNameEnum.assajdah:
+                      return S.of(context).suraAsSajdah;
+                    case SurahNameEnum.endofAliImran:
+                      return S.of(context).endSuraAliImran;
+                  }
+                }(),
+              ),
             ),
             body: GestureDetector(
               onDoubleTap: () => context.read<QuranCubit>().onDoubleTap(),
@@ -60,8 +62,7 @@ class QuranReadScreen extends StatelessWidget {
                         child: ColorFiltered(
                           colorFilter: greyScale,
                           child: ColorFiltered(
-                            colorFilter:
-                                Theme.of(context).brightness == Brightness.dark
+                            colorFilter: Theme.of(context).brightness == Brightness.dark
                                 ? invert
                                 : normal,
                             child: Image.asset(
@@ -76,8 +77,7 @@ class QuranReadScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(10),
                           child: Text(
-                            state.requiredSurah.pages[index].pageNumber
-                                .toArabicNumberString(),
+                            state.requiredSurah.pages[index].pageNumber.toArabicNumberString(),
                           ),
                         ),
                       ),

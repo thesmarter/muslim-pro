@@ -21,6 +21,7 @@ class TallyBloc extends Bloc<TallyEvent, TallyState> {
   final EffectsManager effectsManager;
   final VolumeButtonManager volumeButtonManager;
   final TallyRepo tallyRepo;
+  StreamSubscription? _volumeSubscription;
   TallyBloc(
     this.tallyDatabaseHelper,
     this.effectsManager,
@@ -33,10 +34,11 @@ class TallyBloc extends Bloc<TallyEvent, TallyState> {
       activate: sl<AppSettingsRepo>().praiseWithVolumeKeys,
     );
 
-    volumeButtonManager.listen(
-      onVolumeUpPressed: () => add(TallyIncreaseActiveCounterEvent()),
-      onVolumeDownPressed: () => add(TallyIncreaseActiveCounterEvent()),
-    );
+    _volumeSubscription = volumeButtonManager.stream.listen((event) {
+      if (event == VolumeButtonEvent.volumeUpDown || event == VolumeButtonEvent.volumeDownDown) {
+        add(TallyIncreaseActiveCounterEvent());
+      }
+    });
   }
 
   void _initHandlers() {
@@ -169,8 +171,7 @@ class TallyBloc extends Bloc<TallyEvent, TallyState> {
     );
     if (activeCounterIndex == -1) return;
 
-    final nextCounterIndex =
-        (activeCounterIndex + 1) % state.allCounters.length;
+    final nextCounterIndex = (activeCounterIndex + 1) % state.allCounters.length;
     final nextCounter = state.allCounters[nextCounterIndex];
 
     add(
@@ -190,8 +191,7 @@ class TallyBloc extends Bloc<TallyEvent, TallyState> {
     );
     if (activeCounterIndex == -1) return;
 
-    final previousCounterIndex =
-        (activeCounterIndex - 1) % state.allCounters.length;
+    final previousCounterIndex = (activeCounterIndex - 1) % state.allCounters.length;
     final previousCounter = state.allCounters[previousCounterIndex];
     add(
       TallyToggleCounterActivationEvent(
@@ -309,11 +309,9 @@ class TallyBloc extends Bloc<TallyEvent, TallyState> {
     final state = this.state;
     if (state is! TallyLoadedState) return;
 
-    final nextModeIndex =
-        (state.iterationMode.index + 1) % TallyIterationMode.values.length;
+    final nextModeIndex = (state.iterationMode.index + 1) % TallyIterationMode.values.length;
 
-    final TallyIterationMode nextMode =
-        TallyIterationMode.values[nextModeIndex];
+    final TallyIterationMode nextMode = TallyIterationMode.values[nextModeIndex];
 
     tallyRepo.saveIterationMode(nextMode);
 
@@ -341,6 +339,7 @@ class TallyBloc extends Bloc<TallyEvent, TallyState> {
 
   @override
   Future<void> close() {
+    _volumeSubscription?.cancel();
     volumeButtonManager.dispose();
     return super.close();
   }

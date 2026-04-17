@@ -102,7 +102,7 @@ class _AlarmEditorState extends State<_AlarmEditor> {
               controller: bodyController,
               maxLength: 100,
               autofocus: true,
-              decoration: customInputDecoration.copyWith(
+              decoration: customInputDecoration(context).copyWith(
                 hintText: S.of(context).setMessageForYou,
                 labelText: S.of(context).setMessageForYou,
               ),
@@ -114,7 +114,9 @@ class _AlarmEditorState extends State<_AlarmEditor> {
                 title: Text(
                   selectedHour == null || selectedMinute == null
                       ? S.of(context).clickToChooseTime
-                      : DateFormat("hh:mm a").format(
+                      : DateFormat(
+                          "hh:mm a",
+                        ).format(
                           DateTime(1, 1, 1, selectedHour!, selectedMinute!),
                         ),
                   textAlign: TextAlign.center,
@@ -159,21 +161,19 @@ class _AlarmEditorState extends State<_AlarmEditor> {
                     repeatType = newValue;
                   });
                 },
-                items: AlarmRepeatType.values
-                    .map<DropdownMenuItem<AlarmRepeatType>>((
-                      AlarmRepeatType value,
-                    ) {
-                      return DropdownMenuItem<AlarmRepeatType>(
-                        // alignment: Alignment.center,
-                        value: value,
-                        child: Text(
-                          value.getUserFriendlyName(context),
+                items: AlarmRepeatType.values.map<DropdownMenuItem<AlarmRepeatType>>((
+                  AlarmRepeatType value,
+                ) {
+                  return DropdownMenuItem<AlarmRepeatType>(
+                    // alignment: Alignment.center,
+                    value: value,
+                    child: Text(
+                      value.getUserFriendlyName(context),
 
-                          // textAlign: TextAlign.center,
-                        ),
-                      );
-                    })
-                    .toList(),
+                      // textAlign: TextAlign.center,
+                    ),
+                  );
+                }).toList(),
               ),
             ),
           ],

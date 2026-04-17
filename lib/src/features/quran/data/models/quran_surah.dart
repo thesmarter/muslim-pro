@@ -6,7 +6,10 @@ class QuranSurah extends Equatable {
   final String surah;
   final List<QuranPage> pages;
 
-  const QuranSurah({required this.surah, required this.pages});
+  const QuranSurah({
+    required this.surah,
+    required this.pages,
+  });
 
   factory QuranSurah.fromJson(Map<String, dynamic> json) => QuranSurah(
     surah: json["surah"] as String,

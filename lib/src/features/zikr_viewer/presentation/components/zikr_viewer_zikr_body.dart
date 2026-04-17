@@ -8,7 +8,10 @@ import 'package:muslim/src/features/zikr_viewer/presentation/components/zikr_con
 
 class ZikrViewerZikrBody extends StatelessWidget {
   final DbContent dbContent;
-  const ZikrViewerZikrBody({super.key, required this.dbContent});
+  const ZikrViewerZikrBody({
+    super.key,
+    required this.dbContent,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,10 @@ class ZikrViewerZikrBody extends StatelessWidget {
                 textAlign: TextAlign.center,
                 textDirection: TextDirection.rtl,
                 softWrap: true,
-                style: TextStyle(fontSize: state.fontSize * 8, height: 2),
+                style: TextStyle(
+                  fontSize: state.fontSize * 8,
+                  height: 2,
+                ),
               ),
             ],
           ],

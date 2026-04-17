@@ -62,8 +62,7 @@ import 'app_localizations_en.dart';
 /// be consistent with the languages listed in the S.supportedLocales
 /// property.
 abstract class S {
-  S(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  S(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -92,10 +91,7 @@ abstract class S {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[
-    Locale('ar'),
-    Locale('en'),
-  ];
+  static const List<Locale> supportedLocales = <Locale>[Locale('ar'), Locale('en')];
 
   /// No description provided for @aboutUs.
   ///
@@ -126,12 +122,6 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Add'**
   String get add;
-
-  /// No description provided for @smartsite.
-  ///
-  /// In en, this message translates to:
-  /// **'Smart Team'**
-  String get smartsite;
 
   /// No description provided for @addNameToCounter.
   ///
@@ -589,6 +579,18 @@ abstract class S {
   /// **'Fake Hadith'**
   String get fakeHadith;
 
+  /// No description provided for @fastingMondayReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting tomorrow (Monday)'**
+  String get fastingMondayReminder;
+
+  /// No description provided for @fastingThursdayReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting tomorrow (Thursday)'**
+  String get fastingThursdayReminder;
+
   /// No description provided for @fastingMondaysThursdaysReminder.
   ///
   /// In en, this message translates to:
@@ -721,6 +723,12 @@ abstract class S {
   /// **'You haven\'t read anything yet'**
   String get haveNotReadAnythingYet;
 
+  /// No description provided for @smartsite.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Team'**
+  String get smartsite;
+
   /// No description provided for @elmoslemPro.
   ///
   /// In en, this message translates to:
@@ -780,6 +788,18 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Image width'**
   String get imageWidth;
+
+  /// No description provided for @ignoreNotificationPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Ignore Notification Permission'**
+  String get ignoreNotificationPermission;
+
+  /// No description provided for @ignoreNotificationPermissionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t ask for notification permissions on app launch'**
+  String get ignoreNotificationPermissionDesc;
 
   /// No description provided for @index.
   ///
@@ -942,6 +962,36 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Phone vibration when all zikr end'**
   String get phoneVibrationWhenAllZikrEnd;
+
+  /// No description provided for @preciseTiming.
+  ///
+  /// In en, this message translates to:
+  /// **'Precise Timing'**
+  String get preciseTiming;
+
+  /// No description provided for @preciseTimingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'To ensure reminders arrive exactly on time (Android 13+).'**
+  String get preciseTimingDesc;
+
+  /// No description provided for @permissionGranted.
+  ///
+  /// In en, this message translates to:
+  /// **'Granted'**
+  String get permissionGranted;
+
+  /// No description provided for @permissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Denied'**
+  String get permissionDenied;
+
+  /// No description provided for @permissionsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions Required'**
+  String get permissionsRequired;
 
   /// No description provided for @prayForUsAndParents.
   ///
@@ -1500,6 +1550,126 @@ abstract class S {
   /// In en, this message translates to:
   /// **'We found a previous session, would you like to restore it?'**
   String get zikrViewerRestoreSessionMsg;
+
+  /// No description provided for @audioPlayerSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Playback Speed'**
+  String get audioPlayerSpeed;
+
+  /// No description provided for @audioPlayerVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume'**
+  String get audioPlayerVolume;
+
+  /// No description provided for @audioPlayerDelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Delay Between Azkar'**
+  String get audioPlayerDelay;
+
+  /// No description provided for @audioPlayerDelayNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No Delay'**
+  String get audioPlayerDelayNone;
+
+  /// No description provided for @audioPlayerDelayByPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as Previous Zikr'**
+  String get audioPlayerDelayByPrevious;
+
+  /// No description provided for @audioPlayerDelayFixed.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed Time'**
+  String get audioPlayerDelayFixed;
+
+  /// No description provided for @audioPlayerDelaySeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds'**
+  String get audioPlayerDelaySeconds;
+
+  /// No description provided for @audioPlayerSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio Settings'**
+  String get audioPlayerSettings;
+
+  /// No description provided for @vibrationDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Vibration duration (ms)'**
+  String get vibrationDuration;
+
+  /// No description provided for @saveToGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to Gallery'**
+  String get saveToGallery;
+
+  /// No description provided for @imageSavedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Image saved successfully'**
+  String get imageSavedSuccessfully;
+
+  /// No description provided for @backupAndRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup & Restore'**
+  String get backupAndRestore;
+
+  /// No description provided for @backupData.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup Data'**
+  String get backupData;
+
+  /// No description provided for @restoreData.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Data'**
+  String get restoreData;
+
+  /// No description provided for @backupSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup Success'**
+  String get backupSuccess;
+
+  /// No description provided for @restoreSuccessRestart.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Success. Please restart app.'**
+  String get restoreSuccessRestart;
+
+  /// No description provided for @backupFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup Failed'**
+  String get backupFailed;
+
+  /// No description provided for @restoreFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Failed'**
+  String get restoreFailed;
+
+  /// No description provided for @showAudioBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Audio Bar'**
+  String get showAudioBar;
+
+  /// No description provided for @showAudioBarDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Show/hide audio control bar in Zikr viewer page'**
+  String get showAudioBarDesc;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {
@@ -1511,8 +1681,7 @@ class _SDelegate extends LocalizationsDelegate<S> {
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['ar', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['ar', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_SDelegate old) => false;

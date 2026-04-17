@@ -26,10 +26,11 @@ class FakeHadithDashboardScreen extends StatelessWidget {
               body: NestedScrollView(
                 physics: const BouncingScrollPhysics(),
                 floatHeaderSlivers: true,
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                      return [const FakehadithAppBar()];
-                    },
+                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                  return [
+                    const FakehadithAppBar(),
+                  ];
+                },
                 body: TabBarView(
                   // controller: tabController,
                   physics: const BouncingScrollPhysics(),
@@ -45,7 +46,9 @@ class FakeHadithDashboardScreen extends StatelessWidget {
                   children: <Widget>[
                     Expanded(
                       flex: 3,
-                      child: FontSettingsBar(showDiacriticsControllers: false),
+                      child: FontSettingsBar(
+                        showDiacriticsControllers: false,
+                      ),
                     ),
                   ],
                 ),

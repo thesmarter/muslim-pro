@@ -9,7 +9,7 @@ class SAr extends S {
   SAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get aboutUs => 'عن التطبيق';
+  String get aboutUs => 'حول التطبيق';
 
   @override
   String get activate => 'تفعيل';
@@ -19,17 +19,13 @@ class SAr extends S {
       'لتفعيل العداد اذهب إلى عرض التسبيحات واضغط على علامة العداد';
 
   @override
-  String get activeTally => 'التسبيح';
+  String get activeTally => 'العداد النشط';
 
   @override
   String get add => 'إضافة';
 
   @override
-  String get smartsite => 'Smart Team';
-
-  @override
-  String get addNameToCounter =>
-      'أدخل اسم العداد مثال\nسبحان الله وبحمده سبحان الله العظيم';
+  String get addNameToCounter => 'أدخل اسم العداد، مثال:\nسبحان الله وبحمده سبحان الله العظيم';
 
   @override
   String get addNewCounter => 'إضافة عداد جديد';
@@ -47,7 +43,7 @@ class SAr extends S {
   String get allowNotifications => 'هل تريد السماح بتشغيل الإشعارات؟';
 
   @override
-  String get allowZikrRestoreSession => 'السماح بإستعادة جلسات الذكر';
+  String get allowZikrRestoreSession => 'السماح باستعادة جلسات الذكر';
 
   @override
   String get allowZikrRestoreSessionDesc =>
@@ -57,16 +53,16 @@ class SAr extends S {
   String get allWords => 'جميع الكلمات';
 
   @override
-  String get anyWords => 'أي كلمة';
+  String get anyWords => 'أي من الكلمات';
 
   @override
   String get appLanguage => 'لغة التطبيق';
 
   @override
-  String get appTitle => 'المسلم برو';
+  String get appTitle => 'حصن المسلم';
 
   @override
-  String get areYouSure => 'متأكد من ذلك؟';
+  String get areYouSure => 'هل أنت متأكد؟';
 
   @override
   String get azkarFilters => 'تصفية الأذكار';
@@ -78,10 +74,10 @@ class SAr extends S {
   String get bookmark => 'أضف للمفضلة';
 
   @override
-  String get brightnessDark => 'ليلي';
+  String get brightnessDark => 'داكن';
 
   @override
-  String get brightnessLight => 'نهاري';
+  String get brightnessLight => 'فاتح';
 
   @override
   String get brightnessSystem => 'النظام';
@@ -108,7 +104,7 @@ class SAr extends S {
   String get chat => 'تواصل';
 
   @override
-  String get chooseTimeForReminder => 'اختر وقتا للتذكير';
+  String get chooseTimeForReminder => 'اختر وقتاً للتذكير';
 
   @override
   String get circleEvery => 'دورة كل';
@@ -117,10 +113,10 @@ class SAr extends S {
   String get circular => 'حلقي';
 
   @override
-  String get clickHere => 'اضغط هنا';
+  String get clickHere => 'انقر هنا';
 
   @override
-  String get clickToChooseTime => 'اضغط لاختيار التوقيت';
+  String get clickToChooseTime => 'انقر لاختيار الوقت';
 
   @override
   String get close => 'إغلاق';
@@ -153,12 +149,10 @@ class SAr extends S {
   String get count => 'عدد المرات';
 
   @override
-  String get counterCircleMustBeGreaterThanZero =>
-      'دورة العداد يجب أن تكون رقم أكبر من الصفر';
+  String get counterCircleMustBeGreaterThanZero => 'يجب أن تكون دورة العداد أكبر من الصفر';
 
   @override
-  String get counterCircleSetToZero =>
-      'تعاد دورة العداد إلى الصفر عند الوصول لهذا الرقم';
+  String get counterCircleSetToZero => 'تصفير العداد عند الوصول لهذا الرقم';
 
   @override
   String get counterName => 'اسم العداد';
@@ -167,7 +161,7 @@ class SAr extends S {
   String get counters => 'عرض التسبيحات';
 
   @override
-  String get counterWillBeDeleted => 'سيتم حذف هذا العداد بما فيه من انجاز';
+  String get counterWillBeDeleted => 'سيتم حذف هذا العداد بما فيه من إنجاز';
 
   @override
   String get currentVersion => 'الإصدار الحالي';
@@ -189,7 +183,7 @@ class SAr extends S {
 
   @override
   String get digitalCopyOfElmoslemPro =>
-      'تم الاستعانة بنسخة رقمية من كتاب حصن المسلم من شبكة الألوكة';
+      'A digital copy of Elmoslem Pro was used from the Aloka Network.';
 
   @override
   String get dislikeAboutApp => 'ما لم يعجبك في التطبيق:';
@@ -201,11 +195,10 @@ class SAr extends S {
   String get done => 'تم';
 
   @override
-  String get donnotAskAgain => 'لا تسأل مجددا';
+  String get donnotAskAgain => 'لا تسأل مجدداً';
 
   @override
-  String get drSaeedBinAliBinWahf =>
-      'للفقير إلى الله تعالى الدكتور سعيد بن علي بن وهف القحطاني';
+  String get drSaeedBinAliBinWahf => 'للفقير إلى الله تعالى الدكتور سعيد بن علي بن وهف القحطاني';
 
   @override
   String get edit => 'تعديل';
@@ -262,6 +255,12 @@ class SAr extends S {
   String get fakeHadith => 'أحاديث لا تصح';
 
   @override
+  String get fastingMondayReminder => 'صيام غدا الإثنين';
+
+  @override
+  String get fastingThursdayReminder => 'صيام غدا الخميس';
+
+  @override
   String get fastingMondaysThursdaysReminder => 'منبه صيام الاثنين والخميس';
 
   @override
@@ -280,10 +279,10 @@ class SAr extends S {
   String get fixedSizeMode => 'حجم خط ثابت';
 
   @override
-  String get fontDecreaseSize => 'قلل حجم الخط';
+  String get fontDecreaseSize => 'تصغير الخط';
 
   @override
-  String get fontIncreaseSize => 'زيادة حجم الخط';
+  String get fontIncreaseSize => 'تكبير الخط';
 
   @override
   String get fontResetSize => 'إعادة تعيين حجم الخط';
@@ -295,8 +294,7 @@ class SAr extends S {
   String get fontType => 'نوع الخط';
 
   @override
-  String get freeAdFreeAndOpenSourceApp =>
-      'تطبيق مجاني خالي من الإعلانات ومفتوح المصدر';
+  String get freeAdFreeAndOpenSourceApp => 'تطبيق مجاني خالي من الإعلانات ومفتوح المصدر';
 
   @override
   String get freqAnnual => 'سنوي';
@@ -329,6 +327,9 @@ class SAr extends S {
   String get haveNotReadAnythingYet => 'لم تقرأ شيئًا بعد';
 
   @override
+  String get smartsite => 'Smart Team';
+
+  @override
   String get elmoslemPro => 'المسلم برو';
 
   @override
@@ -357,6 +358,12 @@ class SAr extends S {
 
   @override
   String get imageWidth => 'عرض الصورة';
+
+  @override
+  String get ignoreNotificationPermission => 'تجاهل إذن الإشعارات';
+
+  @override
+  String get ignoreNotificationPermissionDesc => 'عدم طلب إذن الإشعارات عند فتح التطبيق';
 
   @override
   String get index => 'الفهرس';
@@ -402,13 +409,13 @@ class SAr extends S {
   String get noRemindersFound => 'لا يوجد أي منبهات';
 
   @override
-  String get noResultsFound => 'لا توجد نتائج';
+  String get noResultsFound => 'لم يتم العثور على نتائج';
 
   @override
   String get notes => 'ملاحظات';
 
   @override
-  String get nothingFoundInFavorites => 'لا يوجد شيء في المفضلة';
+  String get nothingFoundInFavorites => 'المفضلة فارغة';
 
   @override
   String get notificationPermissionRequired =>
@@ -441,8 +448,22 @@ class SAr extends S {
   String get phoneVibrationAtSingleZikrEnd => 'اهتزاز الهاتف عند انتهاء كل ذكر';
 
   @override
-  String get phoneVibrationWhenAllZikrEnd =>
-      'اهتزاز الهاتف عند انتهاء جميع الأذكار';
+  String get phoneVibrationWhenAllZikrEnd => 'اهتزاز الهاتف عند انتهاء جميع الأذكار';
+
+  @override
+  String get preciseTiming => 'التوقيت الدقيق';
+
+  @override
+  String get preciseTimingDesc => 'لضمان وصول التنبيهات في الوقت المحدد بالضبط (خاص بأندرويد 13+).';
+
+  @override
+  String get permissionGranted => 'تم السماح';
+
+  @override
+  String get permissionDenied => 'مرفوض';
+
+  @override
+  String get permissionsRequired => 'الأذونات المطلوبة';
 
   @override
   String get prayForUsAndParents => 'نسألكم الدعاء لنا ولوالدينا';
@@ -451,23 +472,20 @@ class SAr extends S {
   String get prefPraiseWithVolumeKeys => 'التسبيح بمفاتيح الصوت';
 
   @override
-  String get prefPraiseWithVolumeKeysDesc =>
-      'استخدام مفاتيح الصوت للتسبيح في وضع الصفحات والسبحة';
+  String get prefPraiseWithVolumeKeysDesc => 'استخدام مفاتيح الصوت للتسبيح في وضع الصفحات والسبحة';
 
   @override
   String get previous => 'السابق';
 
   @override
-  String get progressDeletedCannotUndo =>
-      'سيتم حذف تقدمك في هذا الذكر\nهل تريد القيام بهذا؟';
+  String get progressDeletedCannotUndo => 'سيتم حذف تقدمك في هذا الذكر\nهل تريد القيام بهذا؟';
 
   @override
   String get prophetSaidLiesIntentional =>
       'قال رسول الله صلى الله عليه وسلم: «من كذب علي متعمدا فليتبوأ مقعده من النار»';
 
   @override
-  String get quranPagesFromAndroidQuran =>
-      'صفحات المصحف من خلال موقع android quran';
+  String get quranPagesFromAndroidQuran => 'صفحات المصحف من خلال موقع android quran';
 
   @override
   String get rateTheApp => 'تقييم التطبيق';
@@ -509,7 +527,7 @@ class SAr extends S {
   String get search => 'البحث';
 
   @override
-  String get searchFilters => 'مرشحات البحث';
+  String get searchFilters => 'تصفية البحث';
 
   @override
   String get select => 'تحديد';
@@ -698,7 +716,7 @@ class SAr extends S {
   String get titleColor => 'لون العنوان';
 
   @override
-  String get trueBlackTheme => 'الوضع الأسود الغريب';
+  String get trueBlackTheme => 'الوضع الأسود الحالك';
 
   @override
   String get typical => 'مطابق';
@@ -710,7 +728,7 @@ class SAr extends S {
   String get useHindiDigits => 'استخدام الأرقام الهندية';
 
   @override
-  String get valueMustBeGreaterThanZero => 'القيمة يجب أن تكون أكبر  من صفر';
+  String get valueMustBeGreaterThanZero => 'يجب أن تكون القيمة أكبر من الصفر';
 
   @override
   String get version => 'الإصدار';
@@ -725,6 +743,65 @@ class SAr extends S {
   String get zikrIndex => 'الذكر رقم';
 
   @override
-  String get zikrViewerRestoreSessionMsg =>
-      'عثرنا على جلسة سابقة هل تود استعادتها؟';
+  String get zikrViewerRestoreSessionMsg => 'تم العثور على جلسة سابقة، هل تود استعادتها؟';
+
+  @override
+  String get audioPlayerSpeed => 'سرعة التشغيل';
+
+  @override
+  String get audioPlayerVolume => 'مستوى الصوت';
+
+  @override
+  String get audioPlayerDelay => 'التأخير بين الأذكار';
+
+  @override
+  String get audioPlayerDelayNone => 'بدون تأخير';
+
+  @override
+  String get audioPlayerDelayByPrevious => 'نفس مدة الذكر السابق';
+
+  @override
+  String get audioPlayerDelayFixed => 'وقت محدد';
+
+  @override
+  String get audioPlayerDelaySeconds => 'ثانية';
+
+  @override
+  String get audioPlayerSettings => 'إعدادات الصوت';
+
+  @override
+  String get vibrationDuration => 'مدة الاهتزاز (بالملي ثانية)';
+
+  @override
+  String get saveToGallery => 'حفظ في المعرض';
+
+  @override
+  String get imageSavedSuccessfully => 'تم حفظ الصورة بنجاح';
+
+  @override
+  String get backupAndRestore => 'النسخ الاحتياطي والاستعادة';
+
+  @override
+  String get backupData => 'النسخ الاحتياطي للبيانات';
+
+  @override
+  String get restoreData => 'استعادة البيانات';
+
+  @override
+  String get backupSuccess => 'نجح النسخ الاحتياطي';
+
+  @override
+  String get restoreSuccessRestart => 'نجحت الاستعادة. يرجى إعادة تشغيل التطبيق.';
+
+  @override
+  String get backupFailed => 'فشل النسخ الاحتياطي';
+
+  @override
+  String get restoreFailed => 'فشلت الاستعادة';
+
+  @override
+  String get showAudioBar => 'عرض شريط الصوت';
+
+  @override
+  String get showAudioBarDesc => 'إظهار/إخفاء شريط التحكم في الصوت في صفحة قارئ الأذكار';
 }

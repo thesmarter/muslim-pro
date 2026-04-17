@@ -8,8 +8,9 @@ part 'azkar_filters_state.dart';
 
 class AzkarFiltersCubit extends Cubit<AzkarFiltersState> {
   final AzkarFiltersRepo azkarFiltersRepo;
-  AzkarFiltersCubit(this.azkarFiltersRepo)
-    : super(
+  AzkarFiltersCubit(
+    this.azkarFiltersRepo,
+  ) : super(
         AzkarFiltersState(
           filters: azkarFiltersRepo.getAllFilters,
           enableFilters: azkarFiltersRepo.getEnableFiltersStatus,

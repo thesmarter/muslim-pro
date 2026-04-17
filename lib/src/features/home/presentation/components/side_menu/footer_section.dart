@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
-import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/shared.dart';
-import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
 
 class FooterSection extends StatelessWidget {
   const FooterSection({super.key});
@@ -20,7 +19,7 @@ class FooterSection extends StatelessWidget {
               leading: const Icon(Icons.close),
               title: Text(S.of(context).close),
               onTap: () {
-                sl<HomeBloc>().add(const HomeToggleDrawerEvent());
+                ZoomDrawer.of(context)?.toggle();
               },
             ),
           ),
