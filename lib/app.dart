@@ -20,6 +20,8 @@ import 'package:muslim/src/features/settings/data/repository/app_settings_repo.d
 import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
 import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_cubit.dart';
 import 'package:muslim/src/features/ui/presentation/components/desktop_window_wrapper.dart';
+import 'package:muslim/src/features/update/presentation/controller/update_cubit.dart';
+import 'package:muslim/src/features/update/presentation/screens/force_update_screen.dart';
 import 'package:muslim/src/features/zikr_audio_player/presentation/controller/cubit/zikr_audio_player_cubit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -65,6 +67,7 @@ class AppState extends State<App> {
         BlocProvider(create: (context) => sl<SearchCubit>()..start()),
         BlocProvider(create: (_) => sl<ZikrAudioPlayerCubit>()),
         BlocProvider(create: (_) => sl<BackupRestoreCubit>()),
+        BlocProvider(create: (_) => sl<UpdateCubit>()..checkForUpdate()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
@@ -89,13 +92,21 @@ class AppState extends State<App> {
             theme: state.theme,
             navigatorObservers: [BotToastNavigatorObserver()],
             builder: (context, child) {
-              if (PlatformExtension.isDesktop) {
-                final botToastBuilder = BotToastInit();
-                return DesktopWindowWrapper(
-                  child: botToastBuilder(context, child),
-                );
-              }
-              return child ?? const SizedBox();
+              return BlocBuilder<UpdateCubit, UpdateState>(
+                builder: (context, updateState) {
+                  if (updateState is UpdateRequired) {
+                    return ForceUpdateScreen(updateInfo: updateState.updateInfo);
+                  }
+
+                  if (PlatformExtension.isDesktop) {
+                    final botToastBuilder = BotToastInit();
+                    return DesktopWindowWrapper(
+                      child: botToastBuilder(context, child),
+                    );
+                  }
+                  return child ?? const SizedBox();
+                },
+              );
             },
             home: sl<AppSettingsRepo>().currentVersion != sl<PackageInfo>().version
                 ? const OnBoardingScreen()

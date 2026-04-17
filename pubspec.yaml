@@ -23,6 +23,8 @@ dependencies:
   enum_to_string: ^2.2.1
   equatable: ^2.0.7
   file_picker: ^10.3.3
+  firebase_core: ^4.7.0
+  firebase_messaging: ^16.2.0
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
@@ -41,6 +43,7 @@ dependencies:
   gal: ^2.3.2
   get_it: ^9.2.1
   get_storage: ^2.1.1
+  http: ^1.6.0
   infinite_scroll_pagination: ^5.1.1
   intl: ^0.20.2
   material_design_icons_flutter: ^7.0.7296

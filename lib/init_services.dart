@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
@@ -17,14 +19,34 @@ import 'package:muslim/src/features/ui/data/repository/local_repo.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
 
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  hisnPrint("Handling a background message: ${message.messageId}");
+  if (message.notification != null) {
+    hisnPrint("Message Notification Title: ${message.notification!.title}");
+    hisnPrint("Message Notification Body: ${message.notification!.body}");
+  }
+}
+
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   Bloc.observer = AppBlocObserver();
 
   service_locator.initSL();
-
+  
   await loadLocalizations();
+  
+  try {
+    await GetStorage.init(kAppStorageKey);
+    await sl<LocalNotificationManager>().init();
+  } catch (e) {
+    hisnPrint(e);
+  }
+
+  // تشغيل إعدادات Firebase في الخلفية بدون تعطيل تشغيل التطبيق
+  _setupFirebase();
 
   await phoneDeviceBars();
 
@@ -33,14 +55,47 @@ Future<void> initServices() async {
     databaseFactory = databaseFactoryFfi;
   }
 
-  try {
-    await GetStorage.init(kAppStorageKey);
-    await sl<LocalNotificationManager>().init();
-  } catch (e) {
-    hisnPrint(e);
-  }
-
   await initWindowsManager();
+}
+
+Future<void> _setupFirebase() async {
+  if (!PlatformExtension.isPhone) return;
+
+  try {
+    await Firebase.initializeApp();
+    final messaging = FirebaseMessaging.instance;
+    
+    // طلب الإذن والاشتراك في المواضيع بدون انتظار (non-blocking)
+    messaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      hisnPrint("Got a message whilst in the foreground!");
+      hisnPrint("Message data: ${message.data}");
+
+      if (message.notification != null) {
+        hisnPrint("Message also contained a notification: ${message.notification!.title}");
+        
+        sl<LocalNotificationManager>().showCustomNotification(
+          title: message.notification!.title ?? '',
+          body: message.notification!.body ?? '',
+          payload: message.data['index']?.toString() ?? '',
+        );
+      }
+    });
+
+    // الاشتراك في المواضيع يتم في الخلفية ولا يعطل التطبيق عند فشل الاتصال
+    messaging.subscribeToTopic('all');
+    messaging.subscribeToTopic('info');
+    messaging.subscribeToTopic('dev');
+  } catch (e) {
+    hisnPrint('Firebase init error: $e');
+  }
 }
 
 Future phoneDeviceBars() async {
