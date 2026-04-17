@@ -36,6 +36,8 @@ import 'package:muslim/src/features/tally/presentation/controller/bloc/tally_blo
 import 'package:muslim/src/features/themes/data/repository/theme_repo.dart';
 import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_cubit.dart';
 import 'package:muslim/src/features/ui/data/repository/local_repo.dart';
+import 'package:muslim/src/features/update/data/repository/update_repo.dart';
+import 'package:muslim/src/features/update/presentation/controller/update_cubit.dart';
 import 'package:muslim/src/features/zikr_audio_player/data/repository/zikr_audio_player_repo.dart';
 import 'package:muslim/src/features/zikr_audio_player/presentation/controller/cubit/zikr_audio_player_cubit.dart';
 import 'package:muslim/src/features/zikr_viewer/data/repository/zikr_viewer_repo.dart';
@@ -59,6 +61,7 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => TallyRepo(sl()));
   sl.registerLazySingleton(() => SearchRepo(sl()));
   sl.registerLazySingleton(() => ZikrAudioPlayerRepo(sl()));
+  sl.registerLazySingleton(() => UpdateRepo(sl()));
 
   ///MARK: Init Repo
   sl.registerLazySingleton(() => TallyDatabaseHelper());
@@ -97,6 +100,7 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => AzkarFiltersCubit(sl()));
   sl.registerLazySingleton(() => ZikrAudioPlayerCubit(sl()));
   sl.registerLazySingleton(() => BackupRestoreCubit(repo: sl()));
+  sl.registerLazySingleton(() => UpdateCubit(sl()));
 
   /// Factory BLoC
   sl.registerFactory(() => OnboardCubit(sl(), sl()));

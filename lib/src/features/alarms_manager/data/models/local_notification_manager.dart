@@ -183,6 +183,7 @@ class LocalNotificationManager {
         importance: Importance.max,
         priority: Priority.high,
         styleInformation: bigTextStyleInformation,
+        icon: '@mipmap/ic_launcher',
       ),
       iOS: const DarwinNotificationDetails(
         presentAlert: true,
