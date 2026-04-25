@@ -60,6 +60,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   final themeCubit = sl<ThemeCubit>();
   late Brightness _brightness;
   int _currentTabIndex = 0;
+  bool _showReturnButton = false;
 
   @override
   void initState() {
@@ -74,6 +75,8 @@ class _DashboardScreenState extends State<DashboardScreen>
     if (tabController.indexIsChanging || tabController.index != _currentTabIndex) {
       setState(() {
         _currentTabIndex = tabController.index;
+        // Reset return button visibility when switching to Quran tab
+        _showReturnButton = true;
       });
     }
   }
@@ -114,23 +117,42 @@ class _DashboardScreenState extends State<DashboardScreen>
                     is QuranReadScreen;
 
             return Scaffold(
-              body: NestedScrollView(
-                physics: const BouncingScrollPhysics(),
-                floatHeaderSlivers: true,
-                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                  return [
-                    if (!isQuranTab) HomeAppBar(tabController: tabController),
-                  ];
-                },
-                body: TabBarView(
-                  physics: isQuranTab
-                      ? const NeverScrollableScrollPhysics()
-                      : const BouncingScrollPhysics(),
-                  controller: tabController,
-                  children: List.generate(appDashboardTabs.length, (index) {
-                    return appDashboardTabs[state.dashboardArrangement[index]].widget;
-                  }),
-                ),
+              body: Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (isQuranTab) {
+                        setState(() {
+                          _showReturnButton = !_showReturnButton;
+                        });
+                      }
+                    },
+                    child: NestedScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      floatHeaderSlivers: true,
+                      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                        return [
+                          if (!isQuranTab) HomeAppBar(tabController: tabController),
+                        ];
+                      },
+                      body: TabBarView(
+                    physics: isQuranTab
+                        ? const NeverScrollableScrollPhysics()
+                        : const BouncingScrollPhysics(),
+                    controller: tabController,
+                    children: List.generate(appDashboardTabs.length, (index) {
+                      final component = appDashboardTabs[state.dashboardArrangement[index]];
+                      if (component.widget is QuranReadScreen) {
+                        return QuranReadScreen(
+                          onBack: () => tabController.animateTo(0),
+                        );
+                      }
+                      return component.widget;
+                    }),
+                  ),
+                    ),
+                  ),
+                ],
               ),
               floatingActionButton: isQuranTab
                   ? null
