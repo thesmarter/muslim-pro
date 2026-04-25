@@ -43,20 +43,22 @@ class HomeAppBar extends StatelessWidget {
           snap: true,
           bottom: PreferredSize(
             preferredSize: const Size(0, 48),
-            child: TabBar(
-              controller: tabController,
-              isScrollable: true,
-              tabAlignment: TabAlignment.center,
-              tabs: List.generate(appDashboardTabs.length, (index) {
-                return Tab(
-                  child: Text(
-                    appDashboardTabs[state.dashboardArrangement[index]].title(
-                      context,
-                    ),
+            child: state.dashboardArrangement.length != appDashboardTabs.length
+                ? const SizedBox()
+                : TabBar(
+                    controller: tabController,
+                    isScrollable: true,
+                    tabAlignment: TabAlignment.center,
+                    tabs: List.generate(appDashboardTabs.length, (index) {
+                      return Tab(
+                        child: Text(
+                          appDashboardTabs[state.dashboardArrangement[index]].title(
+                            context,
+                          ),
+                        ),
+                      );
+                    }),
                   ),
-                );
-              }),
-            ),
           ),
           actions: [
             if (!state.isSearching) ...[

@@ -41,6 +41,8 @@ import 'package:muslim/src/features/zikr_audio_player/data/repository/zikr_audio
 import 'package:muslim/src/features/zikr_audio_player/presentation/controller/cubit/zikr_audio_player_cubit.dart';
 import 'package:muslim/src/features/zikr_viewer/data/repository/zikr_viewer_repo.dart';
 import 'package:muslim/src/features/zikr_viewer/presentation/controller/bloc/zikr_viewer_bloc.dart';
+import 'package:muslim/src/features/prayer_times/data/repository/prayer_times_repo.dart';
+import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 final sl = GetIt.instance;
@@ -61,6 +63,7 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => SearchRepo(sl()));
   sl.registerLazySingleton(() => ZikrAudioPlayerRepo(sl()));
   sl.registerLazySingleton(() => UpdateRepo(sl()));
+  sl.registerLazySingleton(() => PrayerTimesRepo());
 
   ///MARK: Init Repo
   sl.registerLazySingleton(() => TallyDatabaseHelper());
@@ -98,6 +101,7 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => SettingsCubit(sl(), sl(), sl(), sl(), sl()));
   sl.registerLazySingleton(() => AzkarFiltersCubit(sl()));
   sl.registerLazySingleton(() => ZikrAudioPlayerCubit(sl()));
+  sl.registerLazySingleton(() => PrayerTimesBloc(sl()));
   sl.registerLazySingleton(() => BackupRestoreCubit(repo: sl()));
   sl.registerLazySingleton(() => UpdateCubit(sl()));
 

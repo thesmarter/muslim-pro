@@ -19,6 +19,7 @@ import 'package:muslim/src/features/onboarding/presentation/screens/onboarding_s
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
 import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
 import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_cubit.dart';
+import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_bloc.dart';
 import 'package:muslim/src/features/ui/presentation/components/desktop_window_wrapper.dart';
 import 'package:muslim/src/features/update/presentation/controller/update_cubit.dart';
 import 'package:muslim/src/features/update/presentation/screens/force_update_screen.dart';
@@ -68,6 +69,7 @@ class AppState extends State<App> {
         BlocProvider(create: (_) => sl<ZikrAudioPlayerCubit>()),
         BlocProvider(create: (_) => sl<BackupRestoreCubit>()),
         BlocProvider(create: (_) => sl<UpdateCubit>()..checkForUpdate()),
+        BlocProvider(create: (_) => sl<PrayerTimesBloc>()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {

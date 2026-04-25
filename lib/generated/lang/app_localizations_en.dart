@@ -805,4 +805,80 @@ class SEn extends S {
 
   @override
   String get showAudioBarDesc => 'Show/hide audio control bar in Zikr viewer page';
+
+  @override
+  String get zikrRestoreSession => 'Zikr session restoration';
+
+  @override
+  String get prayerTimes => 'Prayer Times';
+
+  @override
+  String get fajr => 'Fajr';
+
+  @override
+  String get sunrise => 'Sunrise';
+
+  @override
+  String get dhuhr => 'Dhuhr';
+
+  @override
+  String get asr => 'Asr';
+
+  @override
+  String get maghrib => 'Maghrib';
+
+  @override
+  String get isha => 'Isha';
+
+  @override
+  String get nextPrayer => 'Next Prayer';
+
+  @override
+  String get prayerAdjustments => 'Prayer Adjustments';
+
+  @override
+  String get adjustmentMinutes => 'Adjustment Minutes';
+
+  @override
+  String get selectCountry => 'Select Country';
+
+  @override
+  String get selectCity => 'Select City';
+
+  @override
+  String get calculationMethod => 'Calculation Method';
+
+  @override
+  String get locationRequired => 'Location Required';
+
+  @override
+  String get detectLocation => 'Detect Location Automatically';
+
+  @override
+  String get minutes => 'Minutes';
+
+  @override
+  String get imsak => 'Imsak';
+
+  @override
+  String get midnight => 'Midnight';
+
+  @override
+  String get lastThird => 'Last Third';
+
+  @override
+  String get unknownLocation => 'Unknown Location';
+
+  @override
+  String get searchLocation => 'Search Location';
+
+  @override
+  String get enterCityName => 'Enter city name';
+
+  @override
+  String get locationNotFound => 'Location not found';
+
+  @override
+  String get locationPermissionExplanation =>
+      'We need access to your location to accurately determine prayer times for your current city.';
 }

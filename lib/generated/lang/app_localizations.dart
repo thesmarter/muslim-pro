@@ -1670,6 +1670,156 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Show/hide audio control bar in Zikr viewer page'**
   String get showAudioBarDesc;
+
+  /// No description provided for @zikrRestoreSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Zikr session restoration'**
+  String get zikrRestoreSession;
+
+  /// No description provided for @prayerTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Times'**
+  String get prayerTimes;
+
+  /// No description provided for @fajr.
+  ///
+  /// In en, this message translates to:
+  /// **'Fajr'**
+  String get fajr;
+
+  /// No description provided for @sunrise.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise'**
+  String get sunrise;
+
+  /// No description provided for @dhuhr.
+  ///
+  /// In en, this message translates to:
+  /// **'Dhuhr'**
+  String get dhuhr;
+
+  /// No description provided for @asr.
+  ///
+  /// In en, this message translates to:
+  /// **'Asr'**
+  String get asr;
+
+  /// No description provided for @maghrib.
+  ///
+  /// In en, this message translates to:
+  /// **'Maghrib'**
+  String get maghrib;
+
+  /// No description provided for @isha.
+  ///
+  /// In en, this message translates to:
+  /// **'Isha'**
+  String get isha;
+
+  /// No description provided for @nextPrayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Prayer'**
+  String get nextPrayer;
+
+  /// No description provided for @prayerAdjustments.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Adjustments'**
+  String get prayerAdjustments;
+
+  /// No description provided for @adjustmentMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjustment Minutes'**
+  String get adjustmentMinutes;
+
+  /// No description provided for @selectCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Country'**
+  String get selectCountry;
+
+  /// No description provided for @selectCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Select City'**
+  String get selectCity;
+
+  /// No description provided for @calculationMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculation Method'**
+  String get calculationMethod;
+
+  /// No description provided for @locationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Required'**
+  String get locationRequired;
+
+  /// No description provided for @detectLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Detect Location Automatically'**
+  String get detectLocation;
+
+  /// No description provided for @minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get minutes;
+
+  /// No description provided for @imsak.
+  ///
+  /// In en, this message translates to:
+  /// **'Imsak'**
+  String get imsak;
+
+  /// No description provided for @midnight.
+  ///
+  /// In en, this message translates to:
+  /// **'Midnight'**
+  String get midnight;
+
+  /// No description provided for @lastThird.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Third'**
+  String get lastThird;
+
+  /// No description provided for @unknownLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Location'**
+  String get unknownLocation;
+
+  /// No description provided for @searchLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Location'**
+  String get searchLocation;
+
+  /// No description provided for @enterCityName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter city name'**
+  String get enterCityName;
+
+  /// No description provided for @locationNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Location not found'**
+  String get locationNotFound;
+
+  /// No description provided for @locationPermissionExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'We need access to your location to accurately determine prayer times for your current city.'**
+  String get locationPermissionExplanation;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {
