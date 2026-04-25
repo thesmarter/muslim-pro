@@ -1,11 +1,12 @@
 package com.detatech.Azkar
 
+import com.ryanheise.audioservice.AudioServiceActivity
 import io.flutter.embedding.android.FlutterActivity
 import android.view.KeyEvent
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
-class MainActivity : FlutterActivity() {
+class MainActivity : AudioServiceActivity() {
      private lateinit var channel: MethodChannel
      private var activateVolumeDispatch:Boolean = false
 

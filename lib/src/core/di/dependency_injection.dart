@@ -24,7 +24,6 @@ import 'package:muslim/src/features/home_search/domain/repository/search_repo.da
 import 'package:muslim/src/features/home_search/presentation/controller/cubit/search_cubit.dart';
 import 'package:muslim/src/features/onboarding/presentation/controller/cubit/onboard_cubit.dart';
 import 'package:muslim/src/features/quran/data/repository/uthmani_repository.dart';
-import 'package:muslim/src/features/quran/presentation/controller/cubit/quran_cubit.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
 import 'package:muslim/src/features/settings/data/repository/zikr_text_repo.dart';
 import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
@@ -106,7 +105,6 @@ Future<void> initSL() async {
   sl.registerFactory(() => OnboardCubit(sl(), sl()));
   sl.registerFactory(() => TallyBloc(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => ShareImageCubit(sl()));
-  sl.registerFactory(() => QuranCubit(sl()));
   sl.registerFactory(() => FakeHadithBloc(sl()));
   sl.registerFactory(
     () => ZikrViewerBloc(sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()),
