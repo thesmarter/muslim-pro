@@ -11,7 +11,6 @@ import 'package:muslim/src/core/functions/print.dart';
 import 'package:muslim/src/features/alarms_manager/data/repository/alarm_database_helper.dart';
 import 'package:muslim/src/features/alarms_manager/data/repository/alarms_repo.dart';
 import 'package:muslim/src/features/alarms_manager/presentation/components/permission_dialog.dart';
-import 'package:muslim/src/features/quran/data/models/surah_name_enum.dart';
 import 'package:muslim/src/features/quran/presentation/screens/quran_read_screen.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
 import 'package:muslim/src/features/zikr_viewer/presentation/screens/zikr_viewer_screen.dart';
@@ -353,7 +352,7 @@ class LocalNotificationManager {
 
     /// go to quran page if clicked
     if (payload == "الكهف") {
-      context.push(const QuranReadScreen(surahName: SurahNameEnum.alKahf));
+      context.push(const QuranReadScreen(startPage: 293));
     }
     /// ignore constant alarms if clicked
     else if (payload == "555" || payload == "666") {

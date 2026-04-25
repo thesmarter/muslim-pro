@@ -16,6 +16,7 @@ import 'package:muslim/src/core/values/constant.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/local_notification_manager.dart';
 import 'package:muslim/src/features/themes/data/repository/theme_repo.dart';
 import 'package:muslim/src/features/ui/data/repository/local_repo.dart';
+import 'package:quran_library/quran_library.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -31,6 +32,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await QuranLibrary.init();
 
   Bloc.observer = AppBlocObserver();
 

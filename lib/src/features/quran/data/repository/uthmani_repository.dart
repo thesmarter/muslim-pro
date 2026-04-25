@@ -1,71 +1,70 @@
-import 'dart:async';
+import 'dart:io';
 
-import 'package:muslim/src/core/extensions/extension_object.dart';
-import 'package:muslim/src/core/utils/db_helper.dart';
+import 'package:flutter/services.dart';
 import 'package:muslim/src/features/quran/data/models/verse_model.dart';
+import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class UthmaniRepository {
-  ///|*| ************* Variables ************* *|
-
-  static const String name = "quran.ar.uthmani.v2";
-  static const String dbName = "$name.db";
-  static const int dbVersion = 2;
-
-  static UthmaniRepository? _databaseHelper;
-  static Database? _database;
-  static late DBHelper _dbHelper;
-
-  ///|*| ************* Singleton Constructor ************* *|
-  factory UthmaniRepository() {
-    _dbHelper = DBHelper(dbName: dbName, dbVersion: dbVersion);
-    _databaseHelper ??= UthmaniRepository._createInstance();
-    return _databaseHelper!;
-  }
-
-  UthmaniRepository._createInstance();
+  Database? _db;
 
   Future<Database> get database async {
-    if (_database == null || !(_database?.isOpen ?? false)) {
-      _database = await _dbHelper.initDatabase();
-    }
-    return _database!;
+    if (_db != null) return _db!;
+    _db = await _initDb();
+    return _db!;
   }
 
-  ///|*| ************* Functions ************* |
+  Future<Database> _initDb() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, "quran.ar.uthmani.v2.db");
+
+    final exists = await databaseExists(path);
+
+    if (!exists) {
+      try {
+        await Directory(dirname(path)).create(recursive: true);
+      } catch (_) {}
+
+      final data = await rootBundle.load(join("assets", "db", "quran.ar.uthmani.v2.db"));
+      final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await File(path).writeAsBytes(bytes, flush: true);
+    }
+
+    return await openDatabase(path, readOnly: true);
+  }
 
   Future<String> getArabicText({
     required int sura,
     required int startAyah,
     required int endAyah,
   }) async {
-    final Database db = await database;
-
-    final List<Map<String, dynamic>> maps = await db.rawQuery(
-      '''
-SELECT * FROM arabic_text 
-WHERE sura = ? AND ayah BETWEEN ? AND ? 
-ORDER BY ayah;
-''',
-      [sura, startAyah, endAyah],
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'quran',
+      columns: ['text'],
+      where: 'sura = ? AND ayah >= ? AND ayah <= ?',
+      whereArgs: [sura, startAyah, endAyah],
+      orderBy: 'ayah ASC',
     );
 
-    if (maps.isEmpty) return "";
-
-    return maps
-        .map((e) => Verse.fromMap(e))
-        .fold(
-          "",
-          (previousValue, element) =>
-              "$previousValue ${element.text} ${element.ayah.toArabicNumberString()}",
-        );
+    return maps.map((e) => e['text'] as String).join(" ");
   }
 
-  /// Close database
-  Future close() async {
-    if (_database != null) {
-      await _database!.close();
-      _database = null;
-    }
+  Future<List<Verse>> getVerses({
+    required int sura,
+    required int startAyah,
+    required int endAyah,
+  }) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'quran',
+      where: 'sura = ? AND ayah >= ? AND ayah <= ?',
+      whereArgs: [sura, startAyah, endAyah],
+      orderBy: 'ayah ASC',
+    );
+
+    return List.generate(maps.length, (i) {
+      return Verse.fromMap(maps[i]);
+    });
   }
 }
