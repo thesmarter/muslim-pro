@@ -71,7 +71,7 @@ class AppSettingsRepo {
     final String? data = box.read(dashboardArrangementKey);
 
     if (data == null) {
-      return [0, 1, 2];
+      return [0, 1, 2, 3];
     }
 
     final String tempList;

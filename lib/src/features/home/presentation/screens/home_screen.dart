@@ -13,6 +13,7 @@ import 'package:muslim/src/features/home/presentation/components/home_appbar.dar
 import 'package:muslim/src/features/home/presentation/components/side_menu/side_menu.dart';
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
 import 'package:muslim/src/features/home_search/presentation/screens/search_screen.dart';
+import 'package:muslim/src/features/quran/presentation/screens/quran_read_screen.dart';
 import 'package:muslim/src/features/tally/presentation/screens/tally_dashboard_screen.dart';
 import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_cubit.dart';
 
@@ -58,12 +59,23 @@ class _DashboardScreenState extends State<DashboardScreen>
   late final TabController tabController;
   final themeCubit = sl<ThemeCubit>();
   late Brightness _brightness;
+  int _currentTabIndex = 0;
+
   @override
   void initState() {
     tabController = TabController(vsync: this, length: appDashboardTabs.length);
+    tabController.addListener(_handleTabSelection);
     WidgetsBinding.instance.addObserver(this);
     _brightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
     super.initState();
+  }
+
+  void _handleTabSelection() {
+    if (tabController.indexIsChanging || tabController.index != _currentTabIndex) {
+      setState(() {
+        _currentTabIndex = tabController.index;
+      });
+    }
   }
 
   @override
@@ -78,6 +90,8 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   @override
   void dispose() {
+    tabController.removeListener(_handleTabSelection);
+    tabController.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -94,29 +108,39 @@ class _DashboardScreenState extends State<DashboardScreen>
             if (state.isSearching) {
               return const SearchScreen();
             }
+
+            final isQuranTab =
+                appDashboardTabs[state.dashboardArrangement[_currentTabIndex]].widget
+                    is QuranReadScreen;
+
             return Scaffold(
               body: NestedScrollView(
                 physics: const BouncingScrollPhysics(),
                 floatHeaderSlivers: true,
                 headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                  return [HomeAppBar(tabController: tabController)];
+                  return [
+                    if (!isQuranTab) HomeAppBar(tabController: tabController),
+                  ];
                 },
                 body: TabBarView(
-                  physics: const BouncingScrollPhysics(),
+                  physics: isQuranTab
+                      ? const NeverScrollableScrollPhysics()
+                      : const BouncingScrollPhysics(),
                   controller: tabController,
                   children: List.generate(appDashboardTabs.length, (index) {
                     return appDashboardTabs[state.dashboardArrangement[index]].widget;
                   }),
                 ),
               ),
-
-              floatingActionButton: FloatingActionButton(
-                tooltip: S.of(context).tally,
-                child: Icon(MdiIcons.counter, size: 35),
-                onPressed: () {
-                  context.push(const TallyDashboardScreen());
-                },
-              ),
+              floatingActionButton: isQuranTab
+                  ? null
+                  : FloatingActionButton(
+                      tooltip: S.of(context).tally,
+                      child: Icon(MdiIcons.counter, size: 35),
+                      onPressed: () {
+                        context.push(const TallyDashboardScreen());
+                      },
+                    ),
             );
           },
         );
