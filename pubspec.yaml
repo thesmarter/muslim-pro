@@ -3,13 +3,14 @@ description: muslim-pro start kit app.
 
 publish_to: "none"
 
-version: 3.2.01+31
+version: 3.2.03+32
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
   flutter: ">=3.32.0 <4.0.0"
 
 dependencies:
+  adhan: ^2.0.0+1
   archive: ^4.0.0
   audioplayers: ^6.5.1
   auto_size_text: ^3.0.0
@@ -41,6 +42,8 @@ dependencies:
   fluttertoast: ^9.0.0
   font_awesome_flutter: ^10.12.0
   gal: ^2.3.2
+  geocoding: ^4.0.0
+  geolocator: ^14.0.2
   get_it: ^9.2.1
   get_storage: ^2.1.1
   http: ^1.6.0

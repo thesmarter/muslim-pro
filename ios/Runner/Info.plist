@@ -49,5 +49,9 @@
 	<array>
 		<string>audio</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to location to calculate accurate prayer times for your current city.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs access to location to calculate accurate prayer times for your current city.</string>
 </dict>
 </plist>

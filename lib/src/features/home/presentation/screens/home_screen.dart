@@ -112,8 +112,13 @@ class _DashboardScreenState extends State<DashboardScreen>
               return const SearchScreen();
             }
 
+            final arrangement = state.dashboardArrangement;
+            if (arrangement.length != appDashboardTabs.length) {
+              return const Loading();
+            }
+
             final isQuranTab =
-                appDashboardTabs[state.dashboardArrangement[_currentTabIndex]].widget
+                appDashboardTabs[arrangement[_currentTabIndex]].widget
                     is QuranReadScreen;
 
             return Scaffold(

@@ -67,22 +67,80 @@ class AppSettingsRepo {
 
   static const String dashboardArrangementKey = "list_arrange";
 
-  List<int> get dashboardArrangement {
-    final String? data = box.read(dashboardArrangementKey);
+  List<int> getDashboardArrangement(int tabsCount) {
+    final dynamic data = box.read(dashboardArrangementKey);
 
-    if (data == null) {
-      return [0, 1, 2, 3];
+    List<int> arrangement = [];
+    try {
+      if (data == null) {
+        arrangement = List.generate(tabsCount, (index) => index);
+      } else if (data is List) {
+        arrangement = List<int>.from(data);
+      } else if (data is String) {
+        if (data.isEmpty) {
+          arrangement = List.generate(tabsCount, (index) => index);
+        } else {
+          final String cleanedData = data.replaceAll('[', '').replaceAll(']', '');
+          arrangement = cleanedData
+              .split(",")
+              .map((e) => e.trim())
+              .where((e) => e.isNotEmpty)
+              .map<int>((e) => int.parse(e))
+              .toList();
+        }
+      } else {
+        arrangement = List.generate(tabsCount, (index) => index);
+      }
+    } catch (e) {
+      arrangement = List.generate(tabsCount, (index) => index);
     }
 
-    final String tempList;
-    if (data.contains("[")) {
-      /// for old saved data [0,1,2]
-      tempList = data.replaceAll('[', '').replaceAll(']', '');
-    } else {
-      /// for new saved data  0,1,2
-      tempList = data;
+    // Ensure all indices are present and valid
+    bool needsFix = arrangement.length != tabsCount;
+    
+    if (!needsFix) {
+      // Check if all indices from 0 to tabsCount-1 are present
+      for (int i = 0; i < tabsCount; i++) {
+        if (!arrangement.contains(i)) {
+          needsFix = true;
+          break;
+        }
+      }
     }
-    return tempList.split(",").map<int>((e) => int.parse(e)).toList();
+
+    if (needsFix) {
+      // Create a set of unique valid indices
+      final Set<int> validIndices = arrangement.where((i) => i >= 0 && i < tabsCount).toSet();
+      
+      // Add any missing indices
+      for (int i = 0; i < tabsCount; i++) {
+        validIndices.add(i);
+      }
+      
+      // Create a new arrangement list
+      final List<int> newArrangement = [];
+      
+      // First, add existing valid indices in their current order
+      for (final i in arrangement) {
+        if (i >= 0 && i < tabsCount && !newArrangement.contains(i)) {
+          newArrangement.add(i);
+        }
+      }
+      
+      // Then, add any remaining valid indices that weren't in the original list
+      for (int i = 0; i < tabsCount; i++) {
+        if (!newArrangement.contains(i)) {
+          newArrangement.add(i);
+        }
+      }
+      
+      arrangement = newArrangement;
+      
+      // Save the fixed arrangement back to storage
+      changeDashboardArrangement(arrangement);
+    }
+
+    return arrangement;
   }
 
   void changeDashboardArrangement(List<int> value) {

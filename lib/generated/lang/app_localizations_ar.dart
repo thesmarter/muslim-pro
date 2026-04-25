@@ -37,7 +37,7 @@ class SAr extends S {
   String get alarmEditor => 'محرر التنبيهات';
 
   @override
-  String get allow => 'السماح';
+  String get allow => 'سماح';
 
   @override
   String get allowNotifications => 'هل تريد السماح بتشغيل الإشعارات؟';
@@ -804,4 +804,80 @@ class SAr extends S {
 
   @override
   String get showAudioBarDesc => 'إظهار/إخفاء شريط التحكم في الصوت في صفحة قارئ الأذكار';
+
+  @override
+  String get zikrRestoreSession => 'استعادة جلسة الذكر';
+
+  @override
+  String get prayerTimes => 'مواقيت الصلاة';
+
+  @override
+  String get fajr => 'الفجر';
+
+  @override
+  String get sunrise => 'الشروق';
+
+  @override
+  String get dhuhr => 'الظهر';
+
+  @override
+  String get asr => 'العصر';
+
+  @override
+  String get maghrib => 'المغرب';
+
+  @override
+  String get isha => 'العشاء';
+
+  @override
+  String get nextPrayer => 'الصلاة القادمة';
+
+  @override
+  String get prayerAdjustments => 'تعديل المواقيت';
+
+  @override
+  String get adjustmentMinutes => 'دقائق التعديل';
+
+  @override
+  String get selectCountry => 'اختر الدولة';
+
+  @override
+  String get selectCity => 'اختر المدينة';
+
+  @override
+  String get calculationMethod => 'طريقة الحساب';
+
+  @override
+  String get locationRequired => 'مطلوب تحديد الموقع';
+
+  @override
+  String get detectLocation => 'تحديد الموقع تلقائياً';
+
+  @override
+  String get minutes => 'دقائق';
+
+  @override
+  String get imsak => 'الإمساك';
+
+  @override
+  String get midnight => 'منتصف الليل';
+
+  @override
+  String get lastThird => 'الثلث الأخير';
+
+  @override
+  String get unknownLocation => 'موقع غير معروف';
+
+  @override
+  String get searchLocation => 'البحث عن موقع';
+
+  @override
+  String get enterCityName => 'أدخل اسم المدينة';
+
+  @override
+  String get locationNotFound => 'لم يتم العثور على الموقع';
+
+  @override
+  String get locationPermissionExplanation =>
+      'نحتاج للوصول إلى موقعك لتحديد مواقيت الصلاة بدقة لمدينتك الحالية.';
 }

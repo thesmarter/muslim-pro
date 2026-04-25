@@ -6,6 +6,7 @@ import 'package:muslim/src/features/azkar_filters/data/models/zikr_filter.dart';
 import 'package:muslim/src/features/azkar_filters/data/models/zikr_filter_list_extension.dart';
 import 'package:muslim/src/features/azkar_filters/presentation/controller/cubit/azkar_filters_cubit.dart';
 import 'package:muslim/src/features/bookmark/presentation/controller/bloc/bookmark_bloc.dart';
+import 'package:muslim/src/features/home/data/data_source/app_dashboard_tabs.dart';
 import 'package:muslim/src/features/home/data/models/titles_freq_enum.dart';
 import 'package:muslim/src/features/home/data/models/zikr_title.dart';
 import 'package:muslim/src/features/home/data/repository/data_database_helper.dart';
@@ -64,12 +65,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final filteredAzkar = filters.getFilteredZikr(azkarFromDB);
     final bookmarkedTitlesIds = await userDataDBHelper.getAllFavoriteTitles();
 
+    final arrangement = appSettingsRepo.getDashboardArrangement(appDashboardTabs.length);
+    
     emit(
       HomeLoadedState(
         titles: filtered,
         bookmarkedContents: filteredAzkar,
         isSearching: false,
-        dashboardArrangement: appSettingsRepo.dashboardArrangement,
+        dashboardArrangement: arrangement,
         freqFilters: appSettingsRepo.getTitlesFreqFilterStatus,
         bookmarkedTitlesIds: bookmarkedTitlesIds,
       ),
