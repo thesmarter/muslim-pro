@@ -2,6 +2,9 @@ import 'package:adhan/adhan.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:muslim/src/core/di/dependency_injection.dart';
+import 'package:muslim/src/core/extensions/localization_extesion.dart';
+import 'package:muslim/src/features/alarms_manager/data/models/local_notification_manager.dart';
 import 'package:muslim/src/features/prayer_times/data/models/prayer_settings.dart';
 
 class PrayerTimesRepo {
@@ -10,6 +13,72 @@ class PrayerTimesRepo {
 
   Future<void> saveSettings(PrayerSettings settings) async {
     await _box.write(_settingsKey, settings.toJson());
+    await schedulePrayerNotifications(settings);
+  }
+
+  Future<void> schedulePrayerNotifications(PrayerSettings settings) async {
+    final notificationManager = sl<LocalNotificationManager>();
+    
+    // Cancel existing prayer notifications first
+    // Using a specific range of IDs for prayer times (e.g., 2000-2010)
+    for (int i = 2000; i <= 2010; i++) {
+      await notificationManager.cancelNotificationById(id: i);
+    }
+
+    if (settings.latitude == 0 && settings.longitude == 0) return;
+
+    final now = DateTime.now();
+    final prayerTimes = calculatePrayerTimes(settings, now);
+    
+    final Map<String, DateTime> times = {
+      'fajr': prayerTimes.fajr,
+      'sunrise': prayerTimes.sunrise,
+      'sunrise_end': prayerTimes.sunrise.add(const Duration(minutes: 15)), // Example: 15 mins after sunrise
+      'dhuhr': prayerTimes.dhuhr,
+      'asr': prayerTimes.asr,
+      'maghrib': prayerTimes.maghrib,
+      'isha': prayerTimes.isha,
+    };
+
+    final Map<String, int> ids = {
+      'fajr': 2000,
+      'sunrise': 2001,
+      'sunrise_end': 2002,
+      'dhuhr': 2003,
+      'asr': 2004,
+      'maghrib': 2005,
+      'isha': 2006,
+    };
+
+    for (var entry in times.entries) {
+      final prayerKey = entry.key;
+      final prayerTime = entry.value;
+      final isEnabled = settings.notifications[prayerKey] ?? false;
+
+      if (isEnabled && prayerTime.isAfter(now)) {
+        String title = "";
+        String body = SX.current.prayerTimeReminder(SX.current.getValue(prayerKey));
+
+        if (prayerKey == 'sunrise') {
+          title = SX.current.sunrise;
+          body = SX.current.sunriseNotificationBody;
+        } else if (prayerKey == 'sunrise_end') {
+          title = SX.current.sunriseEnd;
+          body = SX.current.sunriseEndNotificationBody;
+        } else {
+          title = SX.current.getValue(prayerKey);
+        }
+
+        await notificationManager.addCustomDailyReminder(
+          id: ids[prayerKey]!,
+          title: title,
+          body: body,
+          time: Time(prayerTime.hour, prayerTime.minute),
+          payload: "prayer_time_$prayerKey",
+          requestPermission: false,
+        );
+      }
+    }
   }
 
   PrayerSettings getSettings() {

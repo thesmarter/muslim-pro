@@ -287,6 +287,12 @@
   "searchLocation": "Search Location",
   "enterCityName": "Enter city name",
   "locationNotFound": "Location not found",
-  "locationPermissionExplanation": "We need access to your location to accurately determine prayer times for your current city.",
+  "prayerNotifications": "Prayer Notifications",
+  "prayerTimeReminder": "It's time for {prayerName}",
+  "sunriseNotificationBody": "It's sunrise time now",
+  "sunriseEnd": "Sunrise End",
+  "sunriseEndNotificationBody": "Sunrise time has ended now",
+  "getValue": "{key, select, fajr{Fajr} sunrise{Sunrise} sunrise_end{Sunrise End} dhuhr{Dhuhr} asr{Asr} maghrib{Maghrib} isha{Isha} other{{key}}}",
+  "locationPermissionExplanation": "We need access to your location to accurately determine prayer times for your current city. This is optional, you can always enter your location manually via search.",
   "allow": "Allow"
 }

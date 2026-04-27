@@ -878,6 +878,41 @@ class SAr extends S {
   String get locationNotFound => 'لم يتم العثور على الموقع';
 
   @override
+  String get prayerNotifications => 'تنبيهات الصلاة';
+
+  @override
+  String prayerTimeReminder(Object prayerName) {
+    return 'حان الآن موعد $prayerName';
+  }
+
+  @override
+  String get sunriseNotificationBody => 'حان الآن وقت الشروق';
+
+  @override
+  String get sunriseEnd => 'نهاية الشروق';
+
+  @override
+  String get sunriseEndNotificationBody => 'انتهى وقت الشروق الآن';
+
+  @override
+  String getValue(String key) {
+    String _temp0 = intl.Intl.selectLogic(
+      key,
+      {
+        'fajr': 'الفجر',
+        'sunrise': 'الشروق',
+        'sunrise_end': 'نهاية الشروق',
+        'dhuhr': 'الظهر',
+        'asr': 'العصر',
+        'maghrib': 'المغرب',
+        'isha': 'العشاء',
+        'other': '$key',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get locationPermissionExplanation =>
-      'نحتاج للوصول إلى موقعك لتحديد مواقيت الصلاة بدقة لمدينتك الحالية.';
+      'نحتاج للوصول إلى موقعك لتحديد مواقيت الصلاة بدقة لمدينتك الحالية. هذا الأمر اختياري، يمكنك دائماً إدخال موقعك يدوياً عبر البحث.';
 }

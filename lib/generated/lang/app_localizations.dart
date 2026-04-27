@@ -1815,10 +1815,46 @@ abstract class S {
   /// **'Location not found'**
   String get locationNotFound;
 
+  /// No description provided for @prayerNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Notifications'**
+  String get prayerNotifications;
+
+  /// No description provided for @prayerTimeReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s time for {prayerName}'**
+  String prayerTimeReminder(Object prayerName);
+
+  /// No description provided for @sunriseNotificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s sunrise time now'**
+  String get sunriseNotificationBody;
+
+  /// No description provided for @sunriseEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise End'**
+  String get sunriseEnd;
+
+  /// No description provided for @sunriseEndNotificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise time has ended now'**
+  String get sunriseEndNotificationBody;
+
+  /// No description provided for @getValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{key, select, fajr{Fajr} sunrise{Sunrise} sunrise_end{Sunrise End} dhuhr{Dhuhr} asr{Asr} maghrib{Maghrib} isha{Isha} other{{key}}}'**
+  String getValue(String key);
+
   /// No description provided for @locationPermissionExplanation.
   ///
   /// In en, this message translates to:
-  /// **'We need access to your location to accurately determine prayer times for your current city.'**
+  /// **'We need access to your location to accurately determine prayer times for your current city. This is optional, you can always enter your location manually via search.'**
   String get locationPermissionExplanation;
 }
 

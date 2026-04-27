@@ -7,6 +7,7 @@ class PrayerSettings extends Equatable {
   final String? countryName;
   final String calculationMethod;
   final Map<String, int> adjustments; // minutes to add/subtract for each prayer
+  final Map<String, bool> notifications; // whether notifications are enabled for each prayer
 
   const PrayerSettings({
     this.latitude = 0.0,
@@ -22,6 +23,15 @@ class PrayerSettings extends Equatable {
       'maghrib': 0,
       'isha': 0,
     },
+    this.notifications = const {
+      'fajr': true,
+      'sunrise': true,
+      'sunrise_end': true,
+      'dhuhr': true,
+      'asr': true,
+      'maghrib': true,
+      'isha': true,
+    },
   });
 
   PrayerSettings copyWith({
@@ -31,6 +41,7 @@ class PrayerSettings extends Equatable {
     String? countryName,
     String? calculationMethod,
     Map<String, int>? adjustments,
+    Map<String, bool>? notifications,
   }) {
     return PrayerSettings(
       latitude: latitude ?? this.latitude,
@@ -39,6 +50,7 @@ class PrayerSettings extends Equatable {
       countryName: countryName ?? this.countryName,
       calculationMethod: calculationMethod ?? this.calculationMethod,
       adjustments: adjustments ?? this.adjustments,
+      notifications: notifications ?? this.notifications,
     );
   }
 
@@ -50,6 +62,7 @@ class PrayerSettings extends Equatable {
       'countryName': countryName,
       'calculationMethod': calculationMethod,
       'adjustments': adjustments,
+      'notifications': notifications,
     };
   }
 
@@ -71,6 +84,18 @@ class PrayerSettings extends Equatable {
             'maghrib': 0,
             'isha': 0,
           },
+      notifications: (json['notifications'] as Map<String, dynamic>?)?.map(
+            (key, value) => MapEntry(key, value as bool),
+          ) ??
+          const {
+            'fajr': true,
+            'sunrise': true,
+            'sunrise_end': true,
+            'dhuhr': true,
+            'asr': true,
+            'maghrib': true,
+            'isha': true,
+          },
     );
   }
 
@@ -82,5 +107,6 @@ class PrayerSettings extends Equatable {
         countryName,
         calculationMethod,
         adjustments,
+        notifications,
       ];
 }
