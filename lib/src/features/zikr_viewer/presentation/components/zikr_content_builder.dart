@@ -130,12 +130,39 @@ class ZikrContentTextWithQuran extends StatelessWidget {
     return FutureBuilder(
       future: dbContent.getQuranVersesText(),
       builder: (context, snap) {
-        if (!snap.hasData) return const LinearProgressIndicator();
+        if (snap.connectionState == ConnectionState.waiting) {
+          return const LinearProgressIndicator();
+        }
+
+        if (snap.hasError) {
+          return Center(
+            child: Text(
+              "حدث خطأ أثناء تحميل الآيات: ${snap.error}",
+              style: const TextStyle(color: Colors.red),
+            ),
+          );
+        }
+
+        final verses = snap.data ?? [];
+        if (verses.isEmpty && dbContent.content.contains("QuranText")) {
+          // If content contains QuranText but no verses were parsed/fetched,
+          // it might be a parsing error or missing data.
+          // Fallback to showing the raw content if possible, or an error.
+          return SelectableText(
+            dbContent.content,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: fontSize,
+              height: 2,
+              color: color,
+            ),
+          );
+        }
 
         return RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            children: getTextSpan(snap.data ?? []),
+            children: getTextSpan(verses),
             style: TextStyle(
               fontSize: fontSize,
               height: 2,
