@@ -25,6 +25,15 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
               _buildSectionTitle(context, S.of(context).calculationMethod),
               _buildCalculationMethodDropdown(context, state),
               const Divider(height: 32),
+              _buildSectionTitle(context, S.of(context).prayerNotifications),
+              _buildNotificationTile(context, S.of(context).fajr, 'fajr', settings.notifications['fajr'] ?? true, state),
+              _buildNotificationTile(context, S.of(context).sunrise, 'sunrise', settings.notifications['sunrise'] ?? true, state),
+              _buildNotificationTile(context, S.of(context).sunriseEnd, 'sunrise_end', settings.notifications['sunrise_end'] ?? true, state),
+              _buildNotificationTile(context, S.of(context).dhuhr, 'dhuhr', settings.notifications['dhuhr'] ?? true, state),
+              _buildNotificationTile(context, S.of(context).asr, 'asr', settings.notifications['asr'] ?? true, state),
+              _buildNotificationTile(context, S.of(context).maghrib, 'maghrib', settings.notifications['maghrib'] ?? true, state),
+              _buildNotificationTile(context, S.of(context).isha, 'isha', settings.notifications['isha'] ?? true, state),
+              const Divider(height: 32),
               _buildSectionTitle(context, S.of(context).prayerAdjustments),
               _buildAdjustmentTile(context, S.of(context).fajr, 'fajr', adjustments['fajr'] ?? 0, state),
               _buildAdjustmentTile(context, S.of(context).sunrise, 'sunrise', adjustments['sunrise'] ?? 0, state),
@@ -36,6 +45,19 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Widget _buildNotificationTile(BuildContext context, String label, String key, bool isEnabled, PrayerTimesState state) {
+    return SwitchListTile(
+      title: Text(label),
+      value: isEnabled,
+      onChanged: (value) {
+        final newNotifications = Map<String, bool>.from(state.settings.notifications);
+        newNotifications[key] = value;
+        final newSettings = state.settings.copyWith(notifications: newNotifications);
+        context.read<PrayerTimesBloc>().add(UpdatePrayerSettings(newSettings));
+      },
     );
   }
 

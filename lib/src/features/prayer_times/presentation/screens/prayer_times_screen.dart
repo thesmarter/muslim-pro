@@ -34,17 +34,6 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         });
       }
     });
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkAndRequestLocation();
-    });
-  }
-
-  void _checkAndRequestLocation() {
-    final state = context.read<PrayerTimesBloc>().state;
-    if (state.settings.latitude == 0 && state.settings.longitude == 0) {
-      _showPermissionExplanationDialog();
-    }
   }
 
   void _showPermissionExplanationDialog() {
@@ -103,9 +92,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                   Text(S.of(context).locationRequired, style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 16),
                   ElevatedButton.icon(
-                    onPressed: () {
-                      context.read<PrayerTimesBloc>().add(DetectLocation());
-                    },
+                    onPressed: _showPermissionExplanationDialog,
                     icon: const Icon(Icons.my_location),
                     label: Text(S.of(context).detectLocation),
                   ),
@@ -128,9 +115,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                   Text(state.errorMessage ?? S.of(context).errorOccurred),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
-                      context.read<PrayerTimesBloc>().add(DetectLocation());
-                    },
+                    onPressed: _showPermissionExplanationDialog,
                     child: Text(S.of(context).detectLocation),
                   ),
                 ],
@@ -199,9 +184,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
             icon: Icon(Icons.search, color: Theme.of(context).colorScheme.onPrimary),
           ),
           IconButton(
-            onPressed: () {
-              context.read<PrayerTimesBloc>().add(DetectLocation());
-            },
+            onPressed: _showPermissionExplanationDialog,
             icon: Icon(Icons.my_location, color: Theme.of(context).colorScheme.onPrimary),
           ),
         ],

@@ -879,6 +879,41 @@ class SEn extends S {
   String get locationNotFound => 'Location not found';
 
   @override
+  String get prayerNotifications => 'Prayer Notifications';
+
+  @override
+  String prayerTimeReminder(Object prayerName) {
+    return 'It\'s time for $prayerName';
+  }
+
+  @override
+  String get sunriseNotificationBody => 'It\'s sunrise time now';
+
+  @override
+  String get sunriseEnd => 'Sunrise End';
+
+  @override
+  String get sunriseEndNotificationBody => 'Sunrise time has ended now';
+
+  @override
+  String getValue(String key) {
+    String _temp0 = intl.Intl.selectLogic(
+      key,
+      {
+        'fajr': 'Fajr',
+        'sunrise': 'Sunrise',
+        'sunrise_end': 'Sunrise End',
+        'dhuhr': 'Dhuhr',
+        'asr': 'Asr',
+        'maghrib': 'Maghrib',
+        'isha': 'Isha',
+        'other': '$key',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get locationPermissionExplanation =>
-      'We need access to your location to accurately determine prayer times for your current city.';
+      'We need access to your location to accurately determine prayer times for your current city. This is optional, you can always enter your location manually via search.';
 }

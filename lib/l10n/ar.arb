@@ -289,6 +289,12 @@
   "searchLocation": "البحث عن موقع",
   "enterCityName": "أدخل اسم المدينة",
   "locationNotFound": "لم يتم العثور على الموقع",
-  "locationPermissionExplanation": "نحتاج للوصول إلى موقعك لتحديد مواقيت الصلاة بدقة لمدينتك الحالية.",
+  "prayerNotifications": "تنبيهات الصلاة",
+  "prayerTimeReminder": "حان الآن موعد {prayerName}",
+  "sunriseNotificationBody": "حان الآن وقت الشروق",
+  "sunriseEnd": "نهاية الشروق",
+  "sunriseEndNotificationBody": "انتهى وقت الشروق الآن",
+  "getValue": "{key, select, fajr{الفجر} sunrise{الشروق} sunrise_end{نهاية الشروق} dhuhr{الظهر} asr{العصر} maghrib{المغرب} isha{العشاء} other{{key}}}",
+  "locationPermissionExplanation": "نحتاج للوصول إلى موقعك لتحديد مواقيت الصلاة بدقة لمدينتك الحالية. هذا الأمر اختياري، يمكنك دائماً إدخال موقعك يدوياً عبر البحث.",
   "allow": "سماح"
 }
