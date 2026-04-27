@@ -40,7 +40,7 @@ class UthmaniRepository {
   }) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
-      'quran',
+      'arabic_text',
       columns: ['text'],
       where: 'sura = ? AND ayah >= ? AND ayah <= ?',
       whereArgs: [sura, startAyah, endAyah],
@@ -57,7 +57,7 @@ class UthmaniRepository {
   }) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
-      'quran',
+      'arabic_text',
       where: 'sura = ? AND ayah >= ? AND ayah <= ?',
       whereArgs: [sura, startAyah, endAyah],
       orderBy: 'ayah ASC',
