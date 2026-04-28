@@ -56,14 +56,27 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
   }
 
   Widget _buildAdhanAudioToggle(BuildContext context, PrayerTimesState state) {
-    return SwitchListTile(
-      title: Text(S.of(context).playAdhanSound),
-      subtitle: Text(S.of(context).playAdhanSoundDesc),
-      value: state.settings.playAdhanSound,
-      onChanged: (value) {
-        final newSettings = state.settings.copyWith(playAdhanSound: value);
-        context.read<PrayerTimesBloc>().add(UpdatePrayerSettings(newSettings));
-      },
+    return Column(
+      children: [
+        SwitchListTile(
+          title: Text(S.of(context).playAdhanSound),
+          subtitle: Text(S.of(context).playAdhanSoundDesc),
+          value: state.settings.playAdhanSound,
+          onChanged: (value) {
+            final newSettings = state.settings.copyWith(playAdhanSound: value);
+            context.read<PrayerTimesBloc>().add(UpdatePrayerSettings(newSettings));
+          },
+        ),
+        SwitchListTile(
+          title: Text(S.of(context).repeatAdhan),
+          subtitle: Text(S.of(context).repeatAdhanDesc),
+          value: state.settings.repeatAdhan,
+          onChanged: (value) {
+            final newSettings = state.settings.copyWith(repeatAdhan: value);
+            context.read<PrayerTimesBloc>().add(UpdatePrayerSettings(newSettings));
+          },
+        ),
+      ],
     );
   }
 

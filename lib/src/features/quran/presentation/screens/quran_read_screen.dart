@@ -29,39 +29,46 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Theme(
-      data: ThemeData(
-        brightness: Theme.of(context).brightness,
-        colorScheme: Theme.of(context).colorScheme,
-        useMaterial3: false,
-      ),
-      child: QuranLibraryScreen(
-        parentContext: context,
-        isDark: isDark,
-        appBar: widget.onBack != null
-            ? AppBar(
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: widget.onBack,
-                ),
-                title: Text(S.of(context).sourceQuran),
-                centerTitle: true,
-              )
-            : null,
-        appLanguageCode: Localizations.localeOf(context).languageCode,
-        topBarStyle: QuranTopBarStyle.defaults(isDark: isDark, context: context).copyWith(
-          showAudioButton: true,
-          showFontsButton: true,
-          tabBookmarksLabel: S.of(context).favoritesContent,
-          tabSearchLabel: S.of(context).search,
-          tabIndexLabel: S.of(context).index,
+    return PopScope(
+      canPop: widget.onBack == null,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        widget.onBack?.call();
+      },
+      child: Theme(
+        data: ThemeData(
+          brightness: Theme.of(context).brightness,
+          colorScheme: Theme.of(context).colorScheme,
+          useMaterial3: false,
         ),
-        bookmarksTabStyle: BookmarksTabStyle.defaults(isDark: isDark, context: context).copyWith(
-          emptyStateText: S.of(context).nothingFoundInFavorites,
+        child: QuranLibraryScreen(
+          parentContext: context,
+          isDark: isDark,
+          appBar: widget.onBack != null
+              ? AppBar(
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: widget.onBack,
+                  ),
+                  title: Text(S.of(context).sourceQuran),
+                  centerTitle: true,
+                )
+              : null,
+          appLanguageCode: Localizations.localeOf(context).languageCode,
+          topBarStyle: QuranTopBarStyle.defaults(isDark: isDark, context: context).copyWith(
+            showAudioButton: true,
+            showFontsButton: true,
+            tabBookmarksLabel: S.of(context).favoritesContent,
+            tabSearchLabel: S.of(context).search,
+            tabIndexLabel: S.of(context).index,
+          ),
+          bookmarksTabStyle: BookmarksTabStyle.defaults(isDark: isDark, context: context).copyWith(
+            emptyStateText: S.of(context).nothingFoundInFavorites,
+          ),
+          onPageChanged: (pageIndex) {
+            // The library handles internal saving of the last page automatically.
+          },
         ),
-        onPageChanged: (pageIndex) {
-          // The library handles internal saving of the last page automatically.
-        },
       ),
     );
   }

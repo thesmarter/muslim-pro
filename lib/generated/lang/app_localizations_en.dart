@@ -891,6 +891,12 @@ class SEn extends S {
   String get playAdhanSoundDesc => 'Play full adhan sound when prayer time begins';
 
   @override
+  String get repeatAdhan => 'Repeat Adhan';
+
+  @override
+  String get repeatAdhanDesc => 'Repeat the Adhan sound until manually stopped';
+
+  @override
   String get chooseMuadhin => 'Choose Muadhin';
 
   @override

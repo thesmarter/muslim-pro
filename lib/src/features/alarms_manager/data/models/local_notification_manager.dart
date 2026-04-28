@@ -12,6 +12,7 @@ import 'package:muslim/src/features/alarms_manager/data/repository/alarm_databas
 import 'package:muslim/src/features/alarms_manager/data/repository/alarms_repo.dart';
 import 'package:muslim/src/features/alarms_manager/presentation/components/permission_dialog.dart';
 import 'package:muslim/src/features/prayer_times/data/repository/adhan_audio_service.dart';
+import 'package:muslim/src/features/prayer_times/presentation/screens/prayer_times_screen.dart';
 import 'package:muslim/src/features/quran/presentation/screens/quran_read_screen.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
 import 'package:muslim/src/features/zikr_viewer/presentation/screens/zikr_viewer_screen.dart';
@@ -61,7 +62,7 @@ class LocalNotificationManager {
         if (androidPlugin != null) {
           // Create Adhan channel
           const adhanChannel = AndroidNotificationChannel(
-            'com.detatech.Azkar.adhan', // Aligned with AdhanAudioService
+            'com.detatech.Azkar.adhan.v1', // Updated key to force refresh
             'الأذان (Adhan)',
             description: 'إشعارات الأذان والصلاة',
             importance: Importance.max,
@@ -196,6 +197,42 @@ class LocalNotificationManager {
       return;
     }
 
+    if (actionId == 'delay_adhan') {
+      await sl<AdhanAudioService>().stopAdhan();
+      // Delay for 5 minutes
+      final scheduledDate = DateTime.now().add(const Duration(minutes: 5));
+      final String? originalPayload = payload;
+      if (originalPayload != null) {
+        // Reconstruct title from payload if possible
+        String title = "تذكير بالصلاة";
+        final parts = originalPayload.split('_');
+        if (originalPayload.startsWith('adhan_') && parts.length >= 3) {
+          final prayerKey = parts.last;
+          // Note: SX.current might not be accessible in static context if not initialized properly,
+          // but onDidReceiveNotificationResponse is called when app is running or background.
+          try {
+            title = "تذكير: موعد صلاة " + SX.current.getValue(prayerKey);
+          } catch (_) {}
+        }
+
+        await sl<LocalNotificationManager>().scheduleAdhanNotification(
+          id: (notificationResponse.id ?? 0) + 100,
+          title: title,
+          body: "تذكير بعد التأجيل لمدة 5 دقائق",
+          scheduledDate: scheduledDate,
+          payload: originalPayload,
+        );
+      }
+      return;
+    }
+
+    if (actionId == 'open_app') {
+      if (payload != null) {
+        onNotificationClick(payload);
+      }
+      return;
+    }
+
     if (payload != null && payload.isNotEmpty) {
       if (payload.startsWith('adhan_') || payload.startsWith('test_adhan_')) {
         final parts = payload.split('_');
@@ -267,6 +304,11 @@ class LocalNotificationManager {
       priority: Priority.high,
       styleInformation: bigTextStyleInformation,
       icon: '@mipmap/ic_launcher',
+      largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+      color: const Color(0xFF1E88E5), // Professional Blue
+      ledColor: const Color(0xFF1E88E5),
+      ledOnMs: 1000,
+      ledOffMs: 500,
       sound: soundName != null ? RawResourceAndroidNotificationSound(soundName) : null,
       fullScreenIntent: playAdhan,
       category: playAdhan ? AndroidNotificationCategory.alarm : null,
@@ -278,6 +320,18 @@ class LocalNotificationManager {
                 'stop_adhan',
                 SX.current.stopAdhan,
                 showsUserInterface: true,
+                cancelNotification: true,
+              ),
+              AndroidNotificationAction(
+                'delay_adhan',
+                'تأجيل (5 دقائق)',
+                showsUserInterface: true,
+                cancelNotification: true,
+              ),
+              AndroidNotificationAction(
+                'open_app',
+                'فتح التطبيق',
+                showsUserInterface: true,
               ),
             ]
           : null,
@@ -287,7 +341,7 @@ class LocalNotificationManager {
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
-      sound: soundName != null ? '$soundName.caf' : null,
+      sound: soundName != null ? '$soundName.mp3' : null,
       interruptionLevel: playAdhan ? InterruptionLevel.critical : InterruptionLevel.active,
     );
 
@@ -547,8 +601,12 @@ class LocalNotificationManager {
     final context = App.navigatorKey.currentState?.context;
     if (context == null) return;
 
+    /// go to adhan screen if clicked
+    if (payload.startsWith('adhan_') || payload.startsWith('test_adhan_')) {
+      context.push(const PrayerTimesScreen());
+    }
     /// go to quran page if clicked
-    if (payload == "الكهف") {
+    else if (payload == "الكهف") {
       context.push(const QuranReadScreen(startPage: 293));
     }
     /// ignore constant alarms if clicked
@@ -630,7 +688,7 @@ class NotificationsChannels {
     description: SX.current.channelScheduledNameDesc,
   );
   static NotifyChannel get adhan => NotifyChannel(
-    key: 'com.detatech.Azkar.adhan',
+    key: 'com.detatech.Azkar.adhan.v1',
     name: 'الأذان (Adhan)',
     description: 'إشعارات الأذان والصلاة',
   );

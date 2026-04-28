@@ -121,10 +121,18 @@ class _DashboardScreenState extends State<DashboardScreen>
                 appDashboardTabs[arrangement[_currentTabIndex]].widget
                     is QuranReadScreen;
 
-            return Scaffold(
-              body: Stack(
-                children: [
-                  GestureDetector(
+            return PopScope(
+              canPop: _currentTabIndex == 0,
+              onPopInvokedWithResult: (didPop, result) {
+                if (didPop) return;
+                if (_currentTabIndex != 0) {
+                  tabController.animateTo(0);
+                }
+              },
+              child: Scaffold(
+                body: Stack(
+                  children: [
+                    GestureDetector(
                     onTap: () {
                       if (isQuranTab) {
                         setState(() {
@@ -160,7 +168,12 @@ class _DashboardScreenState extends State<DashboardScreen>
                 ],
               ),
               floatingActionButton: isQuranTab
-                  ? null
+                  ? (_showReturnButton
+                      ? FloatingActionButton(
+                          onPressed: () => tabController.animateTo(0),
+                          child: const Icon(Icons.arrow_back),
+                        )
+                      : null)
                   : FloatingActionButton(
                       tooltip: S.of(context).tally,
                       child: Icon(MdiIcons.counter, size: 35),
@@ -168,10 +181,11 @@ class _DashboardScreenState extends State<DashboardScreen>
                         context.push(const TallyDashboardScreen());
                       },
                     ),
-            );
-          },
-        );
-      },
-    );
-  }
+            ),
+          );
+        },
+      );
+    },
+  );
+}
 }

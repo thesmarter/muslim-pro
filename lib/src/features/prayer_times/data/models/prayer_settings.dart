@@ -11,6 +11,7 @@ class PrayerSettings extends Equatable {
   final String muadhin; // selected muadhin ID
   final bool playAdhanSound; // whether to play adhan sound or default notification sound
   final double adhanVolume; // volume for adhan playback (0.0 to 1.0)
+  final bool repeatAdhan; // whether to repeat adhan until stopped manually
 
   const PrayerSettings({
     this.latitude = 0.0,
@@ -38,6 +39,7 @@ class PrayerSettings extends Equatable {
     this.muadhin = 'wadie_alyamani',
     this.playAdhanSound = true,
     this.adhanVolume = 0.5,
+    this.repeatAdhan = false,
   });
 
   PrayerSettings copyWith({
@@ -51,6 +53,7 @@ class PrayerSettings extends Equatable {
     String? muadhin,
     bool? playAdhanSound,
     double? adhanVolume,
+    bool? repeatAdhan,
   }) {
     return PrayerSettings(
       latitude: latitude ?? this.latitude,
@@ -63,6 +66,7 @@ class PrayerSettings extends Equatable {
       muadhin: muadhin ?? this.muadhin,
       playAdhanSound: playAdhanSound ?? this.playAdhanSound,
       adhanVolume: adhanVolume ?? this.adhanVolume,
+      repeatAdhan: repeatAdhan ?? this.repeatAdhan,
     );
   }
 
@@ -78,6 +82,7 @@ class PrayerSettings extends Equatable {
       'muadhin': muadhin,
       'playAdhanSound': playAdhanSound,
       'adhanVolume': adhanVolume,
+      'repeatAdhan': repeatAdhan,
     };
   }
 
@@ -114,6 +119,7 @@ class PrayerSettings extends Equatable {
       muadhin: json['muadhin'] as String? ?? 'wadie_alyamani',
       playAdhanSound: json['playAdhanSound'] as bool? ?? true,
       adhanVolume: (json['adhanVolume'] as num?)?.toDouble() ?? 0.5,
+      repeatAdhan: json['repeatAdhan'] as bool? ?? false,
     );
   }
 
@@ -129,5 +135,6 @@ class PrayerSettings extends Equatable {
         muadhin,
         playAdhanSound,
         adhanVolume,
+        repeatAdhan,
       ];
 }
