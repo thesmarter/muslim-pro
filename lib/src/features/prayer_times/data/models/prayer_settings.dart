@@ -8,6 +8,9 @@ class PrayerSettings extends Equatable {
   final String calculationMethod;
   final Map<String, int> adjustments; // minutes to add/subtract for each prayer
   final Map<String, bool> notifications; // whether notifications are enabled for each prayer
+  final String muadhin; // selected muadhin ID
+  final bool playAdhanSound; // whether to play adhan sound or default notification sound
+  final double adhanVolume; // volume for adhan playback (0.0 to 1.0)
 
   const PrayerSettings({
     this.latitude = 0.0,
@@ -32,6 +35,9 @@ class PrayerSettings extends Equatable {
       'maghrib': true,
       'isha': true,
     },
+    this.muadhin = 'wadie_alyamani',
+    this.playAdhanSound = true,
+    this.adhanVolume = 0.5,
   });
 
   PrayerSettings copyWith({
@@ -42,6 +48,9 @@ class PrayerSettings extends Equatable {
     String? calculationMethod,
     Map<String, int>? adjustments,
     Map<String, bool>? notifications,
+    String? muadhin,
+    bool? playAdhanSound,
+    double? adhanVolume,
   }) {
     return PrayerSettings(
       latitude: latitude ?? this.latitude,
@@ -51,6 +60,9 @@ class PrayerSettings extends Equatable {
       calculationMethod: calculationMethod ?? this.calculationMethod,
       adjustments: adjustments ?? this.adjustments,
       notifications: notifications ?? this.notifications,
+      muadhin: muadhin ?? this.muadhin,
+      playAdhanSound: playAdhanSound ?? this.playAdhanSound,
+      adhanVolume: adhanVolume ?? this.adhanVolume,
     );
   }
 
@@ -63,6 +75,9 @@ class PrayerSettings extends Equatable {
       'calculationMethod': calculationMethod,
       'adjustments': adjustments,
       'notifications': notifications,
+      'muadhin': muadhin,
+      'playAdhanSound': playAdhanSound,
+      'adhanVolume': adhanVolume,
     };
   }
 
@@ -96,6 +111,9 @@ class PrayerSettings extends Equatable {
             'maghrib': true,
             'isha': true,
           },
+      muadhin: json['muadhin'] as String? ?? 'wadie_alyamani',
+      playAdhanSound: json['playAdhanSound'] as bool? ?? true,
+      adhanVolume: (json['adhanVolume'] as num?)?.toDouble() ?? 0.5,
     );
   }
 
@@ -108,5 +126,8 @@ class PrayerSettings extends Equatable {
         calculationMethod,
         adjustments,
         notifications,
+        muadhin,
+        playAdhanSound,
+        adhanVolume,
       ];
 }

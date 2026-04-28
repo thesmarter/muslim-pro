@@ -38,7 +38,7 @@ class UpdateCubit extends Cubit<UpdateState> {
   bool _isUpdateRequired(int currentVersion, String latestVersionStr) {
     try {
       // تحويل رقم الإصدار القادم من السيرفر إلى رقم صحيح للمقارنة
-      int latestVersion = int.parse(latestVersionStr);
+      final int latestVersion = int.parse(latestVersionStr);
       return latestVersion > currentVersion;
     } catch (e) {
       // في حالة وجود خطأ في التحويل (مثلاً لو كان النص 1.0 بدلاً من 1)

@@ -23,6 +23,9 @@ import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.
 import 'package:muslim/src/features/home_search/domain/repository/search_repo.dart';
 import 'package:muslim/src/features/home_search/presentation/controller/cubit/search_cubit.dart';
 import 'package:muslim/src/features/onboarding/presentation/controller/cubit/onboard_cubit.dart';
+import 'package:muslim/src/features/prayer_times/data/repository/adhan_audio_service.dart';
+import 'package:muslim/src/features/prayer_times/data/repository/prayer_times_repo.dart';
+import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_bloc.dart';
 import 'package:muslim/src/features/quran/data/repository/uthmani_repository.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
 import 'package:muslim/src/features/settings/data/repository/zikr_text_repo.dart';
@@ -41,8 +44,6 @@ import 'package:muslim/src/features/zikr_audio_player/data/repository/zikr_audio
 import 'package:muslim/src/features/zikr_audio_player/presentation/controller/cubit/zikr_audio_player_cubit.dart';
 import 'package:muslim/src/features/zikr_viewer/data/repository/zikr_viewer_repo.dart';
 import 'package:muslim/src/features/zikr_viewer/presentation/controller/bloc/zikr_viewer_bloc.dart';
-import 'package:muslim/src/features/prayer_times/data/repository/prayer_times_repo.dart';
-import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 final sl = GetIt.instance;
@@ -64,6 +65,7 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => ZikrAudioPlayerRepo(sl()));
   sl.registerLazySingleton(() => UpdateRepo(sl()));
   sl.registerLazySingleton(() => PrayerTimesRepo());
+  sl.registerLazySingleton(() => AdhanAudioService());
 
   ///MARK: Init Repo
   sl.registerLazySingleton(() => TallyDatabaseHelper());

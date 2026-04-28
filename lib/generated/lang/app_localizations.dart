@@ -1821,6 +1821,72 @@ abstract class S {
   /// **'Prayer Notifications'**
   String get prayerNotifications;
 
+  /// No description provided for @adhanAudioSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Adhan Audio Settings'**
+  String get adhanAudioSettings;
+
+  /// No description provided for @playAdhanSound.
+  ///
+  /// In en, this message translates to:
+  /// **'Play Adhan Sound'**
+  String get playAdhanSound;
+
+  /// No description provided for @playAdhanSoundDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Play full adhan sound when prayer time begins'**
+  String get playAdhanSoundDesc;
+
+  /// No description provided for @chooseMuadhin.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Muadhin'**
+  String get chooseMuadhin;
+
+  /// No description provided for @siddiq_hamdoun.
+  ///
+  /// In en, this message translates to:
+  /// **'Siddiq Hamdoun'**
+  String get siddiq_hamdoun;
+
+  /// No description provided for @abdul_basit.
+  ///
+  /// In en, this message translates to:
+  /// **'Abdul Basit Abdul Samad'**
+  String get abdul_basit;
+
+  /// No description provided for @farooq_hadrawi.
+  ///
+  /// In en, this message translates to:
+  /// **'Farooq Hadrawi'**
+  String get farooq_hadrawi;
+
+  /// No description provided for @noreen_mohammed.
+  ///
+  /// In en, this message translates to:
+  /// **'Noreen Mohammed'**
+  String get noreen_mohammed;
+
+  /// No description provided for @wadie_alyamani.
+  ///
+  /// In en, this message translates to:
+  /// **'Wadie Al-Yamani'**
+  String get wadie_alyamani;
+
+  /// No description provided for @yasser_alhouri.
+  ///
+  /// In en, this message translates to:
+  /// **'Yasser Al-Houri'**
+  String get yasser_alhouri;
+
+  /// No description provided for @stopAdhan.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Adhan'**
+  String get stopAdhan;
+
   /// No description provided for @prayerTimeReminder.
   ///
   /// In en, this message translates to:
@@ -1848,7 +1914,7 @@ abstract class S {
   /// No description provided for @getValue.
   ///
   /// In en, this message translates to:
-  /// **'{key, select, fajr{Fajr} sunrise{Sunrise} sunrise_end{Sunrise End} dhuhr{Dhuhr} asr{Asr} maghrib{Maghrib} isha{Isha} other{{key}}}'**
+  /// **'{key, select, fajr{Fajr} sunrise{Sunrise} sunrise_end{Sunrise End} dhuhr{Dhuhr} asr{Asr} maghrib{Maghrib} isha{Isha} siddiq_hamdoun{Siddiq Hamdoun} abdul_basit{Abdul Basit} farooq_hadrawi{Farooq Hadrawi} noreen_mohammed{Noreen Mohammed} wadie_alyamani{Wadie Al-Yamani} yasser_alhouri{Yasser Al-Houri} other{{key}}}'**
   String getValue(String key);
 
   /// No description provided for @locationPermissionExplanation.
@@ -1856,6 +1922,42 @@ abstract class S {
   /// In en, this message translates to:
   /// **'We need access to your location to accurately determine prayer times for your current city. This is optional, you can always enter your location manually via search.'**
   String get locationPermissionExplanation;
+
+  /// No description provided for @testFullAdhan.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Adhan Test'**
+  String get testFullAdhan;
+
+  /// No description provided for @startingFullAdhanTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting adhan test for all prayers...'**
+  String get startingFullAdhanTest;
+
+  /// No description provided for @playingAdhanFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Playing adhan for'**
+  String get playingAdhanFor;
+
+  /// No description provided for @testCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Test Completed'**
+  String get testCompleted;
+
+  /// No description provided for @fullAdhanTestSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'All adhan sounds have been tested successfully and system validity confirmed.'**
+  String get fullAdhanTestSuccess;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

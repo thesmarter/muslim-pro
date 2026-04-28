@@ -16,10 +16,10 @@ import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.
 import 'package:muslim/src/features/home/presentation/screens/home_screen.dart';
 import 'package:muslim/src/features/home_search/presentation/controller/cubit/search_cubit.dart';
 import 'package:muslim/src/features/onboarding/presentation/screens/onboarding_screen.dart';
+import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_bloc.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
 import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
 import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_cubit.dart';
-import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_bloc.dart';
 import 'package:muslim/src/features/ui/presentation/components/desktop_window_wrapper.dart';
 import 'package:muslim/src/features/update/presentation/controller/update_cubit.dart';
 import 'package:muslim/src/features/update/presentation/screens/force_update_screen.dart';

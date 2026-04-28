@@ -882,6 +882,39 @@ class SEn extends S {
   String get prayerNotifications => 'Prayer Notifications';
 
   @override
+  String get adhanAudioSettings => 'Adhan Audio Settings';
+
+  @override
+  String get playAdhanSound => 'Play Adhan Sound';
+
+  @override
+  String get playAdhanSoundDesc => 'Play full adhan sound when prayer time begins';
+
+  @override
+  String get chooseMuadhin => 'Choose Muadhin';
+
+  @override
+  String get siddiq_hamdoun => 'Siddiq Hamdoun';
+
+  @override
+  String get abdul_basit => 'Abdul Basit Abdul Samad';
+
+  @override
+  String get farooq_hadrawi => 'Farooq Hadrawi';
+
+  @override
+  String get noreen_mohammed => 'Noreen Mohammed';
+
+  @override
+  String get wadie_alyamani => 'Wadie Al-Yamani';
+
+  @override
+  String get yasser_alhouri => 'Yasser Al-Houri';
+
+  @override
+  String get stopAdhan => 'Stop Adhan';
+
+  @override
   String prayerTimeReminder(Object prayerName) {
     return 'It\'s time for $prayerName';
   }
@@ -907,6 +940,12 @@ class SEn extends S {
         'asr': 'Asr',
         'maghrib': 'Maghrib',
         'isha': 'Isha',
+        'siddiq_hamdoun': 'Siddiq Hamdoun',
+        'abdul_basit': 'Abdul Basit',
+        'farooq_hadrawi': 'Farooq Hadrawi',
+        'noreen_mohammed': 'Noreen Mohammed',
+        'wadie_alyamani': 'Wadie Al-Yamani',
+        'yasser_alhouri': 'Yasser Al-Houri',
         'other': '$key',
       },
     );
@@ -916,4 +955,23 @@ class SEn extends S {
   @override
   String get locationPermissionExplanation =>
       'We need access to your location to accurately determine prayer times for your current city. This is optional, you can always enter your location manually via search.';
+
+  @override
+  String get testFullAdhan => 'Full Adhan Test';
+
+  @override
+  String get startingFullAdhanTest => 'Starting adhan test for all prayers...';
+
+  @override
+  String get playingAdhanFor => 'Playing adhan for';
+
+  @override
+  String get testCompleted => 'Test Completed';
+
+  @override
+  String get fullAdhanTestSuccess =>
+      'All adhan sounds have been tested successfully and system validity confirmed.';
+
+  @override
+  String get ok => 'OK';
 }

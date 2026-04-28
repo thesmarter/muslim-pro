@@ -30,14 +30,14 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Theme(
-      data: Theme.of(context).copyWith(
-        useMaterial3: false, // Required by quran_library
+      data: ThemeData(
+        brightness: Theme.of(context).brightness,
+        colorScheme: Theme.of(context).colorScheme,
+        useMaterial3: false,
       ),
       child: QuranLibraryScreen(
         parentContext: context,
         isDark: isDark,
-        withPageView: true,
-        useDefaultAppBar: true,
         appBar: widget.onBack != null
             ? AppBar(
                 leading: IconButton(
@@ -48,8 +48,6 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
                 centerTitle: true,
               )
             : null,
-        isShowAudioSlider: true,
-        showAyahBookmarkedIcon: true,
         appLanguageCode: Localizations.localeOf(context).languageCode,
         topBarStyle: QuranTopBarStyle.defaults(isDark: isDark, context: context).copyWith(
           showAudioButton: true,

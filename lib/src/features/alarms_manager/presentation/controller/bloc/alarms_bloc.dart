@@ -3,7 +3,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:muslim/src/core/extensions/localization_extesion.dart';
+import 'package:muslim/src/core/extensions/localization_extension.dart';
 import 'package:muslim/src/core/functions/show_toast.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/alarm.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/alarm_manager.dart';

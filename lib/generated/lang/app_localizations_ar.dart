@@ -758,7 +758,7 @@ class SAr extends S {
   String get audioPlayerDelayNone => 'بدون تأخير';
 
   @override
-  String get audioPlayerDelayByPrevious => 'نفس مدة الذكر السابق';
+  String get audioPlayerDelayByPrevious => 'تكرار آخر تأخير';
 
   @override
   String get audioPlayerDelayFixed => 'وقت محدد';
@@ -881,6 +881,39 @@ class SAr extends S {
   String get prayerNotifications => 'تنبيهات الصلاة';
 
   @override
+  String get adhanAudioSettings => 'إعدادات صوت الأذان';
+
+  @override
+  String get playAdhanSound => 'تشغيل صوت الأذان';
+
+  @override
+  String get playAdhanSoundDesc => 'تشغيل صوت الأذان كاملاً عند دخول وقت الصلاة';
+
+  @override
+  String get chooseMuadhin => 'اختر المؤذن';
+
+  @override
+  String get siddiq_hamdoun => 'صديق أحمد حمدون';
+
+  @override
+  String get abdul_basit => 'عبد الباسط عبد الصمد';
+
+  @override
+  String get farooq_hadrawi => 'فاروق حضراوي';
+
+  @override
+  String get noreen_mohammed => 'نورين محمد صديق';
+
+  @override
+  String get wadie_alyamani => 'وديع اليمني';
+
+  @override
+  String get yasser_alhouri => 'ياسر الحوري';
+
+  @override
+  String get stopAdhan => 'إيقاف الأذان';
+
+  @override
   String prayerTimeReminder(Object prayerName) {
     return 'حان الآن موعد $prayerName';
   }
@@ -906,6 +939,12 @@ class SAr extends S {
         'asr': 'العصر',
         'maghrib': 'المغرب',
         'isha': 'العشاء',
+        'siddiq_hamdoun': 'صديق أحمد حمدون',
+        'abdul_basit': 'عبد الباسط عبد الصمد',
+        'farooq_hadrawi': 'فاروق حضراوي',
+        'noreen_mohammed': 'نورين محمد صديق',
+        'wadie_alyamani': 'وديع اليمني',
+        'yasser_alhouri': 'ياسر الحوري',
         'other': '$key',
       },
     );
@@ -915,4 +954,22 @@ class SAr extends S {
   @override
   String get locationPermissionExplanation =>
       'نحتاج للوصول إلى موقعك لتحديد مواقيت الصلاة بدقة لمدينتك الحالية. هذا الأمر اختياري، يمكنك دائماً إدخال موقعك يدوياً عبر البحث.';
+
+  @override
+  String get testFullAdhan => 'اختبار الأذان بالكامل';
+
+  @override
+  String get startingFullAdhanTest => 'بدء اختبار الأذان لجميع الصلوات...';
+
+  @override
+  String get playingAdhanFor => 'تشغيل أذان';
+
+  @override
+  String get testCompleted => 'اكتمل الاختبار';
+
+  @override
+  String get fullAdhanTestSuccess => 'تم اختبار جميع أصوات الأذان بنجاح وتأكدت صلاحية النظام.';
+
+  @override
+  String get ok => 'حسناً';
 }
