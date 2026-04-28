@@ -291,6 +291,8 @@
   "adhanAudioSettings": "Adhan Audio Settings",
   "playAdhanSound": "Play Adhan Sound",
   "playAdhanSoundDesc": "Play full adhan sound when prayer time begins",
+  "repeatAdhan": "Repeat Adhan",
+  "repeatAdhanDesc": "Repeat the Adhan sound until manually stopped",
   "chooseMuadhin": "Choose Muadhin",
   "siddiq_hamdoun": "Siddiq Hamdoun",
   "abdul_basit": "Abdul Basit Abdul Samad",

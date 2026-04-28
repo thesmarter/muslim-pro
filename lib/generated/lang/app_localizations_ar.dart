@@ -890,6 +890,12 @@ class SAr extends S {
   String get playAdhanSoundDesc => 'تشغيل صوت الأذان كاملاً عند دخول وقت الصلاة';
 
   @override
+  String get repeatAdhan => 'تكرار الأذان';
+
+  @override
+  String get repeatAdhanDesc => 'تكرار صوت الأذان حتى يتم إيقافه يدوياً';
+
+  @override
   String get chooseMuadhin => 'اختر المؤذن';
 
   @override

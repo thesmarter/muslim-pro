@@ -1839,6 +1839,18 @@ abstract class S {
   /// **'Play full adhan sound when prayer time begins'**
   String get playAdhanSoundDesc;
 
+  /// No description provided for @repeatAdhan.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat Adhan'**
+  String get repeatAdhan;
+
+  /// No description provided for @repeatAdhanDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat the Adhan sound until manually stopped'**
+  String get repeatAdhanDesc;
+
   /// No description provided for @chooseMuadhin.
   ///
   /// In en, this message translates to:

@@ -38,17 +38,43 @@ class AdhanAudioService {
 
   Future<void> init() async {
     final session = await AudioSession.instance;
-    await session.configure(const AudioSessionConfiguration.music());
+    await session.configure(const AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playback,
+      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.duckOthers,
+      avAudioSessionMode: AVAudioSessionMode.defaultMode,
+      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.music,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.alarm, // Use alarm usage to respect alarm volume and potentially bypass silent mode
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gainTransientMayDuck,
+      androidWillPauseWhenDucked: true,
+    ));
     await session.setActive(true);
 
     _audioHandler = await AudioService.init(
       builder: () => MyAudioHandler(_player),
       config: const AudioServiceConfig(
-        androidNotificationChannelId: 'com.detatech.Azkar.adhan',
+        androidNotificationChannelId: 'com.detatech.Azkar.adhan.v1',
         androidNotificationChannelName: 'Adhan Playback',
         androidNotificationOngoing: true,
       ),
     );
+
+    // Listen for completion to stop automatically
+    _player.processingStateStream.listen((state) {
+      if (state == ProcessingState.completed) {
+        final settings = sl<PrayerTimesRepo>().getSettings();
+        if (settings.repeatAdhan) {
+          _player.seek(Duration.zero);
+          _player.play();
+        } else {
+          stopAdhan();
+        }
+      }
+    });
     
     // Set initial volume from settings
     try {

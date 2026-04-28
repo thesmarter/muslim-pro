@@ -293,6 +293,8 @@
   "adhanAudioSettings": "إعدادات صوت الأذان",
   "playAdhanSound": "تشغيل صوت الأذان",
   "playAdhanSoundDesc": "تشغيل صوت الأذان كاملاً عند دخول وقت الصلاة",
+  "repeatAdhan": "تكرار الأذان",
+  "repeatAdhanDesc": "تكرار صوت الأذان حتى يتم إيقافه يدوياً",
   "chooseMuadhin": "اختر المؤذن",
   "siddiq_hamdoun": "صديق أحمد حمدون",
   "abdul_basit": "عبد الباسط عبد الصمد",
