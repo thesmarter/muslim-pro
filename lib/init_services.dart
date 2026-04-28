@@ -1,3 +1,4 @@
+// ignore_for_file: unreachable_from_main
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -9,11 +10,13 @@ import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart' as service_locator;
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/extension_platform.dart';
-import 'package:muslim/src/core/extensions/localization_extesion.dart';
+import 'package:muslim/src/core/extensions/localization_extension.dart';
 import 'package:muslim/src/core/functions/print.dart';
 import 'package:muslim/src/core/utils/app_bloc_observer.dart';
 import 'package:muslim/src/core/values/constant.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/local_notification_manager.dart';
+import 'package:muslim/src/features/prayer_times/data/repository/adhan_audio_service.dart';
+import 'package:muslim/src/features/prayer_times/data/repository/prayer_times_repo.dart';
 import 'package:muslim/src/features/themes/data/repository/theme_repo.dart';
 import 'package:muslim/src/features/ui/data/repository/local_repo.dart';
 import 'package:quran_library/quran_library.dart';
@@ -30,6 +33,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 }
 
+// ignore: unreachable_member
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -44,6 +48,14 @@ Future<void> initServices() async {
   try {
     await GetStorage.init(kAppStorageKey);
     await sl<LocalNotificationManager>().init();
+    await sl<AdhanAudioService>().init();
+    
+    // Auto-sync prayer times and reschedule notifications on app start
+    final prayerRepo = sl<PrayerTimesRepo>();
+    final settings = prayerRepo.getSettings();
+    await prayerRepo.schedulePrayerNotifications(settings);
+    hisnPrint("Prayer times synced and rescheduled on app start.");
+    
   } catch (e) {
     hisnPrint(e);
   }
@@ -69,11 +81,7 @@ Future<void> _setupFirebase() async {
     final messaging = FirebaseMessaging.instance;
     
     // طلب الإذن والاشتراك في المواضيع بدون انتظار (non-blocking)
-    messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    messaging.requestPermission();
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -101,6 +109,7 @@ Future<void> _setupFirebase() async {
   }
 }
 
+// ignore: unreachable_member
 Future phoneDeviceBars() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
@@ -111,6 +120,7 @@ Future phoneDeviceBars() async {
   ]);
 }
 
+// ignore: unreachable_member
 Future initWindowsManager() async {
   if (!PlatformExtension.isDesktop) return;
 
@@ -130,6 +140,7 @@ Future initWindowsManager() async {
   });
 }
 
+// ignore: unreachable_member
 Future loadLocalizations() async {
   Locale? localeToSet = sl<ThemeRepo>().appLocale;
   final languageCode = PlatformExtension.languageCode;

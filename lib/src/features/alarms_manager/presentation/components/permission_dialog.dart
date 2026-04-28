@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
-import 'package:muslim/src/core/extensions/localization_extesion.dart';
+import 'package:muslim/src/core/extensions/localization_extension.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/local_notification_manager.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
 import 'package:url_launcher/url_launcher.dart';
