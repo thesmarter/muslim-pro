@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
@@ -16,6 +18,9 @@ class AdhanAudioService {
   final _player = AudioPlayer();
   String? _currentPlayingMuadhinId;
   String? get currentPlayingMuadhinId => _currentPlayingMuadhinId;
+  
+  bool _isInitialized = false;
+  StreamSubscription<ProcessingState>? _stateSubscription;
 
   // Stream for current playing muadhin ID
   final _currentMuadhinSubject = BehaviorSubject<String?>();
@@ -36,6 +41,11 @@ class AdhanAudioService {
   };
 
   Future<void> init() async {
+    if (_isInitialized) {
+      hisnPrint("Adhan audio player already initialized");
+      return;
+    }
+
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playback,
@@ -52,9 +62,11 @@ class AdhanAudioService {
     ));
     await session.setActive(true);
 
+    // Cancel old subscription if any
+    await _stateSubscription?.cancel();
 
     // Listen for completion to stop automatically
-    _player.processingStateStream.listen((state) {
+    _stateSubscription = _player.processingStateStream.listen((state) {
       if (state == ProcessingState.completed) {
         final settings = sl<PrayerTimesRepo>().getSettings();
         if (settings.repeatAdhan) {
@@ -75,21 +87,27 @@ class AdhanAudioService {
       hisnPrint("Error setting initial volume: $e");
     }
     
-    // Initialize stream with null
-    _currentMuadhinSubject.add(null);
-    
+    _isInitialized = true;
     hisnPrint("Adhan audio player initialized");
   }
 
+  bool _isLoading = false;
+
   Future<void> playAdhan(String muadhinId) async {
+    if (_isLoading) {
+      hisnPrint("Playback request ignored: Already loading an asset");
+      return;
+    }
+
     try {
+      _isLoading = true;
       hisnPrint("playAdhan requested for: $muadhinId");
       final soundPath = muadhins[muadhinId] ?? muadhins['wadie_alyamani']!;
       hisnPrint("Resolved sound path: $soundPath");
       
       // Stop current if any
-      if (_player.playing) {
-        hisnPrint("Stopping current playback");
+      if (_player.playing || _player.processingState != ProcessingState.idle) {
+        hisnPrint("Stopping current playback/loading before new request");
         await _player.stop();
       }
 
@@ -98,6 +116,7 @@ class AdhanAudioService {
       _currentMuadhinSubject.add(muadhinId);
       
       hisnPrint("Setting asset: $soundPath");
+      // Use load() explicitly before play for better stability on some Android devices
       await _player.setAsset(soundPath);
       
       // Ensure volume is set again before playing
@@ -116,6 +135,7 @@ class AdhanAudioService {
       // Fallback to default if error
       if (muadhinId != 'wadie_alyamani') {
         hisnPrint("Attempting fallback to default muadhin...");
+        _isLoading = false; // Reset to allow fallback
         await playAdhan('wadie_alyamani');
       }
     } on PlayerInterruptedException catch (e) {
@@ -126,12 +146,16 @@ class AdhanAudioService {
       _currentPlayingMuadhinId = null;
       _currentMuadhinSubject.add(null);
       hisnPrint("Unexpected error playing adhan: $e");
+    } finally {
+      _isLoading = false;
     }
   }
 
   Future<void> stopAdhan() async {
     try {
-      await _player.stop();
+      if (_player.processingState != ProcessingState.idle) {
+        await _player.stop();
+      }
       _currentPlayingMuadhinId = null;
       _currentMuadhinSubject.add(null);
       hisnPrint("Adhan stopped");
@@ -191,6 +215,9 @@ class AdhanAudioService {
   }
 
   void dispose() {
+    _stateSubscription?.cancel();
     _player.dispose();
+    _currentMuadhinSubject.close();
+    _isInitialized = false;
   }
 }
