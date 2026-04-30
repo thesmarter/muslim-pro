@@ -33,3 +33,9 @@
 
 # General project models
 -keep class com.hassaneltantawy.hisnelmoslem.models.** { *; }
+
+# Google Play Core (Flutter internal references)
+-dontwarn com.google.android.play.core.**
+-dontwarn com.google.android.play.core.splitcompat.**
+-dontwarn com.google.android.play.core.splitinstall.**
+-dontwarn com.google.android.play.core.tasks.**
