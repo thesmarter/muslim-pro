@@ -3,7 +3,7 @@ description: muslim-pro start kit app.
 
 publish_to: "none"
 
-version: 3.2.03+32
+version: 3.2.04+33
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
