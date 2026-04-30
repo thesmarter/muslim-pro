@@ -44,17 +44,21 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
         child: QuranLibraryScreen(
           parentContext: context,
           isDark: isDark,
-          appBar: widget.onBack != null
-              ? AppBar(
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: widget.onBack,
-                  ),
-                  title: Text(S.of(context).sourceQuran),
-                  centerTitle: true,
-                )
-              : null,
           appLanguageCode: Localizations.localeOf(context).languageCode,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          ayahSelectedBackgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+          ayahIconColor: Theme.of(context).colorScheme.primary,
+          surahInfoStyle: SurahInfoStyle.defaults(isDark: isDark, context: context).copyWith(
+            ayahCount: S.of(context).ayaCount,
+            firstTabText: S.of(context).surahNames,
+            secondTabText: S.of(context).aboutSurah,
+          ),
+          basmalaStyle: BasmalaStyle(
+            basmalaColor: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
+          ayahStyle: AyahAudioStyle.defaults(isDark: isDark, context: context).copyWith(
+            readersTabText: S.of(context).readers,
+          ),
           topBarStyle: QuranTopBarStyle.defaults(isDark: isDark, context: context).copyWith(
             showAudioButton: true,
             showFontsButton: true,
@@ -62,8 +66,36 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
             tabSearchLabel: S.of(context).search,
             tabIndexLabel: S.of(context).index,
           ),
+          indexTabStyle: IndexTabStyle.defaults(isDark: isDark, context: context).copyWith(
+            tabSurahsLabel: S.of(context).surahs,
+            tabJozzLabel: S.of(context).juzz,
+          ),
+          searchTabStyle: SearchTabStyle.defaults(isDark: isDark, context: context).copyWith(
+            searchHintText: S.of(context).search,
+          ),
           bookmarksTabStyle: BookmarksTabStyle.defaults(isDark: isDark, context: context).copyWith(
-            emptyStateText: S.of(context).nothingFoundInFavorites,
+            emptyStateText: S.of(context).noBookmarksYet,
+            greenGroupText: S.of(context).greenBookmark,
+            yellowGroupText: S.of(context).yellowBookmark,
+            redGroupText: S.of(context).redBookmark,
+          ),
+          ayahMenuStyle: AyahMenuStyle.defaults(isDark: isDark, context: context).copyWith(
+            copySuccessMessage: S.of(context).ayahCopied,
+            showPlayAllButton: true,
+          ),
+          tafsirStyle: TafsirStyle.defaults(isDark: isDark, context: context).copyWith(
+            tafsirName: S.of(context).tafsir,
+            translateName: S.of(context).translate,
+            tafsirIsEmptyNote: S.of(context).tafsirIsEmptyNote,
+            footnotesName: S.of(context).footnotes,
+          ),
+          topBottomQuranStyle: TopBottomQuranStyle.defaults(
+            isDark: isDark,
+            context: context,
+          ).copyWith(
+            hizbName: S.of(context).hizb,
+            juzName: S.of(context).juz,
+            sajdaName: S.of(context).sajda,
           ),
           onPageChanged: (pageIndex) {
             // The library handles internal saving of the last page automatically.

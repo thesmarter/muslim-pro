@@ -980,4 +980,58 @@ class SEn extends S {
 
   @override
   String get ok => 'OK';
+
+  @override
+  String get surahs => 'Surahs';
+
+  @override
+  String get juzz => 'Juzz';
+
+  @override
+  String get readers => 'Readers';
+
+  @override
+  String get greenBookmark => 'Green Bookmark';
+
+  @override
+  String get yellowBookmark => 'Yellow Bookmark';
+
+  @override
+  String get redBookmark => 'Red Bookmark';
+
+  @override
+  String get tafsir => 'Tafsir';
+
+  @override
+  String get translate => 'Translate';
+
+  @override
+  String get footnotes => 'Footnotes';
+
+  @override
+  String get hizb => 'Hizb';
+
+  @override
+  String get juz => 'Juz';
+
+  @override
+  String get sajda => 'Sajda';
+
+  @override
+  String get surahNames => 'Surah Names';
+
+  @override
+  String get aboutSurah => 'About Surah';
+
+  @override
+  String get ayahCopied => 'Ayah copied';
+
+  @override
+  String get noBookmarksYet => 'No bookmarks yet';
+
+  @override
+  String get ayaCount => 'Ayahs count';
+
+  @override
+  String get tafsirIsEmptyNote => 'No tafsir available for this ayah';
 }

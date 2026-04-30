@@ -978,4 +978,58 @@ class SAr extends S {
 
   @override
   String get ok => 'حسناً';
+
+  @override
+  String get surahs => 'السور';
+
+  @override
+  String get juzz => 'الأجزاء';
+
+  @override
+  String get readers => 'القراء';
+
+  @override
+  String get greenBookmark => 'علامة خضراء';
+
+  @override
+  String get yellowBookmark => 'علامة صفراء';
+
+  @override
+  String get redBookmark => 'علامة حمراء';
+
+  @override
+  String get tafsir => 'التفسير';
+
+  @override
+  String get translate => 'الترجمة';
+
+  @override
+  String get footnotes => 'الحواشي';
+
+  @override
+  String get hizb => 'الحزب';
+
+  @override
+  String get juz => 'الجزء';
+
+  @override
+  String get sajda => 'سجدة';
+
+  @override
+  String get surahNames => 'أسماء السور';
+
+  @override
+  String get aboutSurah => 'عن السورة';
+
+  @override
+  String get ayahCopied => 'تم نسخ الآية';
+
+  @override
+  String get noBookmarksYet => 'لا توجد علامات مرجعية بعد';
+
+  @override
+  String get ayaCount => 'عدد الآيات';
+
+  @override
+  String get tafsirIsEmptyNote => 'لا يوجد تفسير متوفر لهذه الآية';
 }

@@ -1,4 +1,4 @@
-import 'package:audio_service/audio_service.dart';
+
 import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
@@ -12,8 +12,7 @@ class AdhanAudioService {
   factory AdhanAudioService() => _instance;
   AdhanAudioService._internal();
 
-  late final AudioHandler _audioHandler;
-  AudioHandler get audioHandler => _audioHandler;
+
   final _player = AudioPlayer();
   String? _currentPlayingMuadhinId;
   String? get currentPlayingMuadhinId => _currentPlayingMuadhinId;
@@ -46,7 +45,6 @@ class AdhanAudioService {
       avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
       androidAudioAttributes: AndroidAudioAttributes(
         contentType: AndroidAudioContentType.music,
-        flags: AndroidAudioFlags.none,
         usage: AndroidAudioUsage.alarm, // Use alarm usage to respect alarm volume and potentially bypass silent mode
       ),
       androidAudioFocusGainType: AndroidAudioFocusGainType.gainTransientMayDuck,
@@ -54,14 +52,6 @@ class AdhanAudioService {
     ));
     await session.setActive(true);
 
-    _audioHandler = await AudioService.init(
-      builder: () => MyAudioHandler(_player),
-      config: const AudioServiceConfig(
-        androidNotificationChannelId: 'com.detatech.Azkar.adhan.v1',
-        androidNotificationChannelName: 'Adhan Playback',
-        androidNotificationOngoing: true,
-      ),
-    );
 
     // Listen for completion to stop automatically
     _player.processingStateStream.listen((state) {
@@ -88,7 +78,7 @@ class AdhanAudioService {
     // Initialize stream with null
     _currentMuadhinSubject.add(null);
     
-    hisnPrint("AudioHandler initialized: ${_audioHandler.runtimeType}");
+    hisnPrint("Adhan audio player initialized");
   }
 
   Future<void> playAdhan(String muadhinId) async {
@@ -164,10 +154,8 @@ class AdhanAudioService {
   Future<void> testFullAdhanSequence(String muadhinId, Function(String prayerName) onPrayerChange) async {
     final prayers = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
     try {
-      // Log starting test
       hisnPrint("--- Starting Full Adhan Test Sequence ---");
       
-      // Check volume and permissions first (basic check)
       if (_player.volume == 0) {
         setVolume(0.5);
       }
@@ -178,15 +166,16 @@ class AdhanAudioService {
         
         hisnPrint("Testing Adhan for: $prayerName");
 
-        // Show test notification
+        // Show test notification with adhan sound
         await sl<LocalNotificationManager>().showAdhanNotification(
           id: 990 + prayers.indexOf(prayerKey),
-          title: "Adhan Test: $prayerName",
-          body: "Testing high-quality audio & notification actions...",
+          title: "اختبار الأذان: $prayerName",
+          body: "اختبار صوت الأذان والإشعار",
           payload: "test_adhan_$muadhinId",
+          soundFileName: muadhinId,
+          muadhinId: muadhinId,
         );
 
-        await playAdhan(muadhinId);
         // Play each for 5 seconds for testing purposes
         await Future.delayed(const Duration(seconds: 5));
         await stopAdhan();
@@ -203,52 +192,5 @@ class AdhanAudioService {
 
   void dispose() {
     _player.dispose();
-  }
-}
-
-class MyAudioHandler extends BaseAudioHandler with SeekHandler {
-  final AudioPlayer _player;
-
-  MyAudioHandler(this._player) {
-    _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
-  }
-
-  @override
-  Future<void> play() => _player.play();
-
-  @override
-  Future<void> pause() => _player.pause();
-
-  @override
-  Future<void> stop() => _player.stop();
-
-  @override
-  Future<void> seek(Duration position) => _player.seek(position);
-
-  PlaybackState _transformEvent(PlaybackEvent event) {
-    return PlaybackState(
-      controls: [
-        MediaControl.pause,
-        MediaControl.stop,
-      ],
-      systemActions: const {
-        MediaAction.seek,
-        MediaAction.seekForward,
-        MediaAction.seekBackward,
-      },
-      androidCompactActionIndices: const [0, 1],
-      processingState: {
-        ProcessingState.idle: AudioProcessingState.idle,
-        ProcessingState.loading: AudioProcessingState.loading,
-        ProcessingState.buffering: AudioProcessingState.buffering,
-        ProcessingState.ready: AudioProcessingState.ready,
-        ProcessingState.completed: AudioProcessingState.completed,
-      }[_player.processingState] ?? AudioProcessingState.idle,
-      playing: _player.playing,
-      updatePosition: _player.position,
-      bufferedPosition: _player.bufferedPosition,
-      speed: _player.speed,
-      queueIndex: event.currentIndex,
-    );
   }
 }

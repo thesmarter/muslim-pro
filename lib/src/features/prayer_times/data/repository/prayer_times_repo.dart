@@ -12,6 +12,9 @@ class PrayerTimesRepo {
   late final GetStorage _box = GetStorage();
   static const String _settingsKey = 'prayer_settings';
 
+  /// Default muadhin used when none is selected
+  static const String defaultMuadhin = 'wadie_alyamani';
+
   Future<void> saveSettings(PrayerSettings settings) async {
     await _box.write(_settingsKey, settings.toJson());
     await schedulePrayerNotifications(settings);
@@ -53,7 +56,7 @@ class PrayerTimesRepo {
     final Map<String, DateTime> times = {
       'fajr': prayerTimes.fajr,
       'sunrise': prayerTimes.sunrise,
-      'sunrise_end': prayerTimes.sunrise.add(const Duration(minutes: 15)), // Example: 15 mins after sunrise
+      'sunrise_end': prayerTimes.sunrise.add(const Duration(minutes: 15)),
       'dhuhr': prayerTimes.dhuhr,
       'asr': prayerTimes.asr,
       'maghrib': prayerTimes.maghrib,
@@ -70,14 +73,16 @@ class PrayerTimesRepo {
       'isha': 2006,
     };
 
+    // Determine the muadhin to use (user-selected or default)
+    final selectedMuadhin = settings.muadhin.isNotEmpty 
+        ? settings.muadhin 
+        : defaultMuadhin;
+
     for (final entry in times.entries) {
       final prayerKey = entry.key;
       final prayerTime = entry.value;
       final isEnabled = settings.notifications[prayerKey] ?? false;
 
-      // Always schedule if it's in the future. 
-      // For cross-day scheduling (e.g., app opened at 11 PM), 
-      // we might want to schedule for tomorrow as well.
       if (isEnabled) {
         DateTime finalScheduledTime = prayerTime;
         if (prayerTime.isBefore(now)) {
@@ -99,6 +104,7 @@ class PrayerTimesRepo {
                 ? SX.current.sunriseEndNotificationBody
                 : SX.current.prayerTimeReminder(SX.current.getValue(prayerKey));
 
+        // Adhan only plays for actual prayer times (not sunrise/sunrise_end)
         final isAdhan = settings.playAdhanSound && 
                       prayerKey != 'sunrise' && 
                       prayerKey != 'sunrise_end';
@@ -109,8 +115,10 @@ class PrayerTimesRepo {
             title: title,
             body: body,
             scheduledDate: finalScheduledTime,
-            payload: "adhan_${settings.muadhin}_$prayerKey",
+            payload: "adhan_${selectedMuadhin}_$prayerKey",
+            soundFileName: selectedMuadhin,
           );
+          hisnPrint("Scheduled adhan for $prayerKey at $finalScheduledTime with muadhin: $selectedMuadhin");
         } else {
           await notificationManager.addCustomDailyReminder(
             id: ids[prayerKey]!,
@@ -120,6 +128,7 @@ class PrayerTimesRepo {
             payload: "prayer_time_$prayerKey",
             requestPermission: false,
           );
+          hisnPrint("Scheduled regular notification for $prayerKey at $finalScheduledTime");
         }
       }
     }

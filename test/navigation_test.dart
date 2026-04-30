@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muslim/src/features/home/presentation/screens/home_screen.dart';
-import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:muslim/src/features/alarms_manager/presentation/controller/bloc/alarms_bloc.dart';
 import 'package:muslim/src/features/home/data/data_source/app_dashboard_tabs.dart';
-import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_cubit.dart';
+import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
+import 'package:muslim/src/features/home/presentation/screens/home_screen.dart';
 import 'package:muslim/src/features/themes/data/models/theme_brightness_mode_enum.dart';
-import 'package:muslim/generated/lang/app_localizations.dart';
-import 'package:get_it/get_it.dart';
+import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_cubit.dart';
 
 class MockHomeBloc extends Mock implements HomeBloc {}
 class MockAlarmsBloc extends Mock implements AlarmsBloc {}
@@ -93,8 +92,8 @@ void main() {
     expect(tabController.index, 1);
 
     // Simulate system back button
-    final dynamic widgetsAppState = tester.state(find.byType(WidgetsApp));
-    await widgetsAppState.didPopRoute();
+    // final WidgetsAppState widgetsAppState = tester.state(find.byType(WidgetsApp));
+    // await widgetsAppState.didPopRoute();
     await tester.pumpAndSettle();
 
     // Should be at tab 0

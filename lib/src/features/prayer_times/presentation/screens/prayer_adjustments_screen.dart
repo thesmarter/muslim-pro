@@ -115,8 +115,6 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
           child: Text(S.of(context).chooseMuadhin, style: Theme.of(context).textTheme.bodyMedium),
         ),
         ...adhanService.muadhins.entries.map((e) {
-          final isCurrentMuadhin = e.key == state.settings.muadhin;
-          
           return StreamBuilder<String?>(
             stream: adhanService.currentMuadhinStream,
             builder: (context, muadhinSnapshot) {
