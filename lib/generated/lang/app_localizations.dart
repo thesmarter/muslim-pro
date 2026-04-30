@@ -1970,6 +1970,114 @@ abstract class S {
   /// In en, this message translates to:
   /// **'OK'**
   String get ok;
+
+  /// No description provided for @surahs.
+  ///
+  /// In en, this message translates to:
+  /// **'Surahs'**
+  String get surahs;
+
+  /// No description provided for @juzz.
+  ///
+  /// In en, this message translates to:
+  /// **'Juzz'**
+  String get juzz;
+
+  /// No description provided for @readers.
+  ///
+  /// In en, this message translates to:
+  /// **'Readers'**
+  String get readers;
+
+  /// No description provided for @greenBookmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Green Bookmark'**
+  String get greenBookmark;
+
+  /// No description provided for @yellowBookmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Yellow Bookmark'**
+  String get yellowBookmark;
+
+  /// No description provided for @redBookmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Red Bookmark'**
+  String get redBookmark;
+
+  /// No description provided for @tafsir.
+  ///
+  /// In en, this message translates to:
+  /// **'Tafsir'**
+  String get tafsir;
+
+  /// No description provided for @translate.
+  ///
+  /// In en, this message translates to:
+  /// **'Translate'**
+  String get translate;
+
+  /// No description provided for @footnotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Footnotes'**
+  String get footnotes;
+
+  /// No description provided for @hizb.
+  ///
+  /// In en, this message translates to:
+  /// **'Hizb'**
+  String get hizb;
+
+  /// No description provided for @juz.
+  ///
+  /// In en, this message translates to:
+  /// **'Juz'**
+  String get juz;
+
+  /// No description provided for @sajda.
+  ///
+  /// In en, this message translates to:
+  /// **'Sajda'**
+  String get sajda;
+
+  /// No description provided for @surahNames.
+  ///
+  /// In en, this message translates to:
+  /// **'Surah Names'**
+  String get surahNames;
+
+  /// No description provided for @aboutSurah.
+  ///
+  /// In en, this message translates to:
+  /// **'About Surah'**
+  String get aboutSurah;
+
+  /// No description provided for @ayahCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Ayah copied'**
+  String get ayahCopied;
+
+  /// No description provided for @noBookmarksYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No bookmarks yet'**
+  String get noBookmarksYet;
+
+  /// No description provided for @ayaCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Ayahs count'**
+  String get ayaCount;
+
+  /// No description provided for @tafsirIsEmptyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'No tafsir available for this ayah'**
+  String get tafsirIsEmptyNote;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

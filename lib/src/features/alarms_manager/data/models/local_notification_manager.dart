@@ -60,14 +60,12 @@ class LocalNotificationManager {
             .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
         
         if (androidPlugin != null) {
-          // Create Adhan channel
+          // Create Adhan channel - sound will be set per-notification
           const adhanChannel = AndroidNotificationChannel(
-            'com.detatech.Azkar.adhan.v1', // Updated key to force refresh
+            'com.detatech.Azkar.adhan.v2',
             'الأذان (Adhan)',
-            description: 'إشعارات الأذان والصلاة',
+            description: 'إشعارات الأذان ومواقيت الصلاة',
             importance: Importance.max,
-            playSound: true,
-            enableVibration: true,
             enableLights: true,
           );
           
@@ -85,7 +83,6 @@ class LocalNotificationManager {
             NotificationsChannels.scheduled.key,
             NotificationsChannels.scheduled.name,
             description: NotificationsChannels.scheduled.description,
-            importance: Importance.defaultImportance,
           ));
           
           hisnPrint("Notification channels created successfully");
@@ -188,90 +185,25 @@ class LocalNotificationManager {
     final String? actionId = notificationResponse.actionId;
     hisnPrint("actionStream: $payload, actionId: $actionId");
 
+    // Handle "Stop Adhan" action button
     if (actionId == 'stop_adhan') {
       await sl<AdhanAudioService>().stopAdhan();
-      // Cancel the notification as well
       if (notificationResponse.id != null) {
         await sl<LocalNotificationManager>().cancelNotificationById(id: notificationResponse.id!);
       }
       return;
     }
 
-    if (actionId == 'delay_adhan') {
-      await sl<AdhanAudioService>().stopAdhan();
-      // Delay for 5 minutes
-      final scheduledDate = DateTime.now().add(const Duration(minutes: 5));
-      final String? originalPayload = payload;
-      if (originalPayload != null) {
-        // Reconstruct title from payload if possible
-        String title = "تذكير بالصلاة";
-        final parts = originalPayload.split('_');
-        if (originalPayload.startsWith('adhan_') && parts.length >= 3) {
-          final prayerKey = parts.last;
-          // Note: SX.current might not be accessible in static context if not initialized properly,
-          // but onDidReceiveNotificationResponse is called when app is running or background.
-          try {
-            title = "تذكير: موعد صلاة " + SX.current.getValue(prayerKey);
-          } catch (_) {}
-        }
-
-        await sl<LocalNotificationManager>().scheduleAdhanNotification(
-          id: (notificationResponse.id ?? 0) + 100,
-          title: title,
-          body: "تذكير بعد التأجيل لمدة 5 دقائق",
-          scheduledDate: scheduledDate,
-          payload: originalPayload,
-        );
-      }
-      return;
-    }
-
-    if (actionId == 'open_app') {
-      if (payload != null) {
-        onNotificationClick(payload);
-      }
-      return;
-    }
-
+    // Handle notification tap (open relevant screen)
     if (payload != null && payload.isNotEmpty) {
       if (payload.startsWith('adhan_') || payload.startsWith('test_adhan_')) {
-        final parts = payload.split('_');
-        String? muadhinId;
-        
-        if (payload.startsWith('adhan_')) {
-          // Payload format: adhan_muadhinId_prayerKey
-          // If muadhinId contains underscores, it's between first and last part
-          if (parts.length >= 3) {
-            muadhinId = parts.sublist(1, parts.length - 1).join('_');
-          }
-        } else if (payload.startsWith('test_adhan_')) {
-          // Payload format: test_adhan_muadhinId
-          if (parts.length >= 3) {
-            muadhinId = parts.sublist(2).join('_');
-          }
-        }
-
-        if (muadhinId != null) {
-          hisnPrint("Playing adhan for muadhin: $muadhinId");
-          await sl<AdhanAudioService>().playAdhan(muadhinId);
-          
-          // Schedule cancellation after 10 minutes if not stopped
-          Future.delayed(const Duration(minutes: 10), () async {
-            await sl<AdhanAudioService>().stopAdhan();
-            if (notificationResponse.id != null) {
-              await sl<LocalNotificationManager>().cancelNotificationById(id: notificationResponse.id!);
-            }
-          });
-        }
+        // Stop any playing adhan when user taps the notification
+        await sl<AdhanAudioService>().stopAdhan();
+        onNotificationClick(payload);
       } else {
         onNotificationClick(payload);
       }
-    } else {
-      hisnPrint("actionStream: Else");
     }
-
-    // Logging all notification operations
-    hisnPrint("Notification received/handled: ${payload ?? 'no-payload'}");
   }
 
   Future<void> cancelAllNotifications() async {
@@ -282,12 +214,14 @@ class LocalNotificationManager {
     await flutterLocalNotificationsPlugin.cancel(id: id);
   }
 
-  NotificationDetails _buildNotificationDetails(
-    NotifyChannel channel,
-    String? title,
-    String? body, {
-    String? soundName,
-    bool playAdhan = false,
+  /// Build notification details for Adhan notifications.
+  /// The adhan sound file name (without extension) from res/raw is used
+  /// as the notification sound. This way, Android plays the adhan audio
+  /// automatically when the notification fires — no user interaction needed.
+  NotificationDetails _buildAdhanNotificationDetails({
+    required String title,
+    String? body,
+    required String soundFileName,
   }) {
     final BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
       body ?? '',
@@ -296,7 +230,60 @@ class LocalNotificationManager {
       htmlFormatContentTitle: true,
     );
 
-    final AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    final AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      NotificationsChannels.adhan.key,
+      NotificationsChannels.adhan.name,
+      channelDescription: NotificationsChannels.adhan.description,
+      importance: Importance.max,
+      priority: Priority.max,
+      styleInformation: bigTextStyleInformation,
+      icon: '@mipmap/ic_launcher',
+      largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+      color: const Color(0xFF1B5E20), // Islamic Green
+      ledColor: const Color(0xFF1B5E20),
+      ledOnMs: 1000,
+      ledOffMs: 500,
+      // Use the adhan sound file from res/raw as the notification sound
+      sound: RawResourceAndroidNotificationSound(soundFileName),
+      fullScreenIntent: true,
+      category: AndroidNotificationCategory.alarm,
+      // Only one action: stop adhan (clean and simple)
+      actions: [
+        AndroidNotificationAction(
+          'stop_adhan',
+          SX.current.stopAdhan,
+        ),
+      ],
+    );
+
+    final DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+      sound: '$soundFileName.mp3',
+      interruptionLevel: InterruptionLevel.critical,
+    );
+
+    return NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
+  }
+
+  /// Build notification details for regular (non-adhan) notifications
+  NotificationDetails _buildRegularNotificationDetails(
+    NotifyChannel channel, {
+    String? title,
+    String? body,
+  }) {
+    final BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
+      body ?? '',
+      htmlFormatBigText: true,
+      contentTitle: title,
+      htmlFormatContentTitle: true,
+    );
+
+    final AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
       channel.key,
       channel.name,
       channelDescription: channel.description,
@@ -305,138 +292,78 @@ class LocalNotificationManager {
       styleInformation: bigTextStyleInformation,
       icon: '@mipmap/ic_launcher',
       largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
-      color: const Color(0xFF1E88E5), // Professional Blue
-      ledColor: const Color(0xFF1E88E5),
-      ledOnMs: 1000,
-      ledOffMs: 500,
-      sound: soundName != null ? RawResourceAndroidNotificationSound(soundName) : null,
-      fullScreenIntent: playAdhan,
-      category: playAdhan ? AndroidNotificationCategory.alarm : null,
-      ongoing: playAdhan,
-      autoCancel: !playAdhan,
-      actions: playAdhan
-          ? [
-              AndroidNotificationAction(
-                'stop_adhan',
-                SX.current.stopAdhan,
-                showsUserInterface: true,
-                cancelNotification: true,
-              ),
-              AndroidNotificationAction(
-                'delay_adhan',
-                'تأجيل (5 دقائق)',
-                showsUserInterface: true,
-                cancelNotification: true,
-              ),
-              AndroidNotificationAction(
-                'open_app',
-                'فتح التطبيق',
-                showsUserInterface: true,
-              ),
-            ]
-          : null,
+      color: const Color(0xFF1B5E20),
     );
 
-    final DarwinNotificationDetails iOSPlatformChannelSpecifics = DarwinNotificationDetails(
+    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
-      sound: soundName != null ? '$soundName.mp3' : null,
-      interruptionLevel: playAdhan ? InterruptionLevel.critical : InterruptionLevel.active,
+      interruptionLevel: InterruptionLevel.active,
     );
 
     return NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics,
+      android: androidDetails,
+      iOS: iosDetails,
     );
   }
 
-  /// Show Adhan Notification
+  /// Schedule an Adhan notification for a specific prayer time.
+  /// The adhan sound plays automatically when the notification fires.
   Future<void> scheduleAdhanNotification({
     required int id,
     required String title,
     String? body,
     required DateTime scheduledDate,
     required String payload,
+    required String soundFileName,
   }) async {
-    // Ensure permissions are granted before scheduling
     await requestPermissionWithDialog();
 
-    // Extract muadhinId for custom notification sound
-    String? soundName;
-    final parts = payload.split('_');
-    hisnPrint("Scheduling adhan notification - Payload: $payload, parts: $parts");
-    
-    if (payload.startsWith('adhan_') && parts.length >= 3) {
-      soundName = parts.sublist(1, parts.length - 1).join('_');
-    }
-    
-    hisnPrint("Extracted soundName for scheduling: $soundName");
+    hisnPrint("Scheduling adhan notification - id: $id, title: $title, "
+        "sound: $soundFileName, date: $scheduledDate, payload: $payload");
 
     await _safeZonedSchedule(
       id: id,
       title: title,
       body: body,
       scheduledDate: tz.TZDateTime.from(scheduledDate, tz.local),
-      notificationDetails: _buildNotificationDetails(
-        NotificationsChannels.adhan,
-        title,
-        body,
-        soundName: soundName,
-        playAdhan: true,
+      notificationDetails: _buildAdhanNotificationDetails(
+        title: title,
+        body: body,
+        soundFileName: soundFileName,
       ),
       payload: payload,
     );
   }
 
+  /// Show an immediate Adhan notification (for testing).
+  /// Also triggers the AudioPlayer for full audio playback in foreground.
   Future<void> showAdhanNotification({
     required int id,
     required String title,
     String? body,
     required String payload,
+    required String soundFileName,
+    required String muadhinId,
   }) async {
-    // Extract muadhinId for custom notification sound
-    String? soundName;
-    final parts = payload.split('_');
-    hisnPrint("Extracting soundName from payload: $payload, parts: $parts");
-    
-    if (payload.startsWith('test_adhan_') && parts.length >= 3) {
-      soundName = parts.sublist(2).join('_');
-    } else if (payload.startsWith('adhan_') && parts.length >= 3) {
-      soundName = parts.sublist(1, parts.length - 1).join('_');
-    }
-    
-    hisnPrint("Extracted soundName: $soundName");
+    hisnPrint("Showing immediate adhan notification - sound: $soundFileName, muadhin: $muadhinId");
 
     await flutterLocalNotificationsPlugin.show(
       id: id,
       title: title,
       body: body,
-      notificationDetails: _buildNotificationDetails(
-        NotificationsChannels.adhan,
-        title,
-        body,
-        soundName: soundName,
-        playAdhan: true,
+      notificationDetails: _buildAdhanNotificationDetails(
+        title: title,
+        body: body,
+        soundFileName: soundFileName,
       ),
       payload: payload,
     );
 
-    // If it's a test or immediate notification, trigger the player manually for foreground
-    if (payload.startsWith('test_adhan_') || payload.startsWith('adhan_')) {
-      if (soundName != null) {
-        hisnPrint("Manually triggering adhan sound for: $soundName");
-        try {
-          await sl<AdhanAudioService>().playAdhan(soundName);
-        } catch (e) {
-          hisnPrint("Error in manual adhan trigger: $e");
-        }
-      } else {
-        hisnPrint("Warning: soundName is null, cannot trigger manual adhan");
-      }
-    }
 
-    // Auto-stop adhan and clear notification after 10 minutes
+
+    // Auto-stop after 10 minutes
     Future.delayed(const Duration(minutes: 10), () async {
       await sl<AdhanAudioService>().stopAdhan();
       await cancelNotificationById(id: id);
@@ -453,10 +380,10 @@ class LocalNotificationManager {
       id: 999,
       title: title,
       body: body,
-      notificationDetails: _buildNotificationDetails(
+      notificationDetails: _buildRegularNotificationDetails(
         NotificationsChannels.inApp,
-        title,
-        body,
+        title: title,
+        body: body,
       ),
       payload: payload,
     );
@@ -473,10 +400,10 @@ class LocalNotificationManager {
       title: SX.current.haveNotOpenedAppLongTime,
       body: 'فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ',
       scheduledDate: scheduleNotificationDateTime,
-      notificationDetails: _buildNotificationDetails(
+      notificationDetails: _buildRegularNotificationDetails(
         NotificationsChannels.scheduled,
-        SX.current.haveNotOpenedAppLongTime,
-        'فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ',
+        title: SX.current.haveNotOpenedAppLongTime,
+        body: 'فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ',
       ),
       payload: "2",
     );
@@ -559,10 +486,10 @@ class LocalNotificationManager {
       title: title,
       body: body,
       scheduledDate: _nextInstanceOfWeekdayAndTime(weekday, time),
-      notificationDetails: _buildNotificationDetails(
+      notificationDetails: _buildRegularNotificationDetails(
         NotificationsChannels.scheduled,
-        title,
-        body,
+        title: title,
+        body: body,
       ),
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
       payload: payload,
@@ -586,10 +513,10 @@ class LocalNotificationManager {
       title: title,
       body: body,
       scheduledDate: _nextInstanceOfTime(time),
-      notificationDetails: _buildNotificationDetails(
+      notificationDetails: _buildRegularNotificationDetails(
         NotificationsChannels.scheduled,
-        title,
-        body,
+        title: title,
+        body: body,
       ),
       matchDateTimeComponents: DateTimeComponents.time,
       payload: payload,
@@ -688,8 +615,8 @@ class NotificationsChannels {
     description: SX.current.channelScheduledNameDesc,
   );
   static NotifyChannel get adhan => NotifyChannel(
-    key: 'com.detatech.Azkar.adhan.v1',
+    key: 'com.detatech.Azkar.adhan.v2',
     name: 'الأذان (Adhan)',
-    description: 'إشعارات الأذان والصلاة',
+    description: 'إشعارات الأذان ومواقيت الصلاة',
   );
 }
