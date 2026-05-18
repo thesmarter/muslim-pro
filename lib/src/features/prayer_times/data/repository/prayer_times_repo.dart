@@ -15,6 +15,9 @@ class PrayerTimesRepo {
 
   static const String defaultMuadhin = 'wadie_alyamani';
 
+  static const int _adhanIdBase = 3000;
+  static const int _adhanScheduleDays = 30;
+
   Future<void> saveSettings(PrayerSettings settings) async {
     await _box.write(_settingsKey, settings.toJson());
     await schedulePrayerNotifications(settings);
@@ -42,90 +45,91 @@ class PrayerTimesRepo {
       }
     }
 
+    if (settings.latitude == 0 && settings.longitude == 0) return;
+
+    // Cancel ALL existing notifications and alarms
     for (int i = 2000; i <= 2010; i++) {
       await notificationManager.cancelNotificationById(id: i);
     }
     await adhanService.cancelAllAdhanAlarms();
 
-    if (settings.latitude == 0 && settings.longitude == 0) return;
-
     final now = DateTime.now();
-    final prayerTimes = calculatePrayerTimes(settings, now);
-
-    final Map<String, DateTime> times = {
-      'fajr': prayerTimes.fajr,
-      'sunrise': prayerTimes.sunrise,
-      'sunrise_end': prayerTimes.sunrise.add(const Duration(minutes: 15)),
-      'dhuhr': prayerTimes.dhuhr,
-      'asr': prayerTimes.asr,
-      'maghrib': prayerTimes.maghrib,
-      'isha': prayerTimes.isha,
-    };
-
-    final Map<String, int> ids = {
-      'fajr': 2000,
-      'sunrise': 2001,
-      'sunrise_end': 2002,
-      'dhuhr': 2003,
-      'asr': 2004,
-      'maghrib': 2005,
-      'isha': 2006,
-    };
-
     final selectedMuadhin = settings.muadhin.isNotEmpty
         ? settings.muadhin
         : defaultMuadhin;
 
-    for (final entry in times.entries) {
+    // ─────────────────────────────────────────────────────
+    // 1. ADHAN PRAYERS: Schedule 30 days ahead via native AlarmManager
+    //    فجر, ظهر, عصر, مغرب, عشاء
+    // ─────────────────────────────────────────────────────
+    final adhanPrayers = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
+
+    for (int dayOffset = 0; dayOffset < _adhanScheduleDays; dayOffset++) {
+      final date = now.add(Duration(days: dayOffset));
+      final pt = calculatePrayerTimes(settings, date);
+
+      for (int pIndex = 0; pIndex < adhanPrayers.length; pIndex++) {
+        final prayerKey = adhanPrayers[pIndex];
+        final prayerTime = _getPrayerTimeFromTimes(pt, prayerKey);
+        final isEnabled = settings.notifications[prayerKey] ?? false;
+
+        if (!isEnabled) continue;
+        if (dayOffset == 0 && prayerTime.isBefore(now)) continue;
+
+        final id = _adhanIdBase + dayOffset * 10 + pIndex;
+        final prayerName = SX.current.getValue(prayerKey);
+
+        await adhanService.scheduleAdhanAlarm(
+          muadhin: selectedMuadhin,
+          prayerName: prayerName,
+          time: prayerTime,
+          volume: settings.adhanVolume,
+          id: id,
+        );
+        hisnPrint("Scheduled adhan alarm [$id] for $prayerKey on $date at $prayerTime");
+      }
+    }
+
+    // ─────────────────────────────────────────────────────
+    // 2. NON-ADHAN NOTIFICATIONS: sunrise + sunrise_end
+    //    تستخدم flutter_local_notifications مع matchDateTimeComponents
+    //    لتكرار الإشعار يومياً تلقائياً
+    // ─────────────────────────────────────────────────────
+    final todayPt = calculatePrayerTimes(settings, now);
+    final nonAdhanTimes = <String, DateTime>{
+      'sunrise': todayPt.sunrise,
+      'sunrise_end': todayPt.sunrise.add(const Duration(minutes: 15)),
+    };
+
+    for (final entry in nonAdhanTimes.entries) {
       final prayerKey = entry.key;
       final prayerTime = entry.value;
       final isEnabled = settings.notifications[prayerKey] ?? false;
 
-      if (isEnabled) {
-        DateTime finalScheduledTime = prayerTime;
-        if (prayerTime.isBefore(now)) {
-          final tomorrow = now.add(const Duration(days: 1));
-          final tomorrowPrayerTimes = calculatePrayerTimes(settings, tomorrow);
-          finalScheduledTime = _getPrayerTimeFromTimes(tomorrowPrayerTimes, prayerKey);
-        }
+      if (!isEnabled) continue;
 
-        final title = (prayerKey == 'sunrise')
-            ? SX.current.sunrise
-            : (prayerKey == 'sunrise_end')
-                ? SX.current.sunriseEnd
-                : SX.current.getValue(prayerKey);
-
-        final body = (prayerKey == 'sunrise')
-            ? SX.current.sunriseNotificationBody
-            : (prayerKey == 'sunrise_end')
-                ? SX.current.sunriseEndNotificationBody
-                : SX.current.prayerTimeReminder(SX.current.getValue(prayerKey));
-
-        final isAdhan = settings.playAdhanSound &&
-            prayerKey != 'sunrise' &&
-            prayerKey != 'sunrise_end';
-
-        if (isAdhan) {
-          await adhanService.scheduleAdhanAlarm(
-            muadhin: selectedMuadhin,
-            prayerName: SX.current.getValue(prayerKey),
-            time: finalScheduledTime,
-            volume: settings.adhanVolume,
-            id: ids[prayerKey]!,
-          );
-          hisnPrint("Scheduled adhan alarm for $prayerKey at $finalScheduledTime with muadhin: $selectedMuadhin");
-        } else {
-          await notificationManager.addCustomDailyReminder(
-            id: ids[prayerKey]!,
-            title: title,
-            body: body,
-            time: Time(finalScheduledTime.hour, finalScheduledTime.minute),
-            payload: "prayer_time_$prayerKey",
-            requestPermission: false,
-          );
-          hisnPrint("Scheduled regular notification for $prayerKey at $finalScheduledTime");
-        }
+      DateTime scheduledTime = prayerTime;
+      if (prayerTime.isBefore(now)) {
+        scheduledTime = prayerTime.add(const Duration(days: 1));
       }
+
+      final title = prayerKey == 'sunrise'
+          ? SX.current.sunrise
+          : SX.current.sunriseEnd;
+
+      final body = prayerKey == 'sunrise'
+          ? SX.current.sunriseNotificationBody
+          : SX.current.sunriseEndNotificationBody;
+
+      await notificationManager.addCustomDailyReminder(
+        id: prayerKey == 'sunrise' ? 2001 : 2002,
+        title: title,
+        body: body,
+        time: Time(scheduledTime.hour, scheduledTime.minute),
+        payload: "prayer_time_$prayerKey",
+        requestPermission: false,
+      );
+      hisnPrint("Scheduled daily notification for $prayerKey at ${scheduledTime.hour}:${scheduledTime.minute}");
     }
   }
 
