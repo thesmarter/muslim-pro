@@ -1,3 +1,4 @@
+// ignore_for_file: unreachable_from_main
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -127,7 +128,6 @@ class LocalNotificationManager {
             description: 'إشعارات الأذان ومواقيت الصلاة',
             importance: Importance.max,
             enableLights: true,
-            playSound: true,
           );
           
           await androidPlugin.createNotificationChannel(adhanChannel);
@@ -279,7 +279,6 @@ class LocalNotificationManager {
       ledColor: const Color(0xFF1B5E20),
       ledOnMs: 1000,
       ledOffMs: 500,
-      playSound: true,
       // Tie the sound to the notification as well
       sound: RawResourceAndroidNotificationSound(soundFileName),
       fullScreenIntent: true,
@@ -626,10 +625,8 @@ class LocalNotificationManager {
         channelName,
         description: 'إشعارات الأذان المخصصة لـ $soundFileName',
         importance: Importance.max,
-        playSound: true,
         sound: RawResourceAndroidNotificationSound(soundFileName),
         enableLights: true,
-        enableVibration: true,
       ));
     }
   }

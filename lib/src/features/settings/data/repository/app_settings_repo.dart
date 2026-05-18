@@ -1,4 +1,5 @@
 import 'package:get_storage/get_storage.dart';
+import 'package:muslim/src/features/home/data/data_source/app_dashboard_tabs.dart';
 import 'package:muslim/src/features/home/data/models/titles_freq_enum.dart';
 
 class AppSettingsRepo {
@@ -70,37 +71,53 @@ class AppSettingsRepo {
   List<int> getDashboardArrangement(int tabsCount) {
     final dynamic data = box.read(dashboardArrangementKey);
 
-    List<int> arrangement = [];
+    List<String> savedIds = [];
     try {
-      if (data == null) {
-        arrangement = List.generate(tabsCount, (index) => index);
-      } else if (data is List) {
-        arrangement = List<int>.from(data);
-      } else if (data is String) {
-        if (data.isEmpty) {
-          arrangement = List.generate(tabsCount, (index) => index);
-        } else {
+      if (data is String) {
+        if (data.isNotEmpty) {
           final String cleanedData = data.replaceAll('[', '').replaceAll(']', '');
-          arrangement = cleanedData
+          savedIds = cleanedData
               .split(",")
               .map((e) => e.trim())
               .where((e) => e.isNotEmpty)
-              .map<int>((e) => int.parse(e))
               .toList();
         }
-      } else {
-        arrangement = List.generate(tabsCount, (index) => index);
+      } else if (data is List) {
+        savedIds = data.map((e) => e.toString().trim()).toList();
       }
     } catch (e) {
-      arrangement = List.generate(tabsCount, (index) => index);
+      savedIds = [];
     }
 
-    // Ensure all indices are present and valid
-    bool needsFix = arrangement.length != tabsCount;
-    
+    // Check if the stored layout is in the old integer format
+    final bool isOldFormat = savedIds.isNotEmpty && savedIds.every((id) => int.tryParse(id) != null);
+
+    if (isOldFormat) {
+      // Map old numeric indices to new stable string IDs
+      final int oldLength = savedIds.length;
+      final List<String> migratedIds = [];
+      for (final idStr in savedIds) {
+        final int? index = int.tryParse(idStr);
+        if (index != null) {
+          migratedIds.add(_mapOldIndexToId(index, oldLength));
+        }
+      }
+      savedIds = migratedIds;
+    }
+
+    // Resolve saved IDs to current indices of appDashboardTabs
+    final List<int> arrangement = [];
+    for (final id in savedIds) {
+      final int index = appDashboardTabs.indexWhere((tab) => tab.id == id);
+      if (index != -1 && !arrangement.contains(index)) {
+        arrangement.add(index);
+      }
+    }
+
+    // Check if we need to fix the list (either missing new tabs or has mismatch)
+    bool needsFix = arrangement.length != appDashboardTabs.length;
     if (!needsFix) {
-      // Check if all indices from 0 to tabsCount-1 are present
-      for (int i = 0; i < tabsCount; i++) {
+      for (int i = 0; i < appDashboardTabs.length; i++) {
         if (!arrangement.contains(i)) {
           needsFix = true;
           break;
@@ -109,42 +126,57 @@ class AppSettingsRepo {
     }
 
     if (needsFix) {
-      // Create a set of unique valid indices
-      final Set<int> validIndices = arrangement.where((i) => i >= 0 && i < tabsCount).toSet();
-      
-      // Add any missing indices
-      for (int i = 0; i < tabsCount; i++) {
-        validIndices.add(i);
-      }
-      
-      // Create a new arrangement list
-      final List<int> newArrangement = [];
-      
-      // First, add existing valid indices in their current order
-      for (final i in arrangement) {
-        if (i >= 0 && i < tabsCount && !newArrangement.contains(i)) {
-          newArrangement.add(i);
+      // Append any missing tab indices in their default order
+      for (int i = 0; i < appDashboardTabs.length; i++) {
+        if (!arrangement.contains(i)) {
+          arrangement.add(i);
         }
       }
       
-      // Then, add any remaining valid indices that weren't in the original list
-      for (int i = 0; i < tabsCount; i++) {
-        if (!newArrangement.contains(i)) {
-          newArrangement.add(i);
-        }
-      }
-      
-      arrangement = newArrangement;
-      
-      // Save the fixed arrangement back to storage
+      // Save the cleaned/updated ID layout back to storage
       changeDashboardArrangement(arrangement);
     }
 
     return arrangement;
   }
 
+  String _mapOldIndexToId(int index, int totalCount) {
+    if (totalCount == 3) {
+      if (index == 0) return 'index';
+      if (index == 1) return 'favorites_content';
+      if (index == 2) return 'favorites_zikr';
+    } else if (totalCount == 4) {
+      if (index == 0) return 'index';
+      if (index == 1) return 'quran';
+      if (index == 2) return 'favorites_content';
+      if (index == 3) return 'favorites_zikr';
+    } else if (totalCount == 5) {
+      // Upgrading from Stage 3 (where prayer_times was at index 1, quran at index 2)
+      if (index == 0) return 'index';
+      if (index == 1) return 'prayer_times';
+      if (index == 2) return 'quran';
+      if (index == 3) return 'favorites_content';
+      if (index == 4) return 'favorites_zikr';
+    }
+    
+    // Fallback/Default Stage 4 mapping
+    if (index == 0) return 'index';
+    if (index == 1) return 'favorites_content';
+    if (index == 2) return 'favorites_zikr';
+    if (index == 3) return 'quran';
+    if (index == 4) return 'prayer_times';
+    return 'index';
+  }
+
   void changeDashboardArrangement(List<int> value) {
-    box.write(dashboardArrangementKey, value.join(","));
+    final List<String> ids = value.map((index) {
+      if (index >= 0 && index < appDashboardTabs.length) {
+        return appDashboardTabs[index].id;
+      }
+      return '';
+    }).where((id) => id.isNotEmpty).toList();
+
+    box.write(dashboardArrangementKey, ids.join(","));
   }
 
   ///MARK:Azkar Read Mode

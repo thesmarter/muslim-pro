@@ -10,6 +10,7 @@ import 'package:muslim/src/core/shared/widgets/loading.dart';
 import 'package:muslim/src/features/alarms_manager/presentation/controller/bloc/alarms_bloc.dart';
 import 'package:muslim/src/features/home/data/data_source/app_dashboard_tabs.dart';
 import 'package:muslim/src/features/home/presentation/components/home_appbar.dart';
+import 'package:muslim/src/features/home/presentation/components/pages/titles_screen.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/side_menu.dart';
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
 import 'package:muslim/src/features/home_search/presentation/screens/search_screen.dart';
@@ -117,16 +118,21 @@ class _DashboardScreenState extends State<DashboardScreen>
               return const Loading();
             }
 
+            final int mainTabIndex = arrangement.indexWhere(
+              (idx) => appDashboardTabs[idx].widget is TitlesScreen,
+            );
+            final int defaultIndex = mainTabIndex != -1 ? mainTabIndex : 0;
+
             final isQuranTab =
                 appDashboardTabs[arrangement[_currentTabIndex]].widget
                     is QuranReadScreen;
 
             return PopScope(
-              canPop: _currentTabIndex == 0,
+              canPop: _currentTabIndex == defaultIndex,
               onPopInvokedWithResult: (didPop, result) {
                 if (didPop) return;
-                if (_currentTabIndex != 0) {
-                  tabController.animateTo(0);
+                if (_currentTabIndex != defaultIndex) {
+                  tabController.animateTo(defaultIndex);
                 }
               },
               child: Scaffold(
@@ -157,7 +163,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       final component = appDashboardTabs[state.dashboardArrangement[index]];
                       if (component.widget is QuranReadScreen) {
                         return QuranReadScreen(
-                          onBack: () => tabController.animateTo(0),
+                          onBack: () => tabController.animateTo(defaultIndex),
                         );
                       }
                       return component.widget;
@@ -170,7 +176,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               floatingActionButton: isQuranTab
                   ? (_showReturnButton
                       ? FloatingActionButton(
-                          onPressed: () => tabController.animateTo(0),
+                          onPressed: () => tabController.animateTo(defaultIndex),
                           child: const Icon(Icons.arrow_back),
                         )
                       : null)
