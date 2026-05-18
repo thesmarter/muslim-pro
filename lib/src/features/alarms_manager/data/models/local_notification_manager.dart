@@ -1,4 +1,3 @@
-// ignore_for_file: unreachable_from_main
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -26,8 +25,7 @@ Future<void> onDidReceiveNotificationResponse(
   NotificationResponse notificationResponse,
 ) async {
   debugPrint("onDidReceiveNotificationResponse - actionId: ${notificationResponse.actionId}, payload: ${notificationResponse.payload}");
-  
-  // Ensure Service Locator is initialized if this is a background isolate
+
   try {
     if (!sl.isRegistered<AdhanAudioService>()) {
       debugPrint("Initializing Service Locator in background...");
@@ -41,15 +39,15 @@ Future<void> onDidReceiveNotificationResponse(
   final String? actionId = notificationResponse.actionId;
   debugPrint("onDidReceiveNotificationResponse - payload: $payload, actionId: $actionId");
 
-  // Handle "Stop Adhan" action button
   if (actionId == 'stop_adhan') {
     try {
       final adhanService = sl<AdhanAudioService>();
       await adhanService.stopAdhan();
+      await adhanService.stopNativeAdhan();
     } catch (e) {
       debugPrint("Error stopping adhan audio: $e");
     }
-    
+
     if (notificationResponse.id != null) {
       try {
         final notificationManager = sl<LocalNotificationManager>();
@@ -61,12 +59,11 @@ Future<void> onDidReceiveNotificationResponse(
     return;
   }
 
-  // Handle notification tap (open relevant screen)
   if (payload != null && payload.isNotEmpty) {
     if (payload.startsWith('adhan_') || payload.startsWith('test_adhan_')) {
-      // Stop any playing adhan when user taps the notification
       try {
         await sl<AdhanAudioService>().stopAdhan();
+        await sl<AdhanAudioService>().stopNativeAdhan();
       } catch (e) {
         debugPrint("Error stopping adhan on tap: $e");
       }
@@ -112,16 +109,13 @@ class LocalNotificationManager {
         onDidReceiveBackgroundNotificationResponse: onDidReceiveNotificationResponse,
       );
 
-      // Create notification channels for Android
       if (Platform.isAndroid) {
         final androidPlugin = flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
-        
+
         if (androidPlugin != null) {
-          // Delete old channels to ensure fresh settings
           await androidPlugin.deleteNotificationChannel(channelId: 'com.detatech.Azkar.adhan.v2');
-          
-          // Create Adhan channel - sound will be set per-notification
+
           const adhanChannel = AndroidNotificationChannel(
             'com.detatech.Azkar.adhan.v3',
             'الأذان (Adhan)',
@@ -129,23 +123,22 @@ class LocalNotificationManager {
             importance: Importance.max,
             enableLights: true,
           );
-          
+
           await androidPlugin.createNotificationChannel(adhanChannel);
-          
-          // Create other channels
+
           await androidPlugin.createNotificationChannel(AndroidNotificationChannel(
             NotificationsChannels.inApp.key,
             NotificationsChannels.inApp.name,
             description: NotificationsChannels.inApp.description,
             importance: Importance.high,
           ));
-          
+
           await androidPlugin.createNotificationChannel(AndroidNotificationChannel(
             NotificationsChannels.scheduled.key,
             NotificationsChannels.scheduled.name,
             description: NotificationsChannels.scheduled.description,
           ));
-          
+
           hisnPrint("Notification channels created successfully");
         }
       }
@@ -179,7 +172,6 @@ class LocalNotificationManager {
     return WindowsInitializationSettings(
       appName: SX.appName,
       appUserModelId: 'com.detatech.Azkar',
-      //run `[guid]::NewGuid()` on windows
       guid: '82fd58ee-c707-40ba-b2f8-799d8cb40e12',
       iconPath: iconPath,
     );
@@ -194,12 +186,10 @@ class LocalNotificationManager {
   Future<bool> requestPermissionWithDialog({bool triggerOnStartup = false}) async {
     if (_isDialogShowing) return false;
 
-    /// if the user ignored the notification permission, don't show the dialog
     final appSettingsRepo = sl<AppSettingsRepo>();
     if (appSettingsRepo.ignoreNotificationPermission) return false;
 
     if (triggerOnStartup) {
-      /// if the user has no alarms, don't show the dialog
       final hasAlarms = await _hasAnyActiveAlarms();
       if (!hasAlarms) return false;
     }
@@ -246,10 +236,6 @@ class LocalNotificationManager {
     await flutterLocalNotificationsPlugin.cancel(id: id);
   }
 
-  /// Build notification details for Adhan notifications.
-  /// The adhan sound file name (without extension) from res/raw is used
-  /// as the notification sound. This way, Android plays the adhan audio
-  /// automatically when the notification fires — no user interaction needed.
   NotificationDetails _buildAdhanNotificationDetails({
     required String title,
     String? body,
@@ -262,25 +248,22 @@ class LocalNotificationManager {
       htmlFormatContentTitle: true,
     );
 
-    // Use a unique channel ID for each muadhin to ensure the specific sound is tied to the channel
-    final String channelId = 'com.detatech.Azkar.adhan.$soundFileName';
-    final String channelName = 'الأذان ($soundFileName)';
+    final String channelId = 'com.detatech.Azkar.adhan.v3';
 
     final AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
       channelId,
-      channelName,
+      'الأذان (Adhan)',
       channelDescription: 'إشعارات الأذان المخصصة',
       importance: Importance.max,
       priority: Priority.max,
       styleInformation: bigTextStyleInformation,
       icon: '@mipmap/ic_launcher',
       largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
-      color: const Color(0xFF1B5E20), // Islamic Green
+      color: const Color(0xFF1B5E20),
       ledColor: const Color(0xFF1B5E20),
       ledOnMs: 1000,
       ledOffMs: 500,
-      // Tie the sound to the notification as well
-      sound: RawResourceAndroidNotificationSound(soundFileName),
+      playSound: false,
       fullScreenIntent: true,
       category: AndroidNotificationCategory.alarm,
       actions: [
@@ -305,7 +288,6 @@ class LocalNotificationManager {
     );
   }
 
-  /// Build notification details for regular (non-adhan) notifications
   NotificationDetails _buildRegularNotificationDetails(
     NotifyChannel channel, {
     String? title,
@@ -343,8 +325,6 @@ class LocalNotificationManager {
     );
   }
 
-  /// Schedule an Adhan notification for a specific prayer time.
-  /// The adhan sound plays automatically when the notification fires.
   Future<void> scheduleAdhanNotification({
     required int id,
     required String title,
@@ -357,8 +337,6 @@ class LocalNotificationManager {
 
     hisnPrint("Scheduling adhan notification - id: $id, title: $title, "
         "sound: $soundFileName, date: $scheduledDate, payload: $payload");
-
-    await _ensureAdhanChannelExists(soundFileName);
 
     await _safeZonedSchedule(
       id: id,
@@ -374,8 +352,6 @@ class LocalNotificationManager {
     );
   }
 
-  /// Show an immediate Adhan notification (for testing).
-  /// Also triggers the AudioPlayer for full audio playback in foreground.
   Future<void> showAdhanNotification({
     required int id,
     required String title,
@@ -385,8 +361,6 @@ class LocalNotificationManager {
     required String muadhinId,
   }) async {
     hisnPrint("Showing immediate adhan notification - sound: $soundFileName, muadhin: $muadhinId");
-
-    await _ensureAdhanChannelExists(soundFileName);
 
     await flutterLocalNotificationsPlugin.show(
       id: id,
@@ -400,14 +374,12 @@ class LocalNotificationManager {
       payload: payload,
     );
 
-    // Auto-stop after 10 minutes
     Future.delayed(const Duration(minutes: 10), () async {
       await sl<AdhanAudioService>().stopAdhan();
       await cancelNotificationById(id: id);
     });
   }
 
-  /// Show Notification
   Future<void> showCustomNotification({
     required String title,
     String? body,
@@ -426,7 +398,6 @@ class LocalNotificationManager {
     );
   }
 
-  /// Show Notification App Open
   Future<void> appOpenNotification() async {
     final scheduleNotificationDateTime = tz.TZDateTime.now(
       tz.local,
@@ -505,7 +476,6 @@ class LocalNotificationManager {
     return scheduledDate;
   }
 
-  /// Add weekly notification
   Future<void> addCustomWeeklyReminder({
     required int id,
     required String title,
@@ -533,7 +503,6 @@ class LocalNotificationManager {
     );
   }
 
-  /// Add Daily notification
   Future<void> addCustomDailyReminder({
     required int id,
     required String title,
@@ -564,19 +533,12 @@ class LocalNotificationManager {
     final context = App.navigatorKey.currentState?.context;
     if (context == null) return;
 
-    /// go to adhan screen if clicked
     if (payload.startsWith('adhan_') || payload.startsWith('test_adhan_')) {
       context.push(const PrayerTimesScreen());
-    }
-    /// go to quran page if clicked
-    else if (payload == "الكهف") {
+    } else if (payload == "الكهف") {
       context.push(const QuranReadScreen(startPage: 293));
-    }
-    /// ignore constant alarms if clicked
-    else if (payload == "555" || payload == "666") {
-    }
-    /// go to zikr page if clicked
-    else {
+    } else if (payload == "555" || payload == "666") {
+    } else {
       final int? pageIndex = int.tryParse(payload);
       if (pageIndex != null) {
         context.push(ZikrViewerScreen(index: pageIndex));
@@ -608,8 +570,6 @@ class LocalNotificationManager {
     return false;
   }
 
-  /// Ensure a specific notification channel exists for a given muadhin sound.
-  /// This is necessary because Android notification channel sounds are immutable after creation.
   Future<void> _ensureAdhanChannelExists(String soundFileName) async {
     if (!Platform.isAndroid) return;
 
@@ -618,14 +578,12 @@ class LocalNotificationManager {
 
     if (androidPlugin != null) {
       final String channelId = 'com.detatech.Azkar.adhan.$soundFileName';
-      final String channelName = 'الأذان ($soundFileName)';
 
       await androidPlugin.createNotificationChannel(AndroidNotificationChannel(
         channelId,
-        channelName,
+        'الأذان ($soundFileName)',
         description: 'إشعارات الأذان المخصصة لـ $soundFileName',
         importance: Importance.max,
-        sound: RawResourceAndroidNotificationSound(soundFileName),
         enableLights: true,
       ));
     }
