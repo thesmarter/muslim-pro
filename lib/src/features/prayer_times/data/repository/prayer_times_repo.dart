@@ -7,12 +7,12 @@ import 'package:muslim/src/core/extensions/localization_extension.dart';
 import 'package:muslim/src/core/functions/print.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/local_notification_manager.dart';
 import 'package:muslim/src/features/prayer_times/data/models/prayer_settings.dart';
+import 'package:muslim/src/features/prayer_times/data/repository/adhan_audio_service.dart';
 
 class PrayerTimesRepo {
   late final GetStorage _box = GetStorage();
   static const String _settingsKey = 'prayer_settings';
 
-  /// Default muadhin used when none is selected
   static const String defaultMuadhin = 'wadie_alyamani';
 
   Future<void> saveSettings(PrayerSettings settings) async {
@@ -22,8 +22,8 @@ class PrayerTimesRepo {
 
   Future<void> schedulePrayerNotifications(PrayerSettings settings) async {
     final notificationManager = sl<LocalNotificationManager>();
-    
-    // Auto-detect location if not set
+    final adhanService = sl<AdhanAudioService>();
+
     if (settings.latitude == 0 && settings.longitude == 0) {
       try {
         final position = await getCurrentPosition();
@@ -42,17 +42,16 @@ class PrayerTimesRepo {
       }
     }
 
-    // Cancel existing prayer notifications first
-    // Using a specific range of IDs for prayer times (e.g., 2000-2010)
     for (int i = 2000; i <= 2010; i++) {
       await notificationManager.cancelNotificationById(id: i);
     }
+    await adhanService.cancelAllAdhanAlarms();
 
     if (settings.latitude == 0 && settings.longitude == 0) return;
 
     final now = DateTime.now();
     final prayerTimes = calculatePrayerTimes(settings, now);
-    
+
     final Map<String, DateTime> times = {
       'fajr': prayerTimes.fajr,
       'sunrise': prayerTimes.sunrise,
@@ -73,9 +72,8 @@ class PrayerTimesRepo {
       'isha': 2006,
     };
 
-    // Determine the muadhin to use (user-selected or default)
-    final selectedMuadhin = settings.muadhin.isNotEmpty 
-        ? settings.muadhin 
+    final selectedMuadhin = settings.muadhin.isNotEmpty
+        ? settings.muadhin
         : defaultMuadhin;
 
     for (final entry in times.entries) {
@@ -86,7 +84,6 @@ class PrayerTimesRepo {
       if (isEnabled) {
         DateTime finalScheduledTime = prayerTime;
         if (prayerTime.isBefore(now)) {
-          // If the time for today has passed, schedule for tomorrow
           final tomorrow = now.add(const Duration(days: 1));
           final tomorrowPrayerTimes = calculatePrayerTimes(settings, tomorrow);
           finalScheduledTime = _getPrayerTimeFromTimes(tomorrowPrayerTimes, prayerKey);
@@ -104,21 +101,19 @@ class PrayerTimesRepo {
                 ? SX.current.sunriseEndNotificationBody
                 : SX.current.prayerTimeReminder(SX.current.getValue(prayerKey));
 
-        // Adhan only plays for actual prayer times (not sunrise/sunrise_end)
-        final isAdhan = settings.playAdhanSound && 
-                      prayerKey != 'sunrise' && 
-                      prayerKey != 'sunrise_end';
+        final isAdhan = settings.playAdhanSound &&
+            prayerKey != 'sunrise' &&
+            prayerKey != 'sunrise_end';
 
         if (isAdhan) {
-          await notificationManager.scheduleAdhanNotification(
+          await adhanService.scheduleAdhanAlarm(
+            muadhin: selectedMuadhin,
+            prayerName: SX.current.getValue(prayerKey),
+            time: finalScheduledTime,
+            volume: settings.adhanVolume,
             id: ids[prayerKey]!,
-            title: title,
-            body: body,
-            scheduledDate: finalScheduledTime,
-            payload: "adhan_${selectedMuadhin}_$prayerKey",
-            soundFileName: selectedMuadhin,
           );
-          hisnPrint("Scheduled adhan for $prayerKey at $finalScheduledTime with muadhin: $selectedMuadhin");
+          hisnPrint("Scheduled adhan alarm for $prayerKey at $finalScheduledTime with muadhin: $selectedMuadhin");
         } else {
           await notificationManager.addCustomDailyReminder(
             id: ids[prayerKey]!,
@@ -203,7 +198,6 @@ class PrayerTimesRepo {
     final coordinates = Coordinates(settings.latitude, settings.longitude);
     final params = _getCalculationMethod(settings.calculationMethod);
 
-    // Apply adjustments
     params.adjustments.fajr = settings.adjustments['fajr'] ?? 0;
     params.adjustments.sunrise = settings.adjustments['sunrise'] ?? 0;
     params.adjustments.dhuhr = settings.adjustments['dhuhr'] ?? 0;

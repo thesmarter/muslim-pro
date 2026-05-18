@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:audio_session/audio_session.dart';
+import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/localization_extension.dart';
@@ -9,20 +10,21 @@ import 'package:muslim/src/core/functions/print.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/local_notification_manager.dart';
 import 'package:muslim/src/features/prayer_times/data/repository/prayer_times_repo.dart';
 import 'package:rxdart/rxdart.dart';
+
 class AdhanAudioService {
   static final AdhanAudioService _instance = AdhanAudioService._internal();
   factory AdhanAudioService() => _instance;
   AdhanAudioService._internal();
 
+  static const MethodChannel _adhanChannel = MethodChannel('adhan_scheduler');
 
   final _player = AudioPlayer();
   String? _currentPlayingMuadhinId;
   String? get currentPlayingMuadhinId => _currentPlayingMuadhinId;
-  
+
   bool _isInitialized = false;
   StreamSubscription<ProcessingState>? _stateSubscription;
 
-  // Stream for current playing muadhin ID
   final _currentMuadhinSubject = BehaviorSubject<String?>();
   Stream<String?> get currentMuadhinStream => _currentMuadhinSubject.stream;
 
@@ -55,17 +57,15 @@ class AdhanAudioService {
       avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
       androidAudioAttributes: AndroidAudioAttributes(
         contentType: AndroidAudioContentType.music,
-        usage: AndroidAudioUsage.alarm, // Use alarm usage to respect alarm volume and potentially bypass silent mode
+        usage: AndroidAudioUsage.alarm,
       ),
       androidAudioFocusGainType: AndroidAudioFocusGainType.gainTransientMayDuck,
       androidWillPauseWhenDucked: true,
     ));
     await session.setActive(true);
 
-    // Cancel old subscription if any
     await _stateSubscription?.cancel();
 
-    // Listen for completion to stop automatically
     _stateSubscription = _player.processingStateStream.listen((state) {
       if (state == ProcessingState.completed) {
         final settings = sl<PrayerTimesRepo>().getSettings();
@@ -77,8 +77,7 @@ class AdhanAudioService {
         }
       }
     });
-    
-    // Set initial volume from settings
+
     try {
       final settings = sl<PrayerTimesRepo>().getSettings();
       await _player.setVolume(settings.adhanVolume);
@@ -86,7 +85,7 @@ class AdhanAudioService {
     } catch (e) {
       hisnPrint("Error setting initial volume: $e");
     }
-    
+
     _isInitialized = true;
     hisnPrint("Adhan audio player initialized");
   }
@@ -104,38 +103,33 @@ class AdhanAudioService {
       hisnPrint("playAdhan requested for: $muadhinId");
       final soundPath = muadhins[muadhinId] ?? muadhins['wadie_alyamani']!;
       hisnPrint("Resolved sound path: $soundPath");
-      
-      // Stop current if any
+
       if (_player.playing || _player.processingState != ProcessingState.idle) {
         hisnPrint("Stopping current playback/loading before new request");
         await _player.stop();
       }
 
-      // Load and play
       _currentPlayingMuadhinId = muadhinId;
       _currentMuadhinSubject.add(muadhinId);
-      
+
       hisnPrint("Setting asset: $soundPath");
-      // Use load() explicitly before play for better stability on some Android devices
       await _player.setAsset(soundPath);
-      
-      // Ensure volume is set again before playing
+
       final settings = sl<PrayerTimesRepo>().getSettings();
       await _player.setVolume(settings.adhanVolume);
       hisnPrint("Volume confirmed at: ${settings.adhanVolume}");
-      
+
       hisnPrint("Starting playback");
       await _player.play();
-      
+
       hisnPrint("Successfully playing Adhan: $muadhinId");
     } on PlayerException catch (e) {
       _currentPlayingMuadhinId = null;
       _currentMuadhinSubject.add(null);
       hisnPrint("PlayerException ($muadhinId): ${e.code} - ${e.message}");
-      // Fallback to default if error
       if (muadhinId != 'wadie_alyamani') {
         hisnPrint("Attempting fallback to default muadhin...");
-        _isLoading = false; // Reset to allow fallback
+        _isLoading = false;
         await playAdhan('wadie_alyamani');
       }
     } on PlayerInterruptedException catch (e) {
@@ -162,12 +156,12 @@ class AdhanAudioService {
     } catch (e) {
       hisnPrint("Error stopping adhan: $e");
     }
+    await stopNativeAdhan();
   }
 
   Future<void> previewAdhan(String muadhinId) async {
     await stopAdhan();
     await playAdhan(muadhinId);
-    // Auto stop preview after 10 seconds
     Future.delayed(const Duration(seconds: 10), () {
       if (_player.playing) {
         stopAdhan();
@@ -179,7 +173,7 @@ class AdhanAudioService {
     final prayers = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
     try {
       hisnPrint("--- Starting Full Adhan Test Sequence ---");
-      
+
       if (_player.volume == 0) {
         setVolume(0.5);
       }
@@ -187,10 +181,9 @@ class AdhanAudioService {
       for (final prayerKey in prayers) {
         final prayerName = SX.current.getValue(prayerKey);
         onPrayerChange(prayerName);
-        
+
         hisnPrint("Testing Adhan for: $prayerName");
 
-        // Show test notification with adhan sound
         await sl<LocalNotificationManager>().showAdhanNotification(
           id: 990 + prayers.indexOf(prayerKey),
           title: "اختبار الأذان: $prayerName",
@@ -200,7 +193,6 @@ class AdhanAudioService {
           muadhinId: muadhinId,
         );
 
-        // Play each for 5 seconds for testing purposes
         await Future.delayed(const Duration(seconds: 5));
         await stopAdhan();
       }
@@ -219,5 +211,51 @@ class AdhanAudioService {
     _player.dispose();
     _currentMuadhinSubject.close();
     _isInitialized = false;
+  }
+
+  // ─── Native Foreground Service Control ───
+
+  Future<void> scheduleAdhanAlarm({
+    required String muadhin,
+    required String prayerName,
+    required DateTime time,
+    required double volume,
+    required int id,
+  }) async {
+    try {
+      await _adhanChannel.invokeMethod('schedule', {
+        'muadhin': muadhin,
+        'prayerName': prayerName,
+        'timestamp': time.millisecondsSinceEpoch,
+        'volume': volume,
+        'id': id,
+      });
+    } catch (e) {
+      hisnPrint('Error scheduling adhan alarm: $e');
+    }
+  }
+
+  Future<void> cancelAdhanAlarm(int id) async {
+    try {
+      await _adhanChannel.invokeMethod('cancel', id);
+    } catch (e) {
+      hisnPrint('Error canceling adhan alarm: $e');
+    }
+  }
+
+  Future<void> cancelAllAdhanAlarms() async {
+    try {
+      await _adhanChannel.invokeMethod('cancelAll');
+    } catch (e) {
+      hisnPrint('Error canceling all adhan alarms: $e');
+    }
+  }
+
+  Future<void> stopNativeAdhan() async {
+    try {
+      await _adhanChannel.invokeMethod('stopAdhan');
+    } catch (e) {
+      hisnPrint('Error stopping native adhan: $e');
+    }
   }
 }
