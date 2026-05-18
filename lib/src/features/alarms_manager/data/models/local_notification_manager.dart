@@ -1,4 +1,5 @@
 import 'dart:io';
+// ignore_for_file: unreachable_from_main
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
