@@ -8,22 +8,27 @@ import 'package:muslim/src/features/settings/data/models/app_component.dart';
 
 final List<AppComponent> appDashboardTabs = [
   AppComponent(
+    id: 'index',
     title: (context) => S.of(context).index,
     widget: const TitlesScreen(),
   ),
   AppComponent(
+    id: 'favorites_content',
     title: (context) => S.of(context).favoritesContent,
     widget: const TitlesBookmarksScreen(),
   ),
   AppComponent(
+    id: 'favorites_zikr',
     title: (context) => S.of(context).favoritesZikr,
     widget: const AzkarBookmarksScreen(),
   ),
   AppComponent(
+    id: 'quran',
     title: (context) => S.of(context).sourceQuran,
     widget: const QuranReadScreen(),
   ),
   AppComponent(
+    id: 'prayer_times',
     title: (context) => S.of(context).prayerTimes,
     widget: const PrayerTimesScreen(),
   ),

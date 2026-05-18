@@ -90,7 +90,6 @@ flutter:
   generate: true
 
   assets:
-    - assets/json/
     - assets/images/
     - assets/sounds/
     - assets/sounds/azkar/
