@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
@@ -133,7 +132,7 @@ class SettingsGeneralSection extends StatelessWidget {
           children: [
             SwitchListTile(
               secondary: Icon(
-                !state.isCardReadMode ? MdiIcons.bookOpenPageVariant : MdiIcons.card,
+                !state.isCardReadMode ? Icons.auto_stories : Icons.credit_card,
               ),
               value: !state.isCardReadMode,
               title: Text(S.of(context).pageMode),
@@ -273,14 +272,14 @@ class _SettingsContactSection extends StatelessWidget {
       children: [
         Title(title: S.of(context).contact),
         ListTile(
-          leading: Icon(MdiIcons.gmail),
+          leading: const Icon(Icons.mail),
           title: Text(S.of(context).sendEmail),
           onTap: () {
             EmailManager.messageUS();
           },
         ),
         ListTile(
-          leading: Icon(MdiIcons.github),
+          leading: const Icon(Icons.code),
           trailing: const Icon(Icons.keyboard_arrow_left),
           title: Text(S.of(context).github),
           onTap: () async {
@@ -288,7 +287,7 @@ class _SettingsContactSection extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: Icon(MdiIcons.information),
+          leading: const Icon(Icons.info),
           trailing: const Icon(Icons.keyboard_arrow_left),
           title: Text(S.of(context).aboutUs),
           onTap: () {

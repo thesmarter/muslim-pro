@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/functions/open_url.dart';
 import 'package:muslim/src/core/values/constant.dart';
@@ -29,11 +28,11 @@ class AboutScreen extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: Icon(MdiIcons.handClap),
+            leading: const Icon(Icons.waving_hand),
             title: Text(S.of(context).prayForUsAndParents),
           ),
           ListTile(
-            leading: Icon(MdiIcons.bookOpenPageVariant),
+            leading: const Icon(Icons.auto_stories),
             title: Text(S.of(context).quranPagesFromAndroidQuran),
             onTap: () {
               openURL("https://android.quran.com/");
@@ -48,7 +47,7 @@ class AboutScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(MdiIcons.web),
+            leading: const Icon(Icons.language),
             title: Text(S.of(context).officialWebsite),
             subtitle: Text(S.of(context).drSaeedBinAliBinWahf),
             onTap: () {
@@ -56,7 +55,7 @@ class AboutScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(MdiIcons.github),
+            leading: const Icon(Icons.code),
             title: Text(S.of(context).github),
             onTap: () async {
               await openURL(kOrgGithub);

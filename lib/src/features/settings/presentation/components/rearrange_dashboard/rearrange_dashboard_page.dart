@@ -37,7 +37,7 @@ class RearrangeDashboardPage extends StatelessWidget {
               );
             },
             itemCount: state.dashboardArrangement.length,
-            onReorder: (oldIndex, newIndex) {
+            onReorderItem: (oldIndex, newIndex) {
               context.read<HomeBloc>().add(
                 HomeDashboardReorderedEvent(
                   oldIndex: oldIndex,

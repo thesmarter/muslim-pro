@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/shared/widgets/font_settings.dart';
 import 'package:muslim/src/features/bookmark/presentation/components/zikr_toggle_favorite_icon_button.dart';
@@ -79,7 +78,7 @@ class ZikrViewerExpandingFab extends StatelessWidget {
         FloatingActionButton.small(
           heroTag: 'commentary',
           tooltip: S.of(context).commentary,
-          child: Icon(MdiIcons.comment),
+          child: const Icon(Icons.comment),
           onPressed: () {
             showCommentaryDialog(context: context, contentId: dbContent.id);
           },

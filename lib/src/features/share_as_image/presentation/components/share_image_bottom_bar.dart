@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/features/share_as_image/presentation/controller/cubit/share_image_cubit.dart';
 
@@ -16,7 +15,7 @@ class ShareImageBottomBar extends StatelessWidget {
         children: [
           IconButton(
             tooltip: S.of(context).showDiacritics,
-            icon: Icon(MdiIcons.abjadArabic),
+            icon: const Icon(Icons.abc),
             onPressed: () {
               shareImageCubit.toggleRemoveDiacritics();
             },
