@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/shared.dart';
@@ -14,14 +13,14 @@ class QuranSection extends StatelessWidget {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
-          leading: Icon(MdiIcons.bookOpenPageVariant),
+          leading: const Icon(Icons.auto_stories),
           title: Text(S.of(context).sourceQuran), // You can change this key
           childrenPadding: const EdgeInsets.symmetric(horizontal: 8),
           expandedCrossAxisAlignment: CrossAxisAlignment.start,
           tilePadding: const EdgeInsets.symmetric(horizontal: 16),
           children: [
             ListTile(
-              leading: Icon(MdiIcons.bookOpenVariant),
+              leading: const Icon(Icons.menu_book),
               title: Text(S.of(context).sourceQuran),
               onTap: () {
                 context.push(const QuranReadScreen());
@@ -29,28 +28,28 @@ class QuranSection extends StatelessWidget {
             ),
             const Divider(height: 1),
             ListTile(
-              leading: Icon(MdiIcons.bookOpenPageVariant),
+              leading: const Icon(Icons.auto_stories),
               title: Text(S.of(context).endSuraAliImran),
               onTap: () {
                 context.push(const QuranReadScreen(startPage: 75));
               },
             ),
             ListTile(
-              leading: Icon(MdiIcons.bookOpenPageVariant),
+              leading: const Icon(Icons.auto_stories),
               title: Text(S.of(context).suraAlKahf),
               onTap: () {
                 context.push(const QuranReadScreen(startPage: 293));
               },
             ),
             ListTile(
-              leading: Icon(MdiIcons.bookOpenPageVariant),
+              leading: const Icon(Icons.auto_stories),
               title: Text(S.of(context).suraAsSajdah),
               onTap: () {
                 context.push(const QuranReadScreen(startPage: 415));
               },
             ),
             ListTile(
-              leading: Icon(MdiIcons.bookOpenPageVariant),
+              leading: const Icon(Icons.auto_stories),
               title: Text(S.of(context).suraAlMulk),
               onTap: () {
                 context.push(const QuranReadScreen(startPage: 562));
