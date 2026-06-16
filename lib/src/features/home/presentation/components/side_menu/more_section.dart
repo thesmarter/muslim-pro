@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
 import 'package:muslim/src/core/functions/open_url.dart';
@@ -20,7 +19,7 @@ class MoreSection extends StatelessWidget {
       children: [
         DrawerCard(
           child: ListTile(
-            leading: Icon(MdiIcons.gmail),
+            leading: const Icon(Icons.mail),
             title: Text(S.of(context).contactDev),
             onTap: () {
               EmailManager.messageUS();
@@ -29,7 +28,7 @@ class MoreSection extends StatelessWidget {
         ),
         DrawerCard(
           child: ListTile(
-            leading: Icon(MdiIcons.web),
+            leading: const Icon(Icons.language),
             title: Text(S.of(context).moreApps),
             onTap: () {
               openURL(kOrgWebsite);

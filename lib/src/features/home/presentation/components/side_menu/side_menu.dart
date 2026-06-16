@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
 import 'package:muslim/src/features/fake_hadith/presentation/screens/fake_hadith_dashboard_screen.dart';
@@ -33,7 +32,7 @@ class SideMenu extends StatelessWidget {
                     children: [
                       DrawerCard(
                         child: ListTile(
-                          leading: Icon(MdiIcons.counter),
+                          leading: const Icon(Icons.onetwothree),
                           title: Text(S.of(context).tally),
                           onTap: () {
                             context.push(const TallyDashboardScreen());

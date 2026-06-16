@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:intl/intl.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
@@ -61,7 +60,6 @@ class _DashboardScreenState extends State<DashboardScreen>
   final themeCubit = sl<ThemeCubit>();
   late Brightness _brightness;
   int _currentTabIndex = 0;
-  bool _showReturnButton = false;
 
   @override
   void initState() {
@@ -76,8 +74,6 @@ class _DashboardScreenState extends State<DashboardScreen>
     if (tabController.indexIsChanging || tabController.index != _currentTabIndex) {
       setState(() {
         _currentTabIndex = tabController.index;
-        // Reset return button visibility when switching to Quran tab
-        _showReturnButton = true;
       });
     }
   }
@@ -123,10 +119,6 @@ class _DashboardScreenState extends State<DashboardScreen>
             );
             final int defaultIndex = mainTabIndex != -1 ? mainTabIndex : 0;
 
-            final isQuranTab =
-                appDashboardTabs[arrangement[_currentTabIndex]].widget
-                    is QuranReadScreen;
-
             return PopScope(
               canPop: _currentTabIndex == defaultIndex,
               onPopInvokedWithResult: (didPop, result) {
@@ -136,28 +128,19 @@ class _DashboardScreenState extends State<DashboardScreen>
                 }
               },
               child: Scaffold(
-                body: Stack(
-                  children: [
-                    GestureDetector(
-                    onTap: () {
-                      if (isQuranTab) {
-                        setState(() {
-                          _showReturnButton = !_showReturnButton;
-                        });
-                      }
-                    },
-                    child: NestedScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      floatHeaderSlivers: true,
-                      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                        return [
-                          if (!isQuranTab) HomeAppBar(tabController: tabController),
-                        ];
-                      },
-                      body: TabBarView(
-                    physics: isQuranTab
-                        ? const NeverScrollableScrollPhysics()
-                        : const BouncingScrollPhysics(),
+                body: NestedScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  floatHeaderSlivers: true,
+                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                    final isQuranTab =
+                        appDashboardTabs[arrangement[_currentTabIndex]].widget
+                            is QuranReadScreen;
+                    return [
+                      if (!isQuranTab) HomeAppBar(tabController: tabController),
+                    ];
+                  },
+                  body: TabBarView(
+                    physics: const NeverScrollableScrollPhysics(),
                     controller: tabController,
                     children: List.generate(appDashboardTabs.length, (index) {
                       final component = appDashboardTabs[state.dashboardArrangement[index]];
@@ -169,29 +152,19 @@ class _DashboardScreenState extends State<DashboardScreen>
                       return component.widget;
                     }),
                   ),
-                    ),
-                  ),
-                ],
+                ),
+                floatingActionButton: FloatingActionButton(
+                  tooltip: S.of(context).tally,
+                  child: const Icon(Icons.onetwothree, size: 35),
+                  onPressed: () {
+                    context.push(const TallyDashboardScreen());
+                  },
+                ),
               ),
-              floatingActionButton: isQuranTab
-                  ? (_showReturnButton
-                      ? FloatingActionButton(
-                          onPressed: () => tabController.animateTo(defaultIndex),
-                          child: const Icon(Icons.arrow_back),
-                        )
-                      : null)
-                  : FloatingActionButton(
-                      tooltip: S.of(context).tally,
-                      child: Icon(MdiIcons.counter, size: 35),
-                      onPressed: () {
-                        context.push(const TallyDashboardScreen());
-                      },
-                    ),
-            ),
-          );
-        },
-      );
-    },
-  );
-}
+            );
+          },
+        );
+      },
+    );
+  }
 }

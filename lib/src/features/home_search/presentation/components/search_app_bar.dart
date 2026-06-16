@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/shared/custom_inputs/custom_field_decoration.dart';
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
@@ -45,7 +44,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         IconButton(
           splashRadius: 20,
           padding: EdgeInsets.zero,
-          icon: Icon(MdiIcons.eraser),
+          icon: const Icon(Icons.delete_forever),
           onPressed: () {
             context.read<SearchCubit>().clear();
           },

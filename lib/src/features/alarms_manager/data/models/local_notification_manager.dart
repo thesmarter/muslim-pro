@@ -249,7 +249,7 @@ class LocalNotificationManager {
       htmlFormatContentTitle: true,
     );
 
-    final String channelId = 'com.detatech.Azkar.adhan.v3';
+    const String channelId = 'com.detatech.Azkar.adhan.v3';
 
     final AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
       channelId,
@@ -571,24 +571,24 @@ class LocalNotificationManager {
     return false;
   }
 
-  Future<void> _ensureAdhanChannelExists(String soundFileName) async {
-    if (!Platform.isAndroid) return;
+  // Future<void> _ensureAdhanChannelExists(String soundFileName) async {
+  //   if (!Platform.isAndroid) return;
 
-    final androidPlugin = flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+  //   final androidPlugin = flutterLocalNotificationsPlugin
+  //       .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
 
-    if (androidPlugin != null) {
-      final String channelId = 'com.detatech.Azkar.adhan.$soundFileName';
+  //   if (androidPlugin != null) {
+  //     final String channelId = 'com.detatech.Azkar.adhan.$soundFileName';
 
-      await androidPlugin.createNotificationChannel(AndroidNotificationChannel(
-        channelId,
-        'الأذان ($soundFileName)',
-        description: 'إشعارات الأذان المخصصة لـ $soundFileName',
-        importance: Importance.max,
-        enableLights: true,
-      ));
-    }
-  }
+  //     await androidPlugin.createNotificationChannel(AndroidNotificationChannel(
+  //       channelId,
+  //       'الأذان ($soundFileName)',
+  //       description: 'إشعارات الأذان المخصصة لـ $soundFileName',
+  //       importance: Importance.max,
+  //       enableLights: true,
+  //     ));
+  //   }
+  // }
 
   Future<bool> _hasAnyActiveAlarms() async {
     final alarmsRepo = sl<AlarmsRepo>();

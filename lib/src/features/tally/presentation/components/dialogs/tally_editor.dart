@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/models/editor_result.dart';
 import 'package:muslim/src/core/shared/custom_inputs/number_field.dart';
@@ -140,7 +139,7 @@ class _TallyEditorState extends State<_TallyEditor> {
               const SizedBox(height: 8),
               UserNumberFormField(
                 controller: _resetCounterController,
-                leadingIcon: MdiIcons.restore,
+                leadingIcon: Icons.restore,
                 hintText: S.of(context).circleEvery,
                 textInputAction: TextInputAction.next,
                 validator: (value) {
@@ -158,7 +157,7 @@ class _TallyEditorState extends State<_TallyEditor> {
               const SizedBox(height: 8),
               UserNumberFormField(
                 controller: _counterValueController,
-                leadingIcon: MdiIcons.counter,
+                leadingIcon: Icons.onetwothree,
                 hintText: S.of(context).count,
                 textInputAction: TextInputAction.done,
                 validator: (value) {

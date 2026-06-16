@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/features/home_search/presentation/components/search_type_bar.dart';
 import 'package:muslim/src/features/home_search/presentation/controller/cubit/search_cubit.dart';
@@ -17,7 +16,7 @@ class SearchFiltersButton extends StatelessWidget {
           onPressed: () async {
             await showSearchFilterDialog(context);
           },
-          icon: Icon(MdiIcons.filter),
+          icon: const Icon(Icons.filter_list),
         );
       },
     );

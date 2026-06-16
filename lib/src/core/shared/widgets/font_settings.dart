@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/extensions/string_extension.dart';
 import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
@@ -15,7 +14,7 @@ class FontSettingsIconButton extends StatelessWidget {
     return IconButton(
       tooltip: S.of(context).fontSettings,
       padding: EdgeInsets.zero,
-      icon: Icon(MdiIcons.formatQuoteOpen),
+      icon: const Icon(Icons.format_quote),
       onPressed: () {
         showDialog(
           context: context,
@@ -64,21 +63,21 @@ class FontSettingsBar extends StatelessWidget {
         if (showFontResizeControllers) ...[
           IconButton(
             tooltip: S.of(context).fontResetSize,
-            icon: Icon(MdiIcons.restart),
+            icon: const Icon(Icons.restart_alt),
             onPressed: () {
               context.read<SettingsCubit>().resetFontSize();
             },
           ),
           IconButton(
             tooltip: S.of(context).fontIncreaseSize,
-            icon: Icon(MdiIcons.formatFontSizeIncrease),
+            icon: const Icon(Icons.format_size),
             onPressed: () {
               context.read<SettingsCubit>().increaseFontSize();
             },
           ),
           IconButton(
             tooltip: S.of(context).fontDecreaseSize,
-            icon: Icon(MdiIcons.formatFontSizeDecrease),
+            icon: const Icon(Icons.format_size),
             onPressed: () {
               context.read<SettingsCubit>().decreaseFontSize();
             },
@@ -89,7 +88,7 @@ class FontSettingsBar extends StatelessWidget {
             tooltip: S.of(context).showDiacritics,
             icon: Transform.rotate(
               angle: context.watch<SettingsCubit>().state.showDiacritics ? 0 : -math.pi / 8,
-              child: Icon(MdiIcons.abjadArabic),
+              child: const Icon(Icons.abc),
             ),
             onPressed: () {
               context.read<SettingsCubit>().toggleDiacriticsStatus();

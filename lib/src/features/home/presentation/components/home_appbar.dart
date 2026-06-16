@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/features/home/data/data_source/app_dashboard_tabs.dart';
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
@@ -30,7 +29,7 @@ class HomeAppBar extends StatelessWidget {
               : IconButton(
                   tooltip: S.of(context).close,
                   padding: EdgeInsets.zero,
-                  icon: Icon(MdiIcons.close),
+                  icon: const Icon(Icons.close),
                   onPressed: () {
                     context.read<HomeBloc>().add(
                       const HomeToggleSearchEvent(isSearching: false),
