@@ -32,4 +32,5 @@ class ZikrTextRepo {
   bool get showDiacritics => box.read('tashkel_status') ?? true;
 
   Future<void> changDiacriticsStatus({required bool value}) => box.write('tashkel_status', value);
+
 }

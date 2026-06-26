@@ -227,7 +227,6 @@ class _SettingsAlarmsSection extends StatelessWidget {
         }
         return Column(
           children: [
-            /**/
             Title(title: S.of(context).reminders),
             ListTile(
               title: Text(S.of(context).remindersManager),

@@ -14,8 +14,10 @@ import 'package:muslim/src/features/bookmark/presentation/controller/bloc/bookma
 import 'package:muslim/src/features/effects_manager/presentation/controller/effects_manager.dart';
 import 'package:muslim/src/features/home/data/models/zikr_title.dart';
 import 'package:muslim/src/features/home/data/repository/hisn_db_helper.dart';
+import 'package:muslim/src/features/home/data/repository/translation_db_helper.dart';
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
+import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_cubit.dart';
 import 'package:muslim/src/features/zikr_audio_player/presentation/controller/cubit/zikr_audio_player_cubit.dart';
 import 'package:muslim/src/features/zikr_viewer/data/models/zikr_content.dart';
 import 'package:muslim/src/features/zikr_viewer/data/models/zikr_content_extension.dart';
@@ -38,6 +40,8 @@ class ZikrViewerBloc extends Bloc<ZikrViewerEvent, ZikrViewerState> {
   final ZikrViewerRepo zikrViewerRepo;
   final AzkarFiltersRepo azkarFiltersRepo;
   final ZikrAudioPlayerCubit zikrAudioPlayerCubit;
+  final TranslationDBHelper translationDBHelper;
+  final ThemeCubit themeCubit;
   ZikrViewerBloc(
     this.effectsManager,
     this.homeBloc,
@@ -47,6 +51,8 @@ class ZikrViewerBloc extends Bloc<ZikrViewerEvent, ZikrViewerState> {
     this.zikrViewerRepo,
     this.azkarFiltersRepo,
     this.zikrAudioPlayerCubit,
+    this.translationDBHelper,
+    this.themeCubit,
   ) : super(ZikrViewerLoadingState()) {
     _initHandlers();
   }
@@ -92,6 +98,23 @@ class ZikrViewerBloc extends Bloc<ZikrViewerEvent, ZikrViewerState> {
     on<ZikrViewerAudioPlayingStateChangedEvent>(_audioPlayingStateChanged);
   }
 
+  List<DbContent> _applyContentTranslations(
+    List<DbContent> contents,
+    Map<int, Map<String, String?>> translations,
+  ) {
+    return contents.map((content) {
+      final translation = translations[content.id];
+      if (translation != null) {
+        return content.copyWith(
+          contentTranslation: translation['content'],
+          transliteration: translation['transliteration'],
+          fadlTranslation: translation['fadl'],
+        );
+      }
+      return content;
+    }).toList();
+  }
+
   Future<void> _start(
     ZikrViewerStartEvent event,
     Emitter<ZikrViewerState> emit,
@@ -100,14 +123,29 @@ class ZikrViewerBloc extends Bloc<ZikrViewerEvent, ZikrViewerState> {
       WakelockPlus.enable();
     }
 
-    final title = await hisnDBHelper.getTitleById(id: event.titleIndex);
+    var title = await hisnDBHelper.getTitleById(id: event.titleIndex);
 
     final azkarFromDB = await hisnDBHelper.getContentsByTitleId(
       titleId: event.titleIndex,
     );
 
+    final translationLang = themeCubit.state.locale?.languageCode ?? 'ar';
+    List<DbContent> translatedAzkar;
+    if (translationLang != 'ar') {
+      final titleTranslation =
+          await translationDBHelper.getTitleTranslation(title.id, translationLang);
+      if (titleTranslation != null) {
+        title = title.copyWith(nameEn: titleTranslation);
+      }
+      final contentTranslations =
+          await translationDBHelper.getAllContentTranslations(translationLang);
+      translatedAzkar = _applyContentTranslations(azkarFromDB, contentTranslations);
+    } else {
+      translatedAzkar = azkarFromDB;
+    }
+
     final List<Filter> filters = azkarFiltersRepo.getAllFilters;
-    final filteredAzkar = filters.getFilteredZikr(azkarFromDB);
+    final filteredAzkar = filters.getFilteredZikr(translatedAzkar);
 
     final azkarToView = List<DbContent>.from(filteredAzkar);
 
@@ -234,8 +272,6 @@ class ZikrViewerBloc extends Bloc<ZikrViewerEvent, ZikrViewerState> {
     final state = this.state;
     if (state is! ZikrViewerLoadedState) return;
 
-    // Optional: If the user swipes, the audio player should match the current page if it's playing.
-    // If the audio player index doesn't match the new page index, we might need to sync.
     if (zikrAudioPlayerCubit.state.isPlaying &&
         zikrAudioPlayerCubit.state.currentIndex != event.index) {
       zikrAudioPlayerCubit.startPlayFromIndex(event.index);
@@ -281,9 +317,6 @@ class ZikrViewerBloc extends Bloc<ZikrViewerEvent, ZikrViewerState> {
     }
 
     if (count <= 1) {
-      // If we are currently in an audio delay phase, we DO NOT turn the page yet.
-      // We wait for the audio delay to finish (`isAudioDelaying` going to false) to turn it.
-      // We check both the bloc state and the cubit state directly to avoid stream race conditions.
       final isDelayingBloc = state.isAudioDelaying;
       final isDelayingCubit = zikrAudioPlayerCubit.state.isDelayingBetweenZikr;
 
@@ -319,9 +352,6 @@ class ZikrViewerBloc extends Bloc<ZikrViewerEvent, ZikrViewerState> {
     final wasDelaying = state.isAudioDelaying;
     emit(state.copyWith(isAudioDelaying: event.isDelaying));
 
-    // If the delay just finished (transitioned from true to false),
-    // and the current active zikr is completely done (count == 0),
-    // we should turn the page now.
     if (wasDelaying && !event.isDelaying) {
       final activeZikr = state.activeZikr;
 
@@ -430,7 +460,9 @@ class ZikrViewerBloc extends Bloc<ZikrViewerEvent, ZikrViewerState> {
 
     final text = await activeZikr.getPlainText();
     EmailManager.sendMisspelledInZikr(
-      title: state.title.name,
+      title: state.title.nameEn != null && state.title.nameEn!.isNotEmpty
+          ? state.title.nameEn!
+          : state.title.name,
       zikrId: (activeZikr.id + 1).toString(),
       zikrBody: text,
     );

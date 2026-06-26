@@ -19,6 +19,7 @@ import 'package:muslim/src/features/fake_hadith/presentation/controller/bloc/fak
 import 'package:muslim/src/features/home/data/repository/commentary_db_helper.dart';
 import 'package:muslim/src/features/home/data/repository/data_database_helper.dart';
 import 'package:muslim/src/features/home/data/repository/hisn_db_helper.dart';
+import 'package:muslim/src/features/home/data/repository/translation_db_helper.dart';
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
 import 'package:muslim/src/features/home_search/domain/repository/search_repo.dart';
 import 'package:muslim/src/features/home_search/presentation/controller/cubit/search_cubit.dart';
@@ -75,6 +76,7 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => HisnDBHelper());
   sl.registerLazySingleton(() => FakeHadithDBHelper(sl()));
   sl.registerLazySingleton(() => CommentaryDBHelper());
+  sl.registerLazySingleton(() => TranslationDBHelper());
   sl.registerLazySingleton(
     () => BackupRestoreRepo(
       userDataDBHelper: sl(),
@@ -98,9 +100,9 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => ThemeCubit(sl()));
   sl.registerLazySingleton(() => AlarmsBloc(sl(), sl(), sl(), sl()));
   sl.registerLazySingleton(() => BookmarkBloc(sl(), sl()));
-  sl.registerLazySingleton(() => HomeBloc(sl(), sl(), sl(), sl(), sl()));
-  sl.registerLazySingleton(() => SearchCubit(sl(), sl(), sl(), sl()));
   sl.registerLazySingleton(() => SettingsCubit(sl(), sl(), sl(), sl(), sl()));
+  sl.registerLazySingleton(() => HomeBloc(sl(), sl(), sl(), sl(), sl(), sl(), sl()));
+  sl.registerLazySingleton(() => SearchCubit(sl(), sl(), sl(), sl()));
   sl.registerLazySingleton(() => AzkarFiltersCubit(sl()));
   sl.registerLazySingleton(() => ZikrAudioPlayerCubit(sl()));
   sl.registerLazySingleton(() => PrayerTimesBloc(sl()));
@@ -113,6 +115,6 @@ Future<void> initSL() async {
   sl.registerFactory(() => ShareImageCubit(sl()));
   sl.registerFactory(() => FakeHadithBloc(sl()));
   sl.registerFactory(
-    () => ZikrViewerBloc(sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()),
+    () => ZikrViewerBloc(sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl(), sl()),
   );
 }

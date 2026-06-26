@@ -719,6 +719,9 @@ class SAr extends S {
   String get trueBlackTheme => 'الوضع الأسود الحالك';
 
   @override
+  String get translationLanguage => 'لغة الترجمة';
+
+  @override
   String get typical => 'مطابق';
 
   @override

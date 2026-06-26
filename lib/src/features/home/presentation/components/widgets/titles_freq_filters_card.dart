@@ -14,23 +14,44 @@ class TitleFreqFilterCard extends StatelessWidget {
         if (state is! HomeLoadedState) {
           return const Loading();
         }
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: TitlesFreqEnum.values.map(
-            (e) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: TitlesFreqEnum.values.map((e) {
+              final isSelected = state.freqFilters.contains(e);
               return Padding(
-                padding: const EdgeInsets.all(5),
-                child: FilterChip(
-                  label: Text(e.localeName(context)),
-                  selected: state.freqFilters.contains(e),
-                  showCheckmark: false,
-                  onSelected: (bool value) {
-                    context.read<HomeBloc>().add(HomeToggleFilterEvent(e));
-                  },
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  child: FilterChip(
+                    label: Text(
+                      e.localeName(context),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                    selected: isSelected,
+                    showCheckmark: false,
+                    selectedColor: Theme.of(context).colorScheme.primary,
+                    backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    side: BorderSide.none,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    onSelected: (bool value) {
+                      context.read<HomeBloc>().add(HomeToggleFilterEvent(e));
+                    },
+                  ),
                 ),
               );
-            },
-          ).toList(),
+            }).toList(),
+          ),
         );
       },
     );

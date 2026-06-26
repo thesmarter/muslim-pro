@@ -11,7 +11,9 @@ import 'package:muslim/src/features/home/data/models/titles_freq_enum.dart';
 import 'package:muslim/src/features/home/data/models/zikr_title.dart';
 import 'package:muslim/src/features/home/data/repository/data_database_helper.dart';
 import 'package:muslim/src/features/home/data/repository/hisn_db_helper.dart';
+import 'package:muslim/src/features/home/data/repository/translation_db_helper.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
+import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_cubit.dart';
 import 'package:muslim/src/features/zikr_viewer/data/models/zikr_content.dart';
 
 part 'home_event.dart';
@@ -22,20 +24,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final AzkarFiltersCubit zikrFiltersCubit;
   late final StreamSubscription filterSubscription;
   late final StreamSubscription bookmarkSubscription;
+  late final StreamSubscription themeSubscription;
   final AppSettingsRepo appSettingsRepo;
   final HisnDBHelper hisnDBHelper;
   final UserDataDBHelper userDataDBHelper;
+  final TranslationDBHelper translationDBHelper;
+  final ThemeCubit themeCubit;
   HomeBloc(
     this.bookmarkBloc,
     this.hisnDBHelper,
     this.appSettingsRepo,
     this.zikrFiltersCubit,
     this.userDataDBHelper,
+    this.translationDBHelper,
+    this.themeCubit,
   ) : super(HomeLoadingState()) {
     filterSubscription = zikrFiltersCubit.stream.listen(
       _onZikrFilterCubitChanged,
     );
     bookmarkSubscription = bookmarkBloc.stream.listen(_onBookmarkChanged);
+    themeSubscription = themeCubit.stream.listen(_onThemeChanged);
     _initHandlers();
   }
   void _initHandlers() {
@@ -49,12 +57,62 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeBookmarksChangeEvent>(_bookmarkChanged);
   }
 
+  String get _currentLanguage {
+    return themeCubit.state.locale?.languageCode ?? 'ar';
+  }
+
+  String? _lastLocaleLanguage;
+
+  void _onThemeChanged(ThemeState themeState) {
+    final newLang = themeState.locale?.languageCode;
+    if (newLang != null && _lastLocaleLanguage != null && _lastLocaleLanguage != newLang) {
+      add(const HomeStartEvent());
+    }
+    _lastLocaleLanguage = newLang;
+  }
+
+  List<DbTitle> _applyTitleTranslations(
+    List<DbTitle> titles,
+    Map<int, String> translations,
+  ) {
+    return titles.map((title) {
+      final translatedName = translations[title.id];
+      if (translatedName != null) {
+        return title.copyWith(nameEn: translatedName);
+      }
+      return title;
+    }).toList();
+  }
+
+  List<DbContent> _applyContentTranslations(
+    List<DbContent> contents,
+    Map<int, Map<String, String?>> translations,
+  ) {
+    return contents.map((content) {
+      final translation = translations[content.id];
+      if (translation != null) {
+        return content.copyWith(
+          contentTranslation: translation['content'],
+          transliteration: translation['transliteration'],
+          fadlTranslation: translation['fadl'],
+        );
+      }
+      return content;
+    }).toList();
+  }
+
   Future<void> _start(HomeStartEvent event, Emitter<HomeState> emit) async {
+    _lastLocaleLanguage = themeCubit.state.locale?.languageCode ?? 'ar';
     final filters = zikrFiltersCubit.state.filters;
+    final language = _currentLanguage;
 
     final dbTitles = await hisnDBHelper.getAllTitles();
+    final titleTranslations =
+        await translationDBHelper.getAllTitleTranslations(language);
+    final translatedTitles = _applyTitleTranslations(dbTitles, titleTranslations);
+
     final List<DbTitle> filtered = await applyFiltersOnTitels(
-      dbTitles,
+      translatedTitles,
       zikrFilters: filters,
     );
 
@@ -62,7 +120,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final azkarFromDB = await hisnDBHelper.getContentsByIds(
       ids: listDbContentFavourite.map((e) => e.itemId).toList(),
     );
-    final filteredAzkar = filters.getFilteredZikr(azkarFromDB);
+    final contentTranslations =
+        await translationDBHelper.getAllContentTranslations(language);
+    final translatedAzkar = _applyContentTranslations(azkarFromDB, contentTranslations);
+    final filteredAzkar = filters.getFilteredZikr(translatedAzkar);
     final bookmarkedTitlesIds = await userDataDBHelper.getAllFavoriteTitles();
 
     final arrangement = appSettingsRepo.getDashboardArrangement(appDashboardTabs.length);
@@ -115,6 +176,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> close() {
     filterSubscription.cancel();
     bookmarkSubscription.cancel();
+    themeSubscription.cancel();
     return super.close();
   }
 
@@ -168,9 +230,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final state = this.state;
     if (state is! HomeLoadedState) return;
 
+    final language = _currentLanguage;
+
     final dbTitles = await hisnDBHelper.getAllTitles();
+    final titleTranslations =
+        await translationDBHelper.getAllTitleTranslations(language);
+    final translatedTitles = _applyTitleTranslations(dbTitles, titleTranslations);
     final List<DbTitle> filtered = await applyFiltersOnTitels(
-      dbTitles,
+      translatedTitles,
       zikrFilters: event.filters,
     );
 
@@ -178,8 +245,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final azkarFromDB = await hisnDBHelper.getContentsByIds(
       ids: listDbContentFavourite.map((e) => e.itemId).toList(),
     );
+    final contentTranslations =
+        await translationDBHelper.getAllContentTranslations(language);
+    final translatedAzkar = _applyContentTranslations(azkarFromDB, contentTranslations);
 
-    final filteredAzkar = event.filters.getFilteredZikr(azkarFromDB);
+    final filteredAzkar = event.filters.getFilteredZikr(translatedAzkar);
 
     emit(state.copyWith(titles: filtered, bookmarkedContents: filteredAzkar));
   }

@@ -10,6 +10,19 @@ class HomeAppBar extends StatelessWidget {
   final TabController tabController;
   const HomeAppBar({super.key, required this.tabController});
 
+  String _getGreeting(BuildContext context) {
+    final hour = DateTime.now().hour;
+    final locale = Localizations.localeOf(context).languageCode;
+    if (locale == 'ar') {
+      return hour < 12 ? 'صباح الخير ☀️' : 'مساء الخير 🌙';
+    } else if (locale == 'fr') {
+      return hour < 12 ? 'Bonjour ☀️' : 'Bonsoir 🌙';
+    } else if (locale == 'tr') {
+      return hour < 12 ? 'Günaydın ☀️' : 'İyi akşamlar 🌙';
+    }
+    return hour < 12 ? 'Good Morning ☀️' : 'Good Evening 🌙';
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
@@ -18,6 +31,49 @@ class HomeAppBar extends StatelessWidget {
           return const SizedBox();
         }
         return SliverAppBar(
+          pinned: true,
+          floating: true,
+          snap: true,
+          expandedHeight: 120,
+          flexibleSpace: FlexibleSpaceBar(
+            titlePadding: const EdgeInsetsDirectional.only(start: 72, bottom: 48),
+            title: Text(
+              _getGreeting(context),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+            background: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.2),
+                    Theme.of(context).colorScheme.surface,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 24),
+                  child: Opacity(
+                    opacity: 0.08,
+                    child: Text(
+                      '﷽',
+                      style: TextStyle(
+                        fontSize: 48,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
           leading: !state.isSearching
               ? Padding(
                   padding: const EdgeInsets.all(7),
@@ -36,27 +92,36 @@ class HomeAppBar extends StatelessWidget {
                     );
                   },
                 ),
-
-          pinned: true,
-          floating: true,
-          snap: true,
           bottom: PreferredSize(
             preferredSize: const Size(0, 48),
             child: state.dashboardArrangement.length != appDashboardTabs.length
                 ? const SizedBox()
-                : TabBar(
-                    controller: tabController,
-                    isScrollable: true,
-                    tabAlignment: TabAlignment.center,
-                    tabs: List.generate(appDashboardTabs.length, (index) {
-                      return Tab(
-                        child: Text(
-                          appDashboardTabs[state.dashboardArrangement[index]].title(
-                            context,
+                : Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
+                    child: TabBar(
+                      controller: tabController,
+                      isScrollable: true,
+                      tabAlignment: TabAlignment.center,
+                      labelStyle: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                      unselectedLabelStyle: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                      tabs: List.generate(appDashboardTabs.length, (index) {
+                        return Tab(
+                          child: Text(
+                            appDashboardTabs[state.dashboardArrangement[index]].title(
+                              context,
+                            ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                    ),
                   ),
           ),
           actions: [

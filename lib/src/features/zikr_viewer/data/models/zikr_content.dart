@@ -14,6 +14,9 @@ class DbContent extends Equatable {
   final String hokm;
   final String audio;
   final bool hasAudio;
+  final String? contentTranslation;
+  final String? transliteration;
+  final String? fadlTranslation;
 
   const DbContent({
     required this.id,
@@ -27,6 +30,9 @@ class DbContent extends Equatable {
     required this.hokm,
     required this.audio,
     required this.hasAudio,
+    this.contentTranslation,
+    this.transliteration,
+    this.fadlTranslation,
   });
 
   DbContent copyWith({
@@ -40,6 +46,9 @@ class DbContent extends Equatable {
     String? search,
     String? hokm,
     String? audio,
+    String? contentTranslation,
+    String? transliteration,
+    String? fadlTranslation,
   }) {
     return DbContent(
       id: id ?? this.id,
@@ -53,11 +62,14 @@ class DbContent extends Equatable {
       hokm: hokm ?? this.hokm,
       audio: audio ?? this.audio,
       hasAudio: hasAudio,
+      contentTranslation: contentTranslation ?? this.contentTranslation,
+      transliteration: transliteration ?? this.transliteration,
+      fadlTranslation: fadlTranslation ?? this.fadlTranslation,
     );
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       id,
       content,
@@ -69,6 +81,9 @@ class DbContent extends Equatable {
       search,
       hokm,
       audio,
+      contentTranslation,
+      transliteration,
+      fadlTranslation,
     ];
   }
 
@@ -86,6 +101,9 @@ class DbContent extends Equatable {
       hokm: (map['hokm'] as String?) ?? "",
       audio: audio ?? "",
       hasAudio: audio != null,
+      contentTranslation: (map['contentTranslation'] as String?) ?? '',
+      transliteration: (map['transliteration'] as String?) ?? '',
+      fadlTranslation: (map['fadlTranslation'] as String?) ?? '',
     );
   }
 }

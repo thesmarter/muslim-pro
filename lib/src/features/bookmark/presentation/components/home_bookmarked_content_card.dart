@@ -140,7 +140,7 @@ class _BottomBar extends StatelessWidget {
                 context.push(ZikrViewerScreen(index: dbTitle.id));
               },
               title: Text(
-                "${S.of(context).goTo}: ${dbTitle.name}",
+                "${S.of(context).goTo}: ${dbTitle.nameEn != null && dbTitle.nameEn!.isNotEmpty ? dbTitle.nameEn! : dbTitle.name}",
                 textAlign: TextAlign.center,
               ),
               trailing: Text(

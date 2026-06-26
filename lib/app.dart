@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/scroll_behavior.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
@@ -15,6 +16,7 @@ import 'package:muslim/src/features/bookmark/presentation/controller/bloc/bookma
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
 import 'package:muslim/src/features/home/presentation/screens/home_screen.dart';
 import 'package:muslim/src/features/home_search/presentation/controller/cubit/search_cubit.dart';
+import 'package:muslim/src/features/onboarding/presentation/screens/language_selection_screen.dart';
 import 'package:muslim/src/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_bloc.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
@@ -64,7 +66,7 @@ class AppState extends State<App> {
         BlocProvider(
           create: (_) => sl<BookmarkBloc>()..add(BookmarkStartEvent()),
         ),
-        BlocProvider(create: (_) => sl<HomeBloc>()..add(HomeStartEvent())),
+        BlocProvider(create: (_) => sl<HomeBloc>()..add(const HomeStartEvent())),
         BlocProvider(create: (context) => sl<SearchCubit>()..start()),
         BlocProvider(create: (_) => sl<ZikrAudioPlayerCubit>()),
         BlocProvider(create: (_) => sl<BackupRestoreCubit>()),
@@ -110,9 +112,11 @@ class AppState extends State<App> {
                 },
               );
             },
-            home: sl<AppSettingsRepo>().currentVersion != sl<PackageInfo>().version
-                ? const OnBoardingScreen()
-                : const HomeScreen(),
+            home: sl<GetStorage>().read('language_chosen') != true
+                ? const LanguageSelectionScreen()
+                : sl<AppSettingsRepo>().currentVersion != sl<PackageInfo>().version
+                    ? const OnBoardingScreen()
+                    : const HomeScreen(),
           );
         },
       ),

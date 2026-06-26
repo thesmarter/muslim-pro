@@ -226,4 +226,5 @@ class AppSettingsRepo {
   bool get showAudioBar => box.read(showAudioBarKey) ?? true;
 
   Future<void> changeShowAudioBarStatus({required bool value}) => box.write(showAudioBarKey, value);
+
 }
