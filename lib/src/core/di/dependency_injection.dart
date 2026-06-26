@@ -25,6 +25,7 @@ import 'package:muslim/src/features/home_search/domain/repository/search_repo.da
 import 'package:muslim/src/features/home_search/presentation/controller/cubit/search_cubit.dart';
 import 'package:muslim/src/features/onboarding/presentation/controller/cubit/onboard_cubit.dart';
 import 'package:muslim/src/features/prayer_times/data/repository/adhan_audio_service.dart';
+import 'package:muslim/src/features/prayer_times/data/repository/countdown_notification_service.dart';
 import 'package:muslim/src/features/prayer_times/data/repository/prayer_times_repo.dart';
 import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_bloc.dart';
 import 'package:muslim/src/features/quran/data/repository/uthmani_repository.dart';
@@ -67,6 +68,7 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => UpdateRepo(sl()));
   sl.registerLazySingleton(() => PrayerTimesRepo());
   sl.registerLazySingleton(() => AdhanAudioService());
+  sl.registerLazySingleton(() => CountdownNotificationService());
 
   ///MARK: Init Repo
   sl.registerLazySingleton(() => TallyDatabaseHelper());

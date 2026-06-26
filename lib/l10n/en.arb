@@ -332,5 +332,12 @@
   "ayahCopied": "Ayah copied",
   "noBookmarksYet": "No bookmarks yet",
   "ayaCount": "Ayahs count",
-  "tafsirIsEmptyNote": "No tafsir available for this ayah"
+  "tafsirIsEmptyNote": "No tafsir available for this ayah",
+  "countdownToAdhan": "Countdown to {prayerName} Adhan",
+  "countdownToIqamah": "Iqamah in - {prayerName}",
+  "countdownToSunriseEnd": "Sunrise ends in",
+  "countdownMinutesToAdhanBody": "{prayerName} adhan in {hours}h {minutes}m",
+  "countdownMinutesToAdhanBodyFinal": "{prayerName} adhan in just {minutes} minutes!",
+  "countdownMinutesToIqamahBody": "{prayerName} iqamah in {hours}h {minutes}m",
+  "countdownSunriseEndBody": "Sunrise ends in {hours}h {minutes}m"
 }

@@ -1046,4 +1046,37 @@ class SFr extends S {
 
   @override
   String get tafsirIsEmptyNote => 'Aucun tafsir disponible pour cet ayah';
+
+  @override
+  String countdownToAdhan(Object prayerName) {
+    return 'Compte à rebours pour $prayerName';
+  }
+
+  @override
+  String countdownToIqamah(Object prayerName) {
+    return 'Iqamah dans - $prayerName';
+  }
+
+  @override
+  String get countdownToSunriseEnd => 'Fin du lever du soleil dans';
+
+  @override
+  String countdownMinutesToAdhanBody(Object hours, Object minutes, Object prayerName) {
+    return 'Adhan $prayerName dans ${hours}h ${minutes}m';
+  }
+
+  @override
+  String countdownMinutesToAdhanBodyFinal(Object minutes, Object prayerName) {
+    return 'Adhan $prayerName dans $minutes minutes seulement!';
+  }
+
+  @override
+  String countdownMinutesToIqamahBody(Object hours, Object minutes, Object prayerName) {
+    return 'Iqamah $prayerName dans ${hours}h ${minutes}m';
+  }
+
+  @override
+  String countdownSunriseEndBody(Object hours, Object minutes) {
+    return 'Fin du lever du soleil dans ${hours}h ${minutes}m';
+  }
 }

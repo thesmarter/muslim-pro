@@ -331,5 +331,12 @@
   "ayahCopied": "Ayet kopyalandı",
   "noBookmarksYet": "Henüz yer imi yok",
   "ayaCount": "Ayet sayısı",
-  "tafsirIsEmptyNote": "Bu ayet için tefsir bulunamadı"
+  "tafsirIsEmptyNote": "Bu ayet için tefsir bulunamadı",
+  "countdownToAdhan": "{prayerName} Ezanına Geri Sayım",
+  "countdownToIqamah": "İqamah - {prayerName}",
+  "countdownToSunriseEnd": "Güneşin doğuşu sona eriyor",
+  "countdownMinutesToAdhanBody": "{prayerName} ezanı {hours}saat {minutes}dakika içinde",
+  "countdownMinutesToAdhanBodyFinal": "{prayerName} ezanı sadece {minutes} dakika içinde!",
+  "countdownMinutesToIqamahBody": "{prayerName} iqamahı {hours}saat {minutes}dakika içinde",
+  "countdownSunriseEndBody": "Güneşin doğuşu {hours}saat {minutes}dakika içinde sona eriyor"
 }

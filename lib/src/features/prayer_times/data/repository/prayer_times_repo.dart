@@ -8,6 +8,7 @@ import 'package:muslim/src/core/functions/print.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/local_notification_manager.dart';
 import 'package:muslim/src/features/prayer_times/data/models/prayer_settings.dart';
 import 'package:muslim/src/features/prayer_times/data/repository/adhan_audio_service.dart';
+import 'package:muslim/src/features/prayer_times/data/repository/countdown_notification_service.dart';
 
 class PrayerTimesRepo {
   late final GetStorage _box = GetStorage();
@@ -26,6 +27,7 @@ class PrayerTimesRepo {
   Future<void> schedulePrayerNotifications(PrayerSettings settings) async {
     final notificationManager = sl<LocalNotificationManager>();
     final adhanService = sl<AdhanAudioService>();
+    final countdownService = sl<CountdownNotificationService>();
 
     if (settings.latitude == 0 && settings.longitude == 0) {
       try {
@@ -52,6 +54,7 @@ class PrayerTimesRepo {
       await notificationManager.cancelNotificationById(id: i);
     }
     await adhanService.cancelAllAdhanAlarms();
+    await countdownService.cancelAllCountdowns();
 
     final now = DateTime.now();
     final selectedMuadhin = settings.muadhin.isNotEmpty
@@ -129,7 +132,111 @@ class PrayerTimesRepo {
         payload: "prayer_time_$prayerKey",
         requestPermission: false,
       );
-      hisnPrint("Scheduled daily notification for $prayerKey at ${scheduledTime.hour}:${scheduledTime.minute}");
+    hisnPrint("Scheduled daily notification for $prayerKey at ${scheduledTime.hour}:${scheduledTime.minute}");
+    }
+
+    // ─────────────────────────────────────────────────────
+    // 3. COUNTDOWN NOTIFICATIONS: Pre-adhan, Post-adhan, and Sunrise End
+    //    إشعارات العد التنازلي قبل الأذان وبعده وانتهاء الشروق
+    // ─────────────────────────────────────────────────────
+    await _scheduleCountdownNotifications(settings, todayPt, now);
+  }
+
+  Future<void> _scheduleCountdownNotifications(
+    PrayerSettings settings,
+    PrayerTimes todayPt,
+    DateTime now,
+  ) async {
+    final countdownService = sl<CountdownNotificationService>();
+    await countdownService.cancelAllCountdowns();
+
+    const int preAdhanMinutes = 20;
+    const int postAdhanMinutes = 10;
+
+    // Find the current/next active prayer
+    final adhanPrayers = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
+    final prayerTimes = [todayPt.fajr, todayPt.dhuhr, todayPt.asr, todayPt.maghrib, todayPt.isha];
+
+    // Case 1: Check if we're in the pre-adhan period for a prayer (20 min before)
+    for (int pIndex = 0; pIndex < adhanPrayers.length; pIndex++) {
+      final prayerKey = adhanPrayers[pIndex];
+      final prayerTime = prayerTimes[pIndex];
+      final isEnabled = settings.notifications[prayerKey] ?? false;
+
+      if (!isEnabled) continue;
+
+      final prayerName = SX.current.getValue(prayerKey);
+      final preAdhanStart = prayerTime.subtract(const Duration(minutes: preAdhanMinutes));
+
+      // If we're in the pre-adhan countdown period
+      if (now.isAfter(preAdhanStart) && now.isBefore(prayerTime)) {
+        await countdownService.startPreAdhanCountdown(
+          prayerIndex: pIndex,
+          prayerName: prayerName,
+          adhanTime: prayerTime,
+          minutesBefore: preAdhanMinutes,
+        );
+        return; // Only show one notification
+      }
+    }
+
+    // Case 2: Check if we're in the post-adhan period (10 min after prayer)
+    for (int pIndex = 0; pIndex < adhanPrayers.length; pIndex++) {
+      final prayerKey = adhanPrayers[pIndex];
+      final prayerTime = prayerTimes[pIndex];
+      final isEnabled = settings.notifications[prayerKey] ?? false;
+
+      if (!isEnabled) continue;
+
+      final prayerName = SX.current.getValue(prayerKey);
+      final postAdhanEnd = prayerTime.add(const Duration(minutes: postAdhanMinutes));
+
+      // If we're in the post-adhan countdown period
+      if (now.isAfter(prayerTime) && now.isBefore(postAdhanEnd)) {
+        await countdownService.startPostAdhanCountdown(
+          prayerIndex: pIndex,
+          prayerName: prayerName,
+          adhanTime: prayerTime,
+          durationMinutes: const Duration(minutes: postAdhanMinutes).inMinutes,
+        );
+        return; // Only show one notification
+      }
+    }
+
+    // Case 3: Schedule countdown for the next upcoming prayer (20 min before)
+    for (int pIndex = 0; pIndex < adhanPrayers.length; pIndex++) {
+      final prayerKey = adhanPrayers[pIndex];
+      final prayerTime = prayerTimes[pIndex];
+      final isEnabled = settings.notifications[prayerKey] ?? false;
+
+      if (!isEnabled) continue;
+
+      final prayerName = SX.current.getValue(prayerKey);
+
+      // If this prayer is in the future
+      if (now.isBefore(prayerTime)) {
+        await countdownService.startPreAdhanCountdown(
+          prayerIndex: pIndex,
+          prayerName: prayerName,
+          adhanTime: prayerTime,
+          minutesBefore: preAdhanMinutes,
+        );
+        return; // Only show one notification
+      }
+    }
+
+    // Case 4: Check sunrise end countdown if applicable
+    if (settings.notifications['sunrise'] ?? false) {
+      final sunriseTime = todayPt.sunrise;
+      final sunriseEndTime = sunriseTime.add(const Duration(minutes: 15));
+
+      if (now.isAfter(sunriseTime) && now.isBefore(sunriseEndTime)) {
+        await countdownService.startSunriseEndCountdown(
+          sunriseTime: sunriseTime,
+          durationMinutes: 15,
+        );
+        return;
+      }
     }
   }
 
