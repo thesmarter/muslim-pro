@@ -334,5 +334,12 @@
   "ayahCopied": "تم نسخ الآية",
   "noBookmarksYet": "لا توجد علامات مرجعية بعد",
   "ayaCount": "عدد الآيات",
-  "tafsirIsEmptyNote": "لا يوجد تفسير متوفر لهذه الآية"
+  "tafsirIsEmptyNote": "لا يوجد تفسير متوفر لهذه الآية",
+  "countdownToAdhan": "متبقي لأذان {prayerName}",
+  "countdownToIqamah": "الإقامة بعد - {prayerName}",
+  "countdownToSunriseEnd": "انتهاء الشروق بعد",
+  "countdownMinutesToAdhanBody": "أذان {prayerName} بعد {hours} ساعة و {minutes} دقيقة",
+  "countdownMinutesToAdhanBodyFinal": "أذان {prayerName} بعد {minutes} دقائق فقط!",
+  "countdownMinutesToIqamahBody": "إقامة {prayerName} بعد {hours} ساعة و {minutes} دقيقة",
+  "countdownSunriseEndBody": "انتهاء وقت الشروق بعد {hours} ساعة و {minutes} دقيقة"
 }

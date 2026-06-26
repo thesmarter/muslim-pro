@@ -1038,4 +1038,37 @@ class STr extends S {
 
   @override
   String get tafsirIsEmptyNote => 'Bu ayet için tefsir bulunamadı';
+
+  @override
+  String countdownToAdhan(Object prayerName) {
+    return '$prayerName Ezanına Geri Sayım';
+  }
+
+  @override
+  String countdownToIqamah(Object prayerName) {
+    return 'İqamah - $prayerName';
+  }
+
+  @override
+  String get countdownToSunriseEnd => 'Güneşin doğuşu sona eriyor';
+
+  @override
+  String countdownMinutesToAdhanBody(Object hours, Object minutes, Object prayerName) {
+    return '$prayerName ezanı ${hours}saat ${minutes}dakika içinde';
+  }
+
+  @override
+  String countdownMinutesToAdhanBodyFinal(Object minutes, Object prayerName) {
+    return '$prayerName ezanı sadece $minutes dakika içinde!';
+  }
+
+  @override
+  String countdownMinutesToIqamahBody(Object hours, Object minutes, Object prayerName) {
+    return '$prayerName iqamahı ${hours}saat ${minutes}dakika içinde';
+  }
+
+  @override
+  String countdownSunriseEndBody(Object hours, Object minutes) {
+    return 'Güneşin doğuşu ${hours}saat ${minutes}dakika içinde sona eriyor';
+  }
 }

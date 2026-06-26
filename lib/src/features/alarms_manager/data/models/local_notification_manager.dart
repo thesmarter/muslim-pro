@@ -140,6 +140,16 @@ class LocalNotificationManager {
             description: NotificationsChannels.scheduled.description,
           ));
 
+          const countdownChannel = AndroidNotificationChannel(
+            'countdown_channel',
+            'عداد تنازلي',
+            description: 'إشعارات العد التنازلي للصلوات',
+            importance: Importance.high,
+            enableLights: true,
+          );
+
+          await androidPlugin.createNotificationChannel(countdownChannel);
+
           hisnPrint("Notification channels created successfully");
         }
       }

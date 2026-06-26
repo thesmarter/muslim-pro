@@ -1037,4 +1037,37 @@ class SEn extends S {
 
   @override
   String get tafsirIsEmptyNote => 'No tafsir available for this ayah';
+
+  @override
+  String countdownToAdhan(Object prayerName) {
+    return 'Countdown to $prayerName Adhan';
+  }
+
+  @override
+  String countdownToIqamah(Object prayerName) {
+    return 'Iqamah in - $prayerName';
+  }
+
+  @override
+  String get countdownToSunriseEnd => 'Sunrise ends in';
+
+  @override
+  String countdownMinutesToAdhanBody(Object hours, Object minutes, Object prayerName) {
+    return '$prayerName adhan in ${hours}h ${minutes}m';
+  }
+
+  @override
+  String countdownMinutesToAdhanBodyFinal(Object minutes, Object prayerName) {
+    return '$prayerName adhan in just $minutes minutes!';
+  }
+
+  @override
+  String countdownMinutesToIqamahBody(Object hours, Object minutes, Object prayerName) {
+    return '$prayerName iqamah in ${hours}h ${minutes}m';
+  }
+
+  @override
+  String countdownSunriseEndBody(Object hours, Object minutes) {
+    return 'Sunrise ends in ${hours}h ${minutes}m';
+  }
 }

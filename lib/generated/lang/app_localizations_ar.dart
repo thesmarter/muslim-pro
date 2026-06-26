@@ -1035,4 +1035,37 @@ class SAr extends S {
 
   @override
   String get tafsirIsEmptyNote => 'لا يوجد تفسير متوفر لهذه الآية';
+
+  @override
+  String countdownToAdhan(Object prayerName) {
+    return 'متبقي لأذان $prayerName';
+  }
+
+  @override
+  String countdownToIqamah(Object prayerName) {
+    return 'الإقامة بعد - $prayerName';
+  }
+
+  @override
+  String get countdownToSunriseEnd => 'انتهاء الشروق بعد';
+
+  @override
+  String countdownMinutesToAdhanBody(Object hours, Object minutes, Object prayerName) {
+    return 'أذان $prayerName بعد $hours ساعة و $minutes دقيقة';
+  }
+
+  @override
+  String countdownMinutesToAdhanBodyFinal(Object minutes, Object prayerName) {
+    return 'أذان $prayerName بعد $minutes دقائق فقط!';
+  }
+
+  @override
+  String countdownMinutesToIqamahBody(Object hours, Object minutes, Object prayerName) {
+    return 'إقامة $prayerName بعد $hours ساعة و $minutes دقيقة';
+  }
+
+  @override
+  String countdownSunriseEndBody(Object hours, Object minutes) {
+    return 'انتهاء وقت الشروق بعد $hours ساعة و $minutes دقيقة';
+  }
 }

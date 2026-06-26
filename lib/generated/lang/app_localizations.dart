@@ -2091,6 +2091,48 @@ abstract class S {
   /// In en, this message translates to:
   /// **'No tafsir available for this ayah'**
   String get tafsirIsEmptyNote;
+
+  /// No description provided for @countdownToAdhan.
+  ///
+  /// In en, this message translates to:
+  /// **'Countdown to {prayerName} Adhan'**
+  String countdownToAdhan(Object prayerName);
+
+  /// No description provided for @countdownToIqamah.
+  ///
+  /// In en, this message translates to:
+  /// **'Iqamah in - {prayerName}'**
+  String countdownToIqamah(Object prayerName);
+
+  /// No description provided for @countdownToSunriseEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise ends in'**
+  String get countdownToSunriseEnd;
+
+  /// No description provided for @countdownMinutesToAdhanBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{prayerName} adhan in {hours}h {minutes}m'**
+  String countdownMinutesToAdhanBody(Object hours, Object minutes, Object prayerName);
+
+  /// No description provided for @countdownMinutesToAdhanBodyFinal.
+  ///
+  /// In en, this message translates to:
+  /// **'{prayerName} adhan in just {minutes} minutes!'**
+  String countdownMinutesToAdhanBodyFinal(Object minutes, Object prayerName);
+
+  /// No description provided for @countdownMinutesToIqamahBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{prayerName} iqamah in {hours}h {minutes}m'**
+  String countdownMinutesToIqamahBody(Object hours, Object minutes, Object prayerName);
+
+  /// No description provided for @countdownSunriseEndBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise ends in {hours}h {minutes}m'**
+  String countdownSunriseEndBody(Object hours, Object minutes);
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

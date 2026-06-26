@@ -331,5 +331,11 @@
   "ayaCount": "Les versets comptent",
   "tafsirIsEmptyNote": "Aucun tafsir disponible pour cet ayah",
   "prayerTimeReminder": "It's time for {prayerName}",
-  "getValue": "{key, select, fajr{Fajr} sunrise{Sunrise} sunrise_end{Sunrise End} dhuhr{Dhuhr} asr{Asr} maghrib{Maghrib} isha{Isha} siddiq_hamdoun{Siddiq Hamdoun} abdul_basit{Abdul Basit} farooq_hadrawi{Farooq Hadrawi} noreen_mohammed{Noreen Mohammed} wadie_alyamani{Wadie Al-Yamani} yasser_alhouri{Yasser Al-Houri} other{{key}}}"
+  "countdownToAdhan": "Compte à rebours pour {prayerName}",
+  "countdownToIqamah": "Iqamah dans - {prayerName}",
+  "countdownToSunriseEnd": "Fin du lever du soleil dans",
+  "countdownMinutesToAdhanBody": "Adhan {prayerName} dans {hours}h {minutes}m",
+  "countdownMinutesToAdhanBodyFinal": "Adhan {prayerName} dans {minutes} minutes seulement!",
+  "countdownMinutesToIqamahBody": "Iqamah {prayerName} dans {hours}h {minutes}m",
+  "countdownSunriseEndBody": "Fin du lever du soleil dans {hours}h {minutes}m"
 }
