@@ -26,6 +26,7 @@ class TitlesScreen extends StatelessWidget {
             : Column(
                 children: [
                   const TitleFreqFilterCard(),
+                  const SizedBox(height: 4),
                   Expanded(child: HomeTitlesListView(titles: state.allTitles)),
                 ],
               );

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:muslim/src/features/home/data/models/zikr_title.dart';
 import 'package:muslim/src/features/home/presentation/components/widgets/title_card.dart';
@@ -10,9 +9,9 @@ class HomeTitlesListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.only(bottom: 100),
+      padding: const EdgeInsets.only(top: 8, bottom: 100),
       itemBuilder: (context, index) {
-        return TitleCard(dbTitle: titles[index]);
+        return TitleCard(dbTitle: titles[index], index: index);
       },
       itemCount: titles.length,
     );

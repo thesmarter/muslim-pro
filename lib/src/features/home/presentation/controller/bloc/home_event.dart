@@ -8,7 +8,9 @@ sealed class HomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class HomeStartEvent extends HomeEvent {}
+class HomeStartEvent extends HomeEvent {
+  const HomeStartEvent();
+}
 
 class HomeToggleSearchEvent extends HomeEvent {
   final bool isSearching;

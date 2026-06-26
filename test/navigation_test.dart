@@ -20,7 +20,7 @@ void main() {
   late MockThemeCubit mockThemeCubit;
 
   setUpAll(() {
-    registerFallbackValue(HomeStartEvent());
+    registerFallbackValue(const HomeStartEvent());
     registerFallbackValue(AlarmsStartEvent());
   });
 

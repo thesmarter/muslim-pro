@@ -719,6 +719,9 @@ class SEn extends S {
   String get trueBlackTheme => 'True black Theme';
 
   @override
+  String get translationLanguage => 'Translation Language';
+
+  @override
   String get typical => 'Typical';
 
   @override
