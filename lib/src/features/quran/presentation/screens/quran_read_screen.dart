@@ -42,9 +42,14 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
           useMaterial3: false,
         ),
         child: Scaffold(
-          body: Stack(
-            children: [
-              QuranLibraryScreen(
+          body: Navigator(
+            onPopPage: (route, result) {
+              widget.onBack?.call();
+              return false;
+            },
+            pages: [
+              MaterialPage(
+                child: QuranLibraryScreen(
                 parentContext: context,
                 isDark: isDark,
                 appLanguageCode: Localizations.localeOf(context).languageCode,
@@ -76,7 +81,7 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
                         .copyWith(
                   showAudioButton: true,
                   showFontsButton: true,
-                  showBackButton: false,
+                  showBackButton: true,
                   tabBookmarksLabel: S.of(context).favoritesContent,
                   tabSearchLabel: S.of(context).search,
                   tabIndexLabel: S.of(context).index,
@@ -123,6 +128,7 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
                   sajdaName: S.of(context).sajda,
                 ),
                 onPageChanged: (pageIndex) {},
+              ),
               ),
             ],
           ),
