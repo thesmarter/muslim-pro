@@ -1071,4 +1071,25 @@ class STr extends S {
   String countdownSunriseEndBody(Object hours, Object minutes) {
     return 'Güneşin doğuşu ${hours}saat ${minutes}dakika içinde sona eriyor';
   }
+
+  @override
+  String get searchCityHint => 'Şehir adı ara...';
+
+  @override
+  String get searchResults => 'Arama Sonuçları';
+
+  @override
+  String get detectByIP => 'IP ile algıla';
+
+  @override
+  String get detectByGPS => 'GPS ile algıla';
+
+  @override
+  String get selectLocation => 'Konum seç';
+
+  @override
+  String get currentLocation => 'Mevcut konum';
+
+  @override
+  String get tryDifferentQuery => 'Farklı bir arama terimi deneyin';
 }

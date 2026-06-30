@@ -10,6 +10,7 @@ import 'package:muslim/src/features/prayer_times/data/models/prayer_settings.dar
 import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_bloc.dart';
 import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_event.dart';
 import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_state.dart';
+import 'package:muslim/src/features/prayer_times/presentation/screens/location_search_screen.dart';
 import 'package:muslim/src/features/prayer_times/presentation/screens/prayer_adjustments_screen.dart';
 
 class PrayerTimesScreen extends StatefulWidget {
@@ -193,42 +194,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   }
 
   void _showSearchDialog(BuildContext context) {
-    final controller = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(S.of(context).searchLocation),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          decoration: InputDecoration(
-            hintText: S.of(context).enterCityName,
-            prefixIcon: const Icon(Icons.location_city),
-          ),
-          onSubmitted: (value) {
-            if (value.isNotEmpty) {
-              context.read<PrayerTimesBloc>().add(SearchLocation(value));
-              Navigator.pop(context);
-            }
-          },
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(S.of(context).close),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              if (controller.text.isNotEmpty) {
-                context.read<PrayerTimesBloc>().add(SearchLocation(controller.text));
-                Navigator.pop(context);
-              }
-            },
-            child: Text(S.of(context).search),
-          ),
-        ],
-      ),
-    );
+    context.push(const LocationSearchScreen());
   }
 
   Widget _buildPrayerList(BuildContext context, PrayerTimes pt) {

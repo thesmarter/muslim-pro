@@ -337,5 +337,13 @@
   "countdownMinutesToAdhanBody": "Adhan {prayerName} dans {hours}h {minutes}m",
   "countdownMinutesToAdhanBodyFinal": "Adhan {prayerName} dans {minutes} minutes seulement!",
   "countdownMinutesToIqamahBody": "Iqamah {prayerName} dans {hours}h {minutes}m",
-  "countdownSunriseEndBody": "Fin du lever du soleil dans {hours}h {minutes}m"
+  "countdownSunriseEndBody": "Fin du lever du soleil dans {hours}h {minutes}m",
+  "searchCityHint": "Rechercher un nom de ville...",
+  "searchResults": "Résultats de recherche",
+  "noResultsFound": "Aucun résultat trouvé",
+  "detectByIP": "Détecter par IP",
+  "detectByGPS": "Détecter par GPS",
+  "selectLocation": "Sélectionner l'emplacement",
+  "currentLocation": "Emplacement actuel",
+  "tryDifferentQuery": "Essayez un autre terme de recherche"
 }

@@ -1079,4 +1079,25 @@ class SFr extends S {
   String countdownSunriseEndBody(Object hours, Object minutes) {
     return 'Fin du lever du soleil dans ${hours}h ${minutes}m';
   }
+
+  @override
+  String get searchCityHint => 'Rechercher un nom de ville...';
+
+  @override
+  String get searchResults => 'Résultats de recherche';
+
+  @override
+  String get detectByIP => 'Détecter par IP';
+
+  @override
+  String get detectByGPS => 'Détecter par GPS';
+
+  @override
+  String get selectLocation => 'Sélectionner l\'emplacement';
+
+  @override
+  String get currentLocation => 'Emplacement actuel';
+
+  @override
+  String get tryDifferentQuery => 'Essayez un autre terme de recherche';
 }

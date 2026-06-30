@@ -341,5 +341,13 @@
   "countdownMinutesToAdhanBody": "أذان {prayerName} بعد {hours} ساعة و {minutes} دقيقة",
   "countdownMinutesToAdhanBodyFinal": "أذان {prayerName} بعد {minutes} دقائق فقط!",
   "countdownMinutesToIqamahBody": "إقامة {prayerName} بعد {hours} ساعة و {minutes} دقيقة",
-  "countdownSunriseEndBody": "انتهاء وقت الشروق بعد {hours} ساعة و {minutes} دقيقة"
+  "countdownSunriseEndBody": "انتهاء وقت الشروق بعد {hours} ساعة و {minutes} دقيقة",
+  "searchCityHint": "ابحث عن اسم المدينة...",
+  "searchResults": "نتائج البحث",
+  "noResultsFound": "لم يتم العثور على نتائج",
+  "detectByIP": "تحديد الموقع بالـ IP",
+  "detectByGPS": "تحديد الموقع بالـ GPS",
+  "selectLocation": "اختيار الموقع",
+  "currentLocation": "الموقع الحالي",
+  "tryDifferentQuery": "جرب البحث بكلمة مختلفة"
 }

@@ -118,6 +118,9 @@ class _DashboardScreenState extends State<DashboardScreen>
               (idx) => appDashboardTabs[idx].widget is TitlesScreen,
             );
             final int defaultIndex = mainTabIndex != -1 ? mainTabIndex : 0;
+            final isQuranTab =
+                appDashboardTabs[arrangement[_currentTabIndex]].widget
+                    is QuranReadScreen;
 
             return PopScope(
               canPop: _currentTabIndex == defaultIndex,
@@ -132,11 +135,11 @@ class _DashboardScreenState extends State<DashboardScreen>
                   physics: const BouncingScrollPhysics(),
                   floatHeaderSlivers: true,
                   headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                    final isQuranTab =
-                        appDashboardTabs[arrangement[_currentTabIndex]].widget
-                            is QuranReadScreen;
+                    if (isQuranTab) {
+                      return [];
+                    }
                     return [
-                      if (!isQuranTab) HomeAppBar(tabController: tabController),
+                      HomeAppBar(tabController: tabController),
                     ];
                   },
                   body: TabBarView(
@@ -153,13 +156,15 @@ class _DashboardScreenState extends State<DashboardScreen>
                     }),
                   ),
                 ),
-                floatingActionButton: FloatingActionButton(
-                  tooltip: S.of(context).tally,
-                  child: const Icon(Icons.onetwothree, size: 35),
-                  onPressed: () {
-                    context.push(const TallyDashboardScreen());
-                  },
-                ),
+                floatingActionButton: isQuranTab
+                    ? null
+                    : FloatingActionButton(
+                        tooltip: S.of(context).tally,
+                        child: const Icon(Icons.onetwothree, size: 35),
+                        onPressed: () {
+                          context.push(const TallyDashboardScreen());
+                        },
+                      ),
               ),
             );
           },
