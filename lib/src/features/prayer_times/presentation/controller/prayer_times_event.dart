@@ -27,3 +27,30 @@ class SearchLocation extends PrayerTimesEvent {
   @override
   List<Object?> get props => [query];
 }
+
+class SearchLocationSuggestions extends PrayerTimesEvent {
+  final String query;
+  const SearchLocationSuggestions(this.query);
+
+  @override
+  List<Object?> get props => [query];
+}
+
+class DetectLocationByIP extends PrayerTimesEvent {}
+
+class SelectLocation extends PrayerTimesEvent {
+  final double latitude;
+  final double longitude;
+  final String? cityName;
+  final String? countryName;
+
+  const SelectLocation({
+    required this.latitude,
+    required this.longitude,
+    this.cityName,
+    this.countryName,
+  });
+
+  @override
+  List<Object?> get props => [latitude, longitude, cityName, countryName];
+}

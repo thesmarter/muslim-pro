@@ -1,0 +1,169 @@
+# ═══════════════════════════════════════════════════════════════
+# FXNavigator — Google Play Store CI/CD (Optimized)
+# ═══════════════════════════════════════════════════════════════
+# Single-job workflow to minimize runner time and stay within
+# GitHub Actions free tier (2,000 min/month).
+#
+# Triggers: Push to `play` branch only.
+#
+# Required GitHub Secrets:
+#   - KEYSTORE_BASE64        : Base64-encoded DetaTech.jks
+#   - KEY_STORE_PASSWORD     : Keystore password
+#   - KEY_ALIAS              : Key alias (DetaTech)
+#   - KEY_PASSWORD           : Key password
+#   - GOOGLE_PLAY_SERVICE_ACCOUNT_JSON : Play Console service account
+#   - GOOGLE_SERVICES_JSON   : Base64-encoded google-services.json
+# ═══════════════════════════════════════════════════════════════
+
+name: Build & Publish AAB to Google Play
+
+on:
+  push:
+    branches: [play]
+
+concurrency:
+  group: play-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: "17"
+  FLUTTER_VERSION: "stable"
+
+jobs:
+  build-and-publish:
+    name: Build & Publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      # ── Checkout ────────────────────────────────
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ── Java ───────────────────────────────────
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: "gradle"
+
+      # ── Gradle cache ──────────────────────────
+      - name: Setup Gradle cache
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: false
+
+      # ── Flutter (with SDK + pub cache) ─────────
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      # ── Pub dependencies cache ─────────────────
+      - name: Cache pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.PUB_CACHE }}
+            .dart_tool/
+          key: pub-${{ runner.os }}-${{ hashFiles('pubspec.lock') }}
+          restore-keys: |
+            pub-${{ runner.os }}-
+
+      # ── Build runner cache ─────────────────────
+      - name: Cache build_runner output
+        uses: actions/cache@v4
+        with:
+          path: |
+            .dart_tool/build
+            lib/**/*.freezed.dart
+            lib/**/*.g.dart
+          key: buildrunner-${{ runner.os }}-${{ hashFiles('pubspec.lock') }}
+          restore-keys: |
+            buildrunner-${{ runner.os }}-
+
+      # ── Install dependencies ───────────────────
+      - name: Flutter pub get
+        run: flutter pub get
+
+      # ── Code generation (skip if cached) ───────
+      - name: Run code generation
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      # ── Analyze (non-blocking) ──────────────────
+      - name: Analyze code
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+        continue-on-error: true
+
+      # ── Extract version ────────────────────────
+      - name: Extract version info
+        id: version
+        run: |
+          VERSION_NAME=$(grep 'version:' pubspec.yaml | head -1 | awk '{print $2}' | cut -d'+' -f1)
+          VERSION_CODE=$(grep 'version:' pubspec.yaml | head -1 | awk '{print $2}' | cut -d'+' -f2)
+          echo "versionName=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "versionCode=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "📱 Version: $VERSION_NAME+$VERSION_CODE"
+
+      # ── Signing ────────────────────────────────
+      - name: Decode keystore
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/DetaTech.jks
+
+      - name: Decode google-services.json
+        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > android/app/google-services.json
+
+      - name: Create key.properties
+        run: |
+          cat > android/key.properties << EOF
+          storePassword=${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          storeFile=DetaTech.jks
+          EOF
+
+      # ── Build AAB ──────────────────────────────
+      - name: Build AAB (Production)
+        timeout-minutes: 60
+        run: |
+          flutter build appbundle \
+            --flavor production \
+            --dart-define=FLAVOR=production \
+            --release
+
+      - name: Verify AAB
+        run: |
+          AAB_PATH="build/app/outputs/bundle/productionRelease/app-production-release.aab"
+          [ ! -f "$AAB_PATH" ] && echo "❌ AAB not found" && exit 1
+          ls -lh "$AAB_PATH"
+
+      # ── Publish to Google Play ─────────────────
+      - name: Publish to Internal Track
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: sd.elteyab.fxapp
+          releaseFiles: build/app/outputs/bundle/productionRelease/app-production-release.aab
+          track: internal
+          status: completed
+          whatsNewDirectory: whatsnew/
+          changesNotSentForReview: false
+
+      # ── Cleanup ────────────────────────────────
+      - name: Clean up sensitive files
+        if: always()
+        run: |
+          rm -f android/DetaTech.jks
+          rm -f android/key.properties
+          rm -f android/app/google-services.json
+
+      # ── Notify ─────────────────────────────────
+      - name: Success summary
+        if: success()
+        run: |
+          echo "## ✅ Deploy Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Version | ${{ steps.version.outputs.versionName }}+${{ steps.version.outputs.versionCode }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Track | Internal |" >> $GITHUB_STEP_SUMMARY
+          echo "| Package | sd.elteyab.fxapp |" >> $GITHUB_STEP_SUMMARY

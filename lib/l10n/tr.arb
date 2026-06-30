@@ -338,5 +338,13 @@
   "countdownMinutesToAdhanBody": "{prayerName} ezanı {hours}saat {minutes}dakika içinde",
   "countdownMinutesToAdhanBodyFinal": "{prayerName} ezanı sadece {minutes} dakika içinde!",
   "countdownMinutesToIqamahBody": "{prayerName} iqamahı {hours}saat {minutes}dakika içinde",
-  "countdownSunriseEndBody": "Güneşin doğuşu {hours}saat {minutes}dakika içinde sona eriyor"
+  "countdownSunriseEndBody": "Güneşin doğuşu {hours}saat {minutes}dakika içinde sona eriyor",
+  "searchCityHint": "Şehir adı ara...",
+  "searchResults": "Arama Sonuçları",
+  "noResultsFound": "Sonuç bulunamadı",
+  "detectByIP": "IP ile algıla",
+  "detectByGPS": "GPS ile algıla",
+  "selectLocation": "Konum seç",
+  "currentLocation": "Mevcut konum",
+  "tryDifferentQuery": "Farklı bir arama terimi deneyin"
 }

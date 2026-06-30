@@ -2133,6 +2133,48 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Sunrise ends in {hours}h {minutes}m'**
   String countdownSunriseEndBody(Object hours, Object minutes);
+
+  /// No description provided for @searchCityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for city name...'**
+  String get searchCityHint;
+
+  /// No description provided for @searchResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Results'**
+  String get searchResults;
+
+  /// No description provided for @detectByIP.
+  ///
+  /// In en, this message translates to:
+  /// **'Detect by IP'**
+  String get detectByIP;
+
+  /// No description provided for @detectByGPS.
+  ///
+  /// In en, this message translates to:
+  /// **'Detect by GPS'**
+  String get detectByGPS;
+
+  /// No description provided for @selectLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Location'**
+  String get selectLocation;
+
+  /// No description provided for @currentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Location'**
+  String get currentLocation;
+
+  /// No description provided for @tryDifferentQuery.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different search term'**
+  String get tryDifferentQuery;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

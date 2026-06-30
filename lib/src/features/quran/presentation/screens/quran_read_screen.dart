@@ -124,28 +124,6 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
                 ),
                 onPageChanged: (pageIndex) {},
               ),
-              if (widget.onBack != null)
-                Positioned(
-                  top: MediaQuery.of(context).padding.top + 8,
-                  left: Directionality.of(context) == TextDirection.rtl ? null : 8,
-                  right: Directionality.of(context) == TextDirection.rtl ? 8 : null,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(24),
-                      onTap: widget.onBack,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
-                          shape: BoxShape.circle,
-                          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.15), blurRadius: 4, offset: const Offset(0, 2))],
-                        ),
-                        child: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface, size: 22),
-                      ),
-                    ),
-                  ),
-                ),
             ],
           ),
         ),

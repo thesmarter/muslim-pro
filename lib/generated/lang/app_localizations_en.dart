@@ -1070,4 +1070,25 @@ class SEn extends S {
   String countdownSunriseEndBody(Object hours, Object minutes) {
     return 'Sunrise ends in ${hours}h ${minutes}m';
   }
+
+  @override
+  String get searchCityHint => 'Search for city name...';
+
+  @override
+  String get searchResults => 'Search Results';
+
+  @override
+  String get detectByIP => 'Detect by IP';
+
+  @override
+  String get detectByGPS => 'Detect by GPS';
+
+  @override
+  String get selectLocation => 'Select Location';
+
+  @override
+  String get currentLocation => 'Current Location';
+
+  @override
+  String get tryDifferentQuery => 'Try a different search term';
 }

@@ -1068,4 +1068,25 @@ class SAr extends S {
   String countdownSunriseEndBody(Object hours, Object minutes) {
     return 'انتهاء وقت الشروق بعد $hours ساعة و $minutes دقيقة';
   }
+
+  @override
+  String get searchCityHint => 'ابحث عن اسم المدينة...';
+
+  @override
+  String get searchResults => 'نتائج البحث';
+
+  @override
+  String get detectByIP => 'تحديد الموقع بالـ IP';
+
+  @override
+  String get detectByGPS => 'تحديد الموقع بالـ GPS';
+
+  @override
+  String get selectLocation => 'اختيار الموقع';
+
+  @override
+  String get currentLocation => 'الموقع الحالي';
+
+  @override
+  String get tryDifferentQuery => 'جرب البحث بكلمة مختلفة';
 }
