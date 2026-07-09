@@ -60,6 +60,7 @@ dependencies:
   rxdart: ^0.28.0
   share_plus: ^12.0.0
   shared_preferences: ^2.5.3
+  showcaseview: ^5.0.2
   sleek_circular_slider: ^2.1.0
   sqflite: ^2.4.2
   sqflite_common_ffi: ^2.3.6

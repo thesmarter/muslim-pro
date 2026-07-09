@@ -1116,4 +1116,114 @@ class SFr extends S {
 
   @override
   String get countdownRemaining => 'Restant';
+
+  @override
+  String get showcaseTourNext => 'Suivant';
+
+  @override
+  String get showcaseTourSkip => 'Passer le tour';
+
+  @override
+  String get showcaseTourDone => 'Terminé';
+
+  @override
+  String get showcaseTourWelcomeTitle => 'Bienvenue sur Elmoslem Pro';
+
+  @override
+  String get showcaseTourWelcomeDesc =>
+      'Laissez-nous vous faire un tour rapide des principales fonctionnalités de l\'application';
+
+  @override
+  String get showcaseTourAzkar => 'Azkar (Invocations)';
+
+  @override
+  String get showcaseTourAzkarDesc =>
+      'Parcourez toutes les invocations quotidiennes de Hisn Al-Muslim avec lecture, audio et tasbih';
+
+  @override
+  String get showcaseTourQuran => 'Saint Coran';
+
+  @override
+  String get showcaseTourQuranDesc =>
+      'Lisez le Saint Coran en écriture Uthmani avec tafsir, écoutez les récitateurs célèbres et recherchez des versets';
+
+  @override
+  String get showcaseTourPrayer => 'Horaires de prière et Adhan';
+
+  @override
+  String get showcaseTourPrayerDesc =>
+      'Consultez les heures de prière précises avec la possibilité d\'entendre l\'Adhan de muadhins célèbres et d\'ajuster les horaires';
+
+  @override
+  String get showcaseTourSettings => 'Paramètres';
+
+  @override
+  String get showcaseTourSettingsDesc =>
+      'D\'ici vous pouvez accéder aux paramètres pour personnaliser l\'application : thèmes, polices, notifications et plus';
+
+  @override
+  String get showcaseTourSearchTitle => 'Recherche';
+
+  @override
+  String get showcaseTourSearchDesc =>
+      'Recherchez dans tout le contenu de l\'application : les invocations et leurs titres, le Saint Coran et ses versets, et les hadiths. Trouvez ce dont vous avez besoin rapidement avec la recherche par mots-clés';
+
+  @override
+  String get showcaseTourFavoritesTitles => 'Favoris - Titres d\'Azkar';
+
+  @override
+  String get showcaseTourFavoritesTitlesDesc =>
+      'Enregistrez vos titres d\'invocations préférés pour un accès rapide. Vous pouvez ajouter toute invocation aux favoris via l\'icône étoile à côté de chaque titre dans la liste';
+
+  @override
+  String get showcaseTourFavoritesZikr => 'Favoris - Contenu des Dhikr';
+
+  @override
+  String get showcaseTourFavoritesZikrDesc =>
+      'Revoyez le contenu des invocations que vous avez marquées. Cet onglet contient le contenu sauvegardé pendant la lecture des azkar pour y revenir directement';
+
+  @override
+  String get showcaseTourTallyFabTitle => 'Tasbih (Chapelet)';
+
+  @override
+  String get showcaseTourTallyFabDesc =>
+      'Glorifiez Allah d\'une simple pression ! Le tasbih numérique vous permet de suivre Subhan Allah, Alhamdulillah, Allahu Akbar et La ilaha illallah. Créez plusieurs compteurs, définissez des cycles et partagez vos réalisations quotidiennes de dhikr';
+
+  @override
+  String get showcaseTourDrawerTallyTitle => 'Tasbih (Chapelet)';
+
+  @override
+  String get showcaseTourDrawerTallyDesc =>
+      'Ouvrez le tasbih numérique depuis le menu latéral pour glorifier Allah facilement avec un suivi quotidien et hebdomadaire du dhikr';
+
+  @override
+  String get showcaseTourDrawerQuranTitle => 'Saint Coran';
+
+  @override
+  String get showcaseTourDrawerQuranDesc =>
+      'Lisez le Saint Coran complet en écriture Uthmani avec audio des récitateurs célèbres, tafsir et traduction';
+
+  @override
+  String get showcaseTourDrawerFakeHadithTitle => 'Hadiths Faibles et Fabrications';
+
+  @override
+  String get showcaseTourDrawerFakeHadithDesc =>
+      'Apprenez à connaître les hadiths faibles et fabriqués qui circulent parmi les gens. Cette section vous aide à distinguer les hadiths authentiques des faibles pour protéger votre foi';
+
+  @override
+  String get showcaseTourDrawerSettingsTitle => 'Paramètres';
+
+  @override
+  String get showcaseTourDrawerSettingsDesc =>
+      'Paramètres complets de l\'application : personnalisez les azkar (sources, règles), ajustez les polices, thèmes et couleurs, gérez les alarmes et rappels, sauvegardez et restaurez les données, et support multilingue';
+
+  @override
+  String get showcaseTourDrawerMoreTitle => 'Plus';
+
+  @override
+  String get showcaseTourDrawerMoreDesc =>
+      'Contactez le développeur, découvrez d\'autres applications et apprenez-en plus sur Elmoslem Pro et l\'équipe de développement';
+
+  @override
+  String get restartShowcaseTour => 'Relancer la visite guidée';
 }

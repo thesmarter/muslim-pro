@@ -1107,4 +1107,114 @@ class SEn extends S {
 
   @override
   String get countdownRemaining => 'Remaining';
+
+  @override
+  String get showcaseTourNext => 'Next';
+
+  @override
+  String get showcaseTourSkip => 'Skip Tour';
+
+  @override
+  String get showcaseTourDone => 'Done';
+
+  @override
+  String get showcaseTourWelcomeTitle => 'Welcome to Elmoslem Pro';
+
+  @override
+  String get showcaseTourWelcomeDesc =>
+      'Let us take you on a quick tour of the main features of the app';
+
+  @override
+  String get showcaseTourAzkar => 'Azkar (Remembrances)';
+
+  @override
+  String get showcaseTourAzkarDesc =>
+      'Browse all daily remembrances from Hisn Al-Muslim with reading, audio, and tasbeeh capabilities';
+
+  @override
+  String get showcaseTourQuran => 'Holy Quran';
+
+  @override
+  String get showcaseTourQuranDesc =>
+      'Read the Holy Quran in Uthmani script with tafsir, listening to famous reciters, and search for verses';
+
+  @override
+  String get showcaseTourPrayer => 'Prayer Times & Adhan';
+
+  @override
+  String get showcaseTourPrayerDesc =>
+      'View accurate prayer times with the ability to hear the Adhan from famous muadhins and adjust prayer times';
+
+  @override
+  String get showcaseTourSettings => 'Settings';
+
+  @override
+  String get showcaseTourSettingsDesc =>
+      'From here you can access settings to customize the app: themes, fonts, notifications and more';
+
+  @override
+  String get showcaseTourSearchTitle => 'Search';
+
+  @override
+  String get showcaseTourSearchDesc =>
+      'Search across all app content: azkar titles and content, the Holy Quran and verses, and hadiths. Find what you need quickly with keyword search';
+
+  @override
+  String get showcaseTourFavoritesTitles => 'Favorites - Azkar Titles';
+
+  @override
+  String get showcaseTourFavoritesTitlesDesc =>
+      'Save your favorite azkar titles for quick access. You can add any zikr to favorites using the star icon next to each title in the azkar list';
+
+  @override
+  String get showcaseTourFavoritesZikr => 'Favorites - Zikr Content';
+
+  @override
+  String get showcaseTourFavoritesZikrDesc =>
+      'Review individual zikr content you\'ve bookmarked. This tab contains the content you saved while reading azkar, allowing you to return to it directly';
+
+  @override
+  String get showcaseTourTallyFabTitle => 'Tasbeeh Counter';
+
+  @override
+  String get showcaseTourTallyFabDesc =>
+      'Glorify Allah at the touch of a button! The digital tasbeeh lets you track Subhan Allah, Alhamdulillah, Allahu Akbar, and La ilaha illallah. Create multiple counters, set cycle counts, and share your daily dhikr achievements';
+
+  @override
+  String get showcaseTourDrawerTallyTitle => 'Tasbeeh Counter';
+
+  @override
+  String get showcaseTourDrawerTallyDesc =>
+      'Open the digital tasbeeh from the side menu to glorify Allah easily with daily and weekly dhikr tracking';
+
+  @override
+  String get showcaseTourDrawerQuranTitle => 'Holy Quran';
+
+  @override
+  String get showcaseTourDrawerQuranDesc =>
+      'Read the complete Holy Quran in Uthmani script with audio from famous reciters, tafsir, and translation';
+
+  @override
+  String get showcaseTourDrawerFakeHadithTitle => 'Weak & Fabricated Hadiths';
+
+  @override
+  String get showcaseTourDrawerFakeHadithDesc =>
+      'Learn about weak and fabricated hadiths circulating among people. This section helps you distinguish authentic hadiths from weak ones to protect your faith';
+
+  @override
+  String get showcaseTourDrawerSettingsTitle => 'Settings';
+
+  @override
+  String get showcaseTourDrawerSettingsDesc =>
+      'Full app settings: customize azkar (sources, rulings), adjust fonts, themes and colors, manage alarms and reminders, backup and restore data, and multi-language support';
+
+  @override
+  String get showcaseTourDrawerMoreTitle => 'More';
+
+  @override
+  String get showcaseTourDrawerMoreDesc =>
+      'Contact the developer, discover other apps, and learn more about Elmoslem Pro and the development team';
+
+  @override
+  String get restartShowcaseTour => 'Restart Showcase Tour';
 }
