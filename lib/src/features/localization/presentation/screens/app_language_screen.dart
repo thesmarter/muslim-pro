@@ -28,7 +28,7 @@ class AppLanguageScreen extends StatelessWidget {
                 tileColor: context.read<ThemeCubit>().state.locale == currentLocale
                     ? Theme.of(
                         context,
-                      ).colorScheme.primary.withAlpha((.5 * 255).round())
+                      ).colorScheme.primary.withValues(alpha: 0.5)
                     : null,
                 title: Text(currentLocale.languageCode),
                 onTap: () {

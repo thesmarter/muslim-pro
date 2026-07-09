@@ -382,5 +382,7 @@
   "showcaseTourDrawerSettingsDesc": "Full app settings: customize azkar (sources, rulings), adjust fonts, themes and colors, manage alarms and reminders, backup and restore data, and multi-language support",
   "showcaseTourDrawerMoreTitle": "More",
   "showcaseTourDrawerMoreDesc": "Contact the developer, discover other apps, and learn more about Elmoslem Pro and the development team",
-  "restartShowcaseTour": "Restart Showcase Tour"
+  "restartShowcaseTour": "Restart Showcase Tour",
+  "goodMorning": "Good Morning ☀️",
+  "goodEvening": "Good Evening 🌙"
 }

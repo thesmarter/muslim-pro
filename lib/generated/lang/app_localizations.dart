@@ -2391,6 +2391,18 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Restart Showcase Tour'**
   String get restartShowcaseTour;
+
+  /// No description provided for @goodMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Morning ☀️'**
+  String get goodMorning;
+
+  /// No description provided for @goodEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Evening 🌙'**
+  String get goodEvening;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

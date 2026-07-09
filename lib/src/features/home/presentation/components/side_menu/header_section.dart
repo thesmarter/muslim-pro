@@ -61,7 +61,7 @@ class HeaderSection extends StatelessWidget {
               Text(
                 appVersionWithBuild(),
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: colorScheme.onPrimaryContainer.withAlpha(125),
+                  color: colorScheme.onPrimaryContainer.withValues(alpha: 125),
                 ),
               ),
             ],

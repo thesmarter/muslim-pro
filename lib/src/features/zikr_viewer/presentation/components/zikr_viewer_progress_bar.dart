@@ -49,7 +49,7 @@ class AnimatedDualProgressBar extends StatelessWidget {
               return LinearProgressIndicator(
                 value: value,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  color.withAlpha((0.5 * 255).toInt()),
+                  color.withValues(alpha: 0.5),
                 ),
               );
             },
@@ -65,7 +65,7 @@ class AnimatedDualProgressBar extends StatelessWidget {
                 value: value,
                 backgroundColor: Colors.transparent,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  color.withAlpha((0.5 * 255).toInt()),
+                  color.withValues(alpha: 0.5),
                 ),
               );
             },

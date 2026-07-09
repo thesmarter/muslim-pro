@@ -27,7 +27,7 @@ class FontFamilyScreen extends StatelessWidget {
                 tileColor: state.fontFamily == font
                     ? Theme.of(
                         context,
-                      ).colorScheme.primary.withAlpha((.2 * 255).round())
+                      ).colorScheme.primary.withValues(alpha: 0.2)
                     : null,
                 subtitle: Text(font, style: TextStyle(fontFamily: font)),
                 title: Text(

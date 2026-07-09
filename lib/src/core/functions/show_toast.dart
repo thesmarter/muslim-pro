@@ -23,7 +23,7 @@ Future<void> showToast({
   if (PlatformExtension.isDesktop) {
     BotToast.showText(
       text: msg,
-      contentColor: backgroundColor.withAlpha((.5 * 255).round()),
+      contentColor: backgroundColor.withValues(alpha: 0.5),
       align: Alignment.bottomCenter,
       textStyle: TextStyle(color: textColor),
       duration: Duration(seconds: toastLength == Toast.LENGTH_SHORT ? 1 : 5),
@@ -31,7 +31,7 @@ Future<void> showToast({
     );
   } else {
     Fluttertoast.showToast(
-      backgroundColor: backgroundColor.withAlpha((.5 * 255).round()),
+      backgroundColor: backgroundColor.withValues(alpha: 0.5),
       textColor: textColor,
       msg: msg,
       toastLength: Toast.LENGTH_SHORT,

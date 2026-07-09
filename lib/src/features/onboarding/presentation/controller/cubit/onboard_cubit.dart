@@ -42,7 +42,6 @@ class OnboardCubit extends Cubit<OnboardState> {
     });
   }
 
-  ///TODO: Change every release
   List<Empty> get pageData {
     return [
       const Empty(

@@ -42,48 +42,52 @@ class LanguageSelectionScreen extends StatelessWidget {
               Text(
                 'Select your preferred language for the app',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 180),
                 ),
                 textAlign: TextAlign.center,
               ),
               const Spacer(),
-              ...languages.map((lang) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
-                    onPressed: () => _onLanguageSelected(context, lang),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(lang.flag, style: const TextStyle(fontSize: 24)),
-                        const SizedBox(width: 12),
-                        Column(
-                          children: [
-                            Text(
-                              lang.nativeName,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
+              ...languages.map(
+                (lang) => Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () => _onLanguageSelected(context, lang),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(lang.flag, style: const TextStyle(fontSize: 24)),
+                          const SizedBox(width: 12),
+                          Column(
+                            children: [
+                              Text(
+                                lang.nativeName,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            Text(
-                              lang.englishName,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+                              Text(
+                                lang.englishName,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface.withValues(alpha: 150),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              )),
+              ),
               const Spacer(flex: 2),
             ],
           ),
@@ -98,9 +102,7 @@ class LanguageSelectionScreen extends StatelessWidget {
 
     final version = sl<PackageInfo>().version;
     final currentVersion = sl<AppSettingsRepo>().currentVersion;
-    final nextScreen = currentVersion != version
-        ? const OnBoardingScreen()
-        : const HomeScreen();
+    final nextScreen = currentVersion != version ? const OnBoardingScreen() : const HomeScreen();
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => nextScreen),

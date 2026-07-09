@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 // ignore_for_file: unreachable_from_main
 
@@ -25,20 +26,20 @@ import 'package:timezone/timezone.dart' as tz;
 Future<void> onDidReceiveNotificationResponse(
   NotificationResponse notificationResponse,
 ) async {
-  debugPrint("onDidReceiveNotificationResponse - actionId: ${notificationResponse.actionId}, payload: ${notificationResponse.payload}");
+  log("onDidReceiveNotificationResponse - actionId: ${notificationResponse.actionId}, payload: ${notificationResponse.payload}");
 
   try {
     if (!sl.isRegistered<AdhanAudioService>()) {
-      debugPrint("Initializing Service Locator in background...");
+      log("Initializing Service Locator in background...");
       await initSL();
     }
   } catch (e) {
-    debugPrint("Error initializing SL in notification response: $e");
+    log("Error initializing SL in notification response: $e");
   }
 
   final String? payload = notificationResponse.payload;
   final String? actionId = notificationResponse.actionId;
-  debugPrint("onDidReceiveNotificationResponse - payload: $payload, actionId: $actionId");
+  log("onDidReceiveNotificationResponse - payload: $payload, actionId: $actionId");
 
   if (actionId == 'stop_adhan') {
     try {
@@ -46,7 +47,7 @@ Future<void> onDidReceiveNotificationResponse(
       await adhanService.stopAdhan();
       await adhanService.stopNativeAdhan();
     } catch (e) {
-      debugPrint("Error stopping adhan audio: $e");
+      log("Error stopping adhan audio: $e");
     }
 
     if (notificationResponse.id != null) {
@@ -54,7 +55,7 @@ Future<void> onDidReceiveNotificationResponse(
         final notificationManager = sl<LocalNotificationManager>();
         await notificationManager.cancelNotificationById(id: notificationResponse.id!);
       } catch (e) {
-        debugPrint("Error canceling notification: $e");
+        log("Error canceling notification: $e");
       }
     }
     return;
@@ -66,7 +67,7 @@ Future<void> onDidReceiveNotificationResponse(
         await sl<AdhanAudioService>().stopAdhan();
         await sl<AdhanAudioService>().stopNativeAdhan();
       } catch (e) {
-        debugPrint("Error stopping adhan on tap: $e");
+        log("Error stopping adhan on tap: $e");
       }
       LocalNotificationManager.onNotificationClick(payload);
     } else {
