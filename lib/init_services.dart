@@ -37,7 +37,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await QuranLibrary.init();
+  try {
+    await QuranLibrary.init();
+  } catch (e) {
+    hisnPrint("Error initializing QuranLibrary: $e");
+  }
 
   Bloc.observer = AppBlocObserver();
 
@@ -49,16 +53,22 @@ Future<void> initServices() async {
     await GetStorage.init(kAppStorageKey);
     await sl<LocalNotificationManager>().init();
     await sl<AdhanAudioService>().init();
-    
-    // Auto-sync prayer times and reschedule notifications on app start
-    final prayerRepo = sl<PrayerTimesRepo>();
-    final settings = prayerRepo.getSettings();
-    await prayerRepo.schedulePrayerNotifications(settings);
-    hisnPrint("Prayer times synced and rescheduled on app start.");
-    
   } catch (e) {
     hisnPrint(e);
   }
+
+  // Auto-sync prayer times and reschedule notifications on app start
+  // Defer to next frame to avoid blocking the UI during startup
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    try {
+      final prayerRepo = sl<PrayerTimesRepo>();
+      final settings = prayerRepo.getSettings();
+      await prayerRepo.schedulePrayerNotifications(settings);
+      hisnPrint("Prayer times synced and rescheduled on app start.");
+    } catch (e) {
+      hisnPrint("Error scheduling prayer notifications: $e");
+    }
+  });
 
   // تشغيل إعدادات Firebase في الخلفية بدون تعطيل تشغيل التطبيق
   _setupFirebase();

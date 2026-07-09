@@ -383,5 +383,10 @@
   "showcaseTourDrawerMoreDesc": "Geliştiriciyle iletişime geçin, diğer uygulamaları keşfedin ve Elmoslem Pro ile geliştirme ekibi hakkında daha fazla bilgi edinin",
   "restartShowcaseTour": "Tanıtım Turunu Yeniden Başlat",
   "goodMorning": "Günaydın ☀️",
-  "goodEvening": "İyi akşamlar 🌙"
+  "goodEvening": "İyi akşamlar 🌙",
+  "newUpdateAvailable": "Yeni güncelleme mevcut",
+  "newVersion": "Yeni Sürüm: {version}",
+  "updateNow": "Şimdi Güncelle",
+  "onboardingUpdateTitle": "Uygulama Güncellemesi",
+  "onboardingUpdateDesc": "Ezan sorunları ve metin oluşturma düzeltildi.\nEkran ve Zikirlere Fransızca, Türkçe ve İngilizce dilleri eklendi."
 }

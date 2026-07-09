@@ -116,42 +116,58 @@ class LocalNotificationManager {
             .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
 
         if (androidPlugin != null) {
-          await androidPlugin.deleteNotificationChannel(channelId: 'com.detatech.Azkar.adhan.v2');
+          try {
+            await androidPlugin.deleteNotificationChannel(channelId: 'com.detatech.Azkar.adhan.v2');
+          } catch (_) {}
 
-          const adhanChannel = AndroidNotificationChannel(
-            'com.detatech.Azkar.adhan.v3',
-            'الأذان (Adhan)',
-            description: 'إشعارات الأذان ومواقيت الصلاة',
-            importance: Importance.max,
-            enableLights: true,
-          );
+          try {
+            const adhanChannel = AndroidNotificationChannel(
+              'com.detatech.Azkar.adhan.v3',
+              'الأذان (Adhan)',
+              description: 'إشعارات الأذان ومواقيت الصلاة',
+              importance: Importance.max,
+              enableLights: true,
+            );
+            await androidPlugin.createNotificationChannel(adhanChannel);
+          } catch (e) {
+            hisnPrint("Error creating adhan channel: $e");
+          }
 
-          await androidPlugin.createNotificationChannel(adhanChannel);
+          try {
+            await androidPlugin.createNotificationChannel(AndroidNotificationChannel(
+              NotificationsChannels.inApp.key,
+              NotificationsChannels.inApp.name,
+              description: NotificationsChannels.inApp.description,
+              importance: Importance.high,
+            ));
+          } catch (e) {
+            hisnPrint("Error creating inApp channel: $e");
+          }
 
-          await androidPlugin.createNotificationChannel(AndroidNotificationChannel(
-            NotificationsChannels.inApp.key,
-            NotificationsChannels.inApp.name,
-            description: NotificationsChannels.inApp.description,
-            importance: Importance.high,
-          ));
+          try {
+            await androidPlugin.createNotificationChannel(AndroidNotificationChannel(
+              NotificationsChannels.scheduled.key,
+              NotificationsChannels.scheduled.name,
+              description: NotificationsChannels.scheduled.description,
+            ));
+          } catch (e) {
+            hisnPrint("Error creating scheduled channel: $e");
+          }
 
-          await androidPlugin.createNotificationChannel(AndroidNotificationChannel(
-            NotificationsChannels.scheduled.key,
-            NotificationsChannels.scheduled.name,
-            description: NotificationsChannels.scheduled.description,
-          ));
-
-          const countdownChannel = AndroidNotificationChannel(
-            'countdown_channel',
-            'عداد تنازلي',
-            description: 'إشعارات العد التنازلي للصلوات',
-            importance: Importance.low,
-            enableLights: true,
-            playSound: false,
-            enableVibration: false,
-          );
-
-          await androidPlugin.createNotificationChannel(countdownChannel);
+          try {
+            const countdownChannel = AndroidNotificationChannel(
+              'countdown_channel',
+              'عداد تنازلي',
+              description: 'إشعارات العد التنازلي للصلوات',
+              importance: Importance.low,
+              enableLights: true,
+              playSound: false,
+              enableVibration: false,
+            );
+            await androidPlugin.createNotificationChannel(countdownChannel);
+          } catch (e) {
+            hisnPrint("Error creating countdown channel: $e");
+          }
 
           hisnPrint("Notification channels created successfully");
         }

@@ -1223,4 +1223,22 @@ class SEn extends S {
 
   @override
   String get goodEvening => 'Good Evening 🌙';
+
+  @override
+  String get newUpdateAvailable => 'New update available';
+
+  @override
+  String newVersion(Object version) {
+    return 'New Version: $version';
+  }
+
+  @override
+  String get updateNow => 'Update Now';
+
+  @override
+  String get onboardingUpdateTitle => 'App Update';
+
+  @override
+  String get onboardingUpdateDesc =>
+      'Fixing Adhan issues and text rendering.\nAdded French, Turkish, and English to display and Azkar.';
 }

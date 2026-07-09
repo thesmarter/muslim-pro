@@ -1,9 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
+import 'package:muslim/src/core/shared/widgets/empty.dart';
 import 'package:muslim/src/core/shared/widgets/loading.dart';
 import 'package:muslim/src/core/values/constant.dart';
 import 'package:muslim/src/features/home/presentation/screens/home_screen.dart';
@@ -12,8 +12,20 @@ import 'package:muslim/src/features/onboarding/presentation/controller/cubit/onb
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
 
+  List<Empty> _getPages(BuildContext context) {
+    return [
+      Empty(
+        title: S.of(context).onboardingUpdateTitle,
+        isImage: false,
+        isItemList: true,
+        description: S.of(context).onboardingUpdateDesc,
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
+    final pages = _getPages(context);
     return BlocProvider(
       create: (context) => sl<OnboardCubit>()..start(),
       child: BlocConsumer<OnboardCubit, OnboardState>(
@@ -31,9 +43,9 @@ class OnBoardingScreen extends StatelessWidget {
             body: PageView.builder(
               physics: const BouncingScrollPhysics(),
               controller: context.read<OnboardCubit>().pageController,
-              itemCount: state.pages.length,
+              itemCount: pages.length,
               itemBuilder: (context, index) {
-                return state.pages[index];
+                return pages[index];
               },
             ),
             bottomNavigationBar: BottomAppBar(
@@ -46,7 +58,7 @@ class OnBoardingScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
-                        state.pages.length,
+                        pages.length,
                         (index) => Dot(
                           index: index,
                           currentPageIndex: state.currentPageIndex,

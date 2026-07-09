@@ -1232,4 +1232,22 @@ class SFr extends S {
 
   @override
   String get goodEvening => 'Bonsoir 🌙';
+
+  @override
+  String get newUpdateAvailable => 'Nouvelle mise à jour disponible';
+
+  @override
+  String newVersion(Object version) {
+    return 'Nouvelle version : $version';
+  }
+
+  @override
+  String get updateNow => 'Mettre à jour maintenant';
+
+  @override
+  String get onboardingUpdateTitle => 'Mise à jour de l\'application';
+
+  @override
+  String get onboardingUpdateDesc =>
+      'Correction des problèmes d\'Adhan et d\'affichage du texte.\nAjout du français, du turc et de l\'anglais dans l\'affichage et les Azkar.';
 }

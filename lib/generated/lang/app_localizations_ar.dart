@@ -1221,4 +1221,22 @@ class SAr extends S {
 
   @override
   String get goodEvening => 'مساء الخير 🌙';
+
+  @override
+  String get newUpdateAvailable => 'تحديث جديد متاح';
+
+  @override
+  String newVersion(Object version) {
+    return 'الإصدار الجديد: $version';
+  }
+
+  @override
+  String get updateNow => 'تحديث الآن';
+
+  @override
+  String get onboardingUpdateTitle => 'تحديث التطبيق';
+
+  @override
+  String get onboardingUpdateDesc =>
+      'إصلاح مشاكل الأذان وعرض النصوص.\nتمت إضافة اللغات الفرنسية والتركية والإنجليزية في العرض والأذكار.';
 }

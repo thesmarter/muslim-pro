@@ -1224,4 +1224,22 @@ class STr extends S {
 
   @override
   String get goodEvening => 'İyi akşamlar 🌙';
+
+  @override
+  String get newUpdateAvailable => 'Yeni güncelleme mevcut';
+
+  @override
+  String newVersion(Object version) {
+    return 'Yeni Sürüm: $version';
+  }
+
+  @override
+  String get updateNow => 'Şimdi Güncelle';
+
+  @override
+  String get onboardingUpdateTitle => 'Uygulama Güncellemesi';
+
+  @override
+  String get onboardingUpdateDesc =>
+      'Ezan sorunları ve metin oluşturma düzeltildi.\nEkran ve Zikirlere Fransızca, Türkçe ve İngilizce dilleri eklendi.';
 }

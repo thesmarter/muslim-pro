@@ -13,25 +13,25 @@ final class OnboardLoadingState extends OnboardState {}
 class OnboardLoadedState extends OnboardState {
   final int currentPageIndex;
   final bool showSkipBtn;
-  final List<Empty> pages;
+  final int pageCount;
 
   const OnboardLoadedState({
     required this.currentPageIndex,
     required this.showSkipBtn,
-    required this.pages,
+    required this.pageCount,
   });
 
-  bool get isFinalPage => currentPageIndex + 1 == pages.length;
+  bool get isFinalPage => currentPageIndex + 1 == pageCount;
 
   OnboardLoadedState copyWith({
     int? currentPageIndex,
     bool? showSkipBtn,
-    List<Empty>? pages,
+    int? pageCount,
   }) {
     return OnboardLoadedState(
       currentPageIndex: currentPageIndex ?? this.currentPageIndex,
       showSkipBtn: showSkipBtn ?? this.showSkipBtn,
-      pages: pages ?? this.pages,
+      pageCount: pageCount ?? this.pageCount,
     );
   }
 
@@ -39,7 +39,7 @@ class OnboardLoadedState extends OnboardState {
   List<Object> get props => [
     currentPageIndex,
     showSkipBtn,
-    pages,
+    pageCount,
   ];
 }
 
