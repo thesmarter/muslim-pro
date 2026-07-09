@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hijri/hijri_calendar.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/localization_extension.dart';
 import 'package:muslim/src/core/functions/print.dart';
@@ -17,18 +19,50 @@ class CountdownNotificationService {
   static const int _postAdhanCountdownBaseId = 5000;
   static const int _sunriseEndCountdownBaseId = 6000;
 
+  String _getHijriDate() {
+    final hijri = HijriCalendar.now();
+    final hijriMonths = [
+      '', 'محرم', 'صفر', 'ربيع الأول', 'ربيع الثاني',
+      'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان',
+      'رمضان', 'شوال', 'ذو القعدة', 'ذو الحجة',
+    ];
+    final monthName = hijriMonths[hijri.hMonth];
+    return '${hijri.hDay} $monthName ${hijri.hYear}';
+  }
+
+  String _getLocationDisplay(String? cityName, String? countryName) {
+    final city = cityName ?? '';
+    final country = countryName ?? '';
+    if (city.isNotEmpty && country.isNotEmpty) return '$city - $country';
+    if (city.isNotEmpty) return city;
+    if (country.isNotEmpty) return country;
+    return '';
+  }
+
   Future<void> startPreAdhanCountdown({
     required int prayerIndex,
     required String prayerName,
     required DateTime adhanTime,
     required int minutesBefore,
+    String? cityName,
+    String? countryName,
   }) async {
     final id = _preAdhanCountdownBaseId + prayerIndex;
-    await cancelAllCountdowns(); // Cancel all other countdowns first
     await _cancelTimer(id);
 
     final now = DateTime.now();
     final countdownStartTime = adhanTime.subtract(Duration(minutes: minutesBefore));
+
+    void onAdhanReached() {
+      startPostAdhanCountdown(
+        prayerIndex: prayerIndex,
+        prayerName: prayerName,
+        adhanTime: adhanTime,
+        durationMinutes: _postAdhanDurationMinutes,
+        cityName: cityName,
+        countryName: countryName,
+      );
+    }
 
     if (now.isBefore(countdownStartTime)) {
       final delay = countdownStartTime.difference(now);
@@ -36,30 +70,39 @@ class CountdownNotificationService {
         _startPeriodicCountdown(
           id: id,
           targetTime: adhanTime,
-          titleBuilder: (remaining) => SX.current.countdownToAdhan(prayerName),
-          bodyBuilder: (remaining) => _formatCountdownBody(remaining, prayerName),
-          interval: const Duration(minutes: 1),
+          title: SX.current.adhanCountdownTitle(prayerName),
+          interval: const Duration(seconds: 1),
+          onComplete: onAdhanReached,
+          cityName: cityName,
+          countryName: countryName,
+          prayerName: prayerName,
         );
       });
     } else if (now.isBefore(adhanTime)) {
       _startPeriodicCountdown(
         id: id,
         targetTime: adhanTime,
-        titleBuilder: (remaining) => SX.current.countdownToAdhan(prayerName),
-        bodyBuilder: (remaining) => _formatCountdownBody(remaining, prayerName),
-        interval: const Duration(minutes: 1),
+        title: SX.current.adhanCountdownTitle(prayerName),
+        interval: const Duration(seconds: 1),
+        onComplete: onAdhanReached,
+        cityName: cityName,
+        countryName: countryName,
+        prayerName: prayerName,
       );
     }
   }
+
+  static const int _postAdhanDurationMinutes = 10;
 
   Future<void> startPostAdhanCountdown({
     required int prayerIndex,
     required String prayerName,
     required DateTime adhanTime,
     required int durationMinutes,
+    String? cityName,
+    String? countryName,
   }) async {
     final id = _postAdhanCountdownBaseId + prayerIndex;
-    await cancelAllCountdowns(); // Cancel all other countdowns first
     await _cancelTimer(id);
 
     final iqamahTime = adhanTime.add(Duration(minutes: durationMinutes));
@@ -69,9 +112,11 @@ class CountdownNotificationService {
       _startPeriodicCountdown(
         id: id,
         targetTime: iqamahTime,
-        titleBuilder: (remaining) => SX.current.countdownToIqamah(prayerName),
-        bodyBuilder: (remaining) => _formatIqamahCountdownBody(remaining, prayerName),
-        interval: const Duration(minutes: 1),
+        title: SX.current.iqamahCountdownTitle(prayerName),
+        interval: const Duration(seconds: 1),
+        cityName: cityName,
+        countryName: countryName,
+        prayerName: prayerName,
       );
     }
   }
@@ -79,9 +124,10 @@ class CountdownNotificationService {
   Future<void> startSunriseEndCountdown({
     required DateTime sunriseTime,
     required int durationMinutes,
+    String? cityName,
+    String? countryName,
   }) async {
     const id = _sunriseEndCountdownBaseId;
-    await cancelAllCountdowns(); // Cancel all other countdowns first
     await _cancelTimer(id);
 
     final sunriseEndTime = sunriseTime.add(Duration(minutes: durationMinutes));
@@ -91,9 +137,11 @@ class CountdownNotificationService {
       _startPeriodicCountdown(
         id: id,
         targetTime: sunriseEndTime,
-        titleBuilder: (remaining) => SX.current.countdownToSunriseEnd,
-        bodyBuilder: (remaining) => _formatSunriseEndCountdownBody(remaining),
-        interval: const Duration(minutes: 1),
+        title: SX.current.sunriseEndCountdownTitle,
+        interval: const Duration(seconds: 1),
+        cityName: cityName,
+        countryName: countryName,
+        prayerName: SX.current.sunriseEndCountdownTitle,
       );
     }
   }
@@ -101,62 +149,72 @@ class CountdownNotificationService {
   void _startPeriodicCountdown({
     required int id,
     required DateTime targetTime,
-    required String Function(Duration remaining) titleBuilder,
-    required String Function(Duration remaining) bodyBuilder,
+    required String title,
     required Duration interval,
+    VoidCallback? onComplete,
+    String? cityName,
+    String? countryName,
+    String? prayerName,
   }) {
-    _showCountdownNotification(id, targetTime, titleBuilder, bodyBuilder);
+    _showCountdownNotification(id, targetTime, title, cityName, countryName, prayerName);
 
     _activeTimers[id] = Timer.periodic(interval, (timer) {
-      _showCountdownNotification(id, targetTime, titleBuilder, bodyBuilder);
-    });
-
-    Future.delayed(targetTime.difference(DateTime.now()), () {
-      _cancelTimer(id);
+      final remaining = targetTime.difference(DateTime.now());
+      if (remaining.isNegative || remaining.inSeconds <= 0) {
+        _cancelTimer(id);
+        onComplete?.call();
+        return;
+      }
+      _showCountdownNotification(id, targetTime, title, cityName, countryName, prayerName);
     });
   }
 
-  Future<void> _showCountdownNotification(
+  void _showCountdownNotification(
     int id,
     DateTime targetTime,
-    String Function(Duration remaining) titleBuilder,
-    String Function(Duration remaining) bodyBuilder,
-  ) async {
+    String title,
+    String? cityName,
+    String? countryName,
+    String? prayerName,
+  ) {
     final now = DateTime.now();
     final remaining = targetTime.difference(now);
 
     if (remaining.isNegative || remaining.inSeconds <= 0) {
-      await _cancelTimer(id);
+      _cancelTimer(id);
       return;
     }
 
-    final title = titleBuilder(remaining);
-    final body = bodyBuilder(remaining);
+    final timeStr = _formatTime(remaining);
+    final hijriDate = _getHijriDate();
+    final location = _getLocationDisplay(cityName, countryName);
+
+    // Title: location + Hijri date
+    final notificationTitle = location.isNotEmpty ? '$location - $hijriDate' : hijriDate;
+
+    // Body: prayer name + remaining time
+    final prayerLabel = prayerName ?? title;
+    final body = '$prayerLabel - $timeStr';
 
     final notificationManager = sl<LocalNotificationManager>();
     final androidPlugin = notificationManager.flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
 
     if (androidPlugin != null) {
-      final bigTextStyleInformation = BigTextStyleInformation(
-        body,
-        htmlFormatBigText: true,
-        contentTitle: title,
-        htmlFormatContentTitle: true,
-      );
-
       const String channelId = 'countdown_channel';
 
-      final androidDetails = AndroidNotificationDetails(
+      const androidDetails = AndroidNotificationDetails(
         channelId,
         'عداد تنازلي',
         channelDescription: 'إشعارات العد التنازلي للصلوات',
-        importance: Importance.high,
-        priority: Priority.high,
-        styleInformation: bigTextStyleInformation,
+        importance: Importance.low,
+        priority: Priority.low,
         icon: '@mipmap/ic_launcher',
-        largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+        largeIcon: DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+        color: Color(0xFFE53935),
         ongoing: true,
+        playSound: false,
+        enableVibration: false,
       );
 
       const iosDetails = DarwinNotificationDetails(
@@ -165,17 +223,19 @@ class CountdownNotificationService {
         presentSound: false,
       );
 
-      final details = NotificationDetails(
+      const details = NotificationDetails(
         android: androidDetails,
         iOS: iosDetails,
       );
 
-      await notificationManager.flutterLocalNotificationsPlugin.show(
-        id: id,
-        title: title,
-        body: body,
-        notificationDetails: details,
-      );
+      notificationManager.flutterLocalNotificationsPlugin
+          .show(
+            id: id,
+            title: notificationTitle,
+            body: body,
+            notificationDetails: details,
+          )
+          .catchError((e) => hisnPrint("Error showing countdown: $e"));
     }
   }
 
@@ -215,36 +275,16 @@ class CountdownNotificationService {
     await _cancelTimer(_sunriseEndCountdownBaseId);
   }
 
-  String _formatCountdownBody(Duration remaining, String prayerName) {
-    if (remaining.inHours > 0) {
-      final hours = remaining.inHours;
-      final minutes = remaining.inMinutes % 60;
-      return SX.current.countdownMinutesToAdhanBody(prayerName, hours, minutes);
-    }
-    final minutes = remaining.inMinutes;
-    if (minutes <= 5) {
-      return SX.current.countdownMinutesToAdhanBodyFinal(prayerName, minutes);
-    }
-    return SX.current.countdownMinutesToAdhanBody(prayerName, 0, minutes);
-  }
+  String _formatTime(Duration remaining) {
+    final hours = remaining.inHours;
+    final minutes = remaining.inMinutes % 60;
+    final seconds = remaining.inSeconds % 60;
 
-  String _formatIqamahCountdownBody(Duration remaining, String prayerName) {
-    if (remaining.inHours > 0) {
-      final hours = remaining.inHours;
-      final minutes = remaining.inMinutes % 60;
-      return SX.current.countdownMinutesToIqamahBody(prayerName, hours, minutes);
-    }
-    final minutes = remaining.inMinutes;
-    return SX.current.countdownMinutesToIqamahBody(prayerName, 0, minutes);
-  }
+    String pad(int n) => n.toString().padLeft(2, '0');
 
-  String _formatSunriseEndCountdownBody(Duration remaining) {
-    if (remaining.inHours > 0) {
-      final hours = remaining.inHours;
-      final minutes = remaining.inMinutes % 60;
-      return SX.current.countdownSunriseEndBody(hours, minutes);
+    if (hours > 0) {
+      return '${pad(hours)}:${pad(minutes)}:${pad(seconds)}';
     }
-    final minutes = remaining.inMinutes;
-    return SX.current.countdownSunriseEndBody(0, minutes);
+    return '${pad(minutes)}:${pad(seconds)}';
   }
 }

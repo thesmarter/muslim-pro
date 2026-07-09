@@ -1089,4 +1089,20 @@ class SAr extends S {
 
   @override
   String get tryDifferentQuery => 'جرب البحث بكلمة مختلفة';
+
+  @override
+  String adhanCountdownTitle(Object prayerName) {
+    return 'أذان $prayerName';
+  }
+
+  @override
+  String iqamahCountdownTitle(Object prayerName) {
+    return 'إقامة $prayerName';
+  }
+
+  @override
+  String get sunriseEndCountdownTitle => 'انتهاء وقت الشروق';
+
+  @override
+  String get countdownRemaining => 'المتبقي';
 }

@@ -342,10 +342,13 @@
   "countdownSunriseEndBody": "Sunrise ends in {hours}h {minutes}m",
   "searchCityHint": "Search for city name...",
   "searchResults": "Search Results",
-  "noResultsFound": "No results found",
   "detectByIP": "Detect by IP",
   "detectByGPS": "Detect by GPS",
   "selectLocation": "Select Location",
   "currentLocation": "Current Location",
-  "tryDifferentQuery": "Try a different search term"
+  "tryDifferentQuery": "Try a different search term",
+  "adhanCountdownTitle": "Adhan {prayerName}",
+  "iqamahCountdownTitle": "Iqamah {prayerName}",
+  "sunriseEndCountdownTitle": "Sunrise End",
+  "countdownRemaining": "Remaining"
 }

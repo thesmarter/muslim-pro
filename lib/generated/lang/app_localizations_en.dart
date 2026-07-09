@@ -1091,4 +1091,20 @@ class SEn extends S {
 
   @override
   String get tryDifferentQuery => 'Try a different search term';
+
+  @override
+  String adhanCountdownTitle(Object prayerName) {
+    return 'Adhan $prayerName';
+  }
+
+  @override
+  String iqamahCountdownTitle(Object prayerName) {
+    return 'Iqamah $prayerName';
+  }
+
+  @override
+  String get sunriseEndCountdownTitle => 'Sunrise End';
+
+  @override
+  String get countdownRemaining => 'Remaining';
 }

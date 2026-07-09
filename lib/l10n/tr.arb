@@ -341,10 +341,13 @@
   "countdownSunriseEndBody": "Güneşin doğuşu {hours}saat {minutes}dakika içinde sona eriyor",
   "searchCityHint": "Şehir adı ara...",
   "searchResults": "Arama Sonuçları",
-  "noResultsFound": "Sonuç bulunamadı",
   "detectByIP": "IP ile algıla",
   "detectByGPS": "GPS ile algıla",
   "selectLocation": "Konum seç",
   "currentLocation": "Mevcut konum",
-  "tryDifferentQuery": "Farklı bir arama terimi deneyin"
+  "tryDifferentQuery": "Farklı bir arama terimi deneyin",
+  "adhanCountdownTitle": "{prayerName} Ezanı",
+  "iqamahCountdownTitle": "{prayerName} İkameti",
+  "sunriseEndCountdownTitle": "Güneşin Doğuşu Sonu",
+  "countdownRemaining": "Kalan"
 }
