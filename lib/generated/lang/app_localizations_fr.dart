@@ -1226,4 +1226,10 @@ class SFr extends S {
 
   @override
   String get restartShowcaseTour => 'Relancer la visite guidée';
+
+  @override
+  String get goodMorning => 'Bonjour ☀️';
+
+  @override
+  String get goodEvening => 'Bonsoir 🌙';
 }

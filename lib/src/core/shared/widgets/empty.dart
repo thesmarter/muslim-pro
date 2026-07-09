@@ -78,7 +78,7 @@ class Empty extends StatelessWidget {
                     leading: Card(
                       color: Theme.of(
                         context,
-                      ).colorScheme.primary.withAlpha(50),
+                      ).colorScheme.primary.withValues(alpha: 50),
                       child: Container(
                         width: 40,
                         height: 40,

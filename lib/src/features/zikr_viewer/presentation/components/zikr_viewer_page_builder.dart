@@ -48,7 +48,7 @@ class ZikrViewerPageBuilder extends StatelessWidget {
                 style: TextStyle(
                   color: Theme.of(
                     context,
-                  ).colorScheme.primary.withAlpha((.02 * 255).round()),
+                  ).colorScheme.primary.withValues(alpha: 0.02),
                   fontSize: 250,
                   fontWeight: FontWeight.bold,
                 ),

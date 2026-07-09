@@ -47,7 +47,7 @@ class ZikrViewerExpandingFab extends StatelessWidget {
         FloatingActionButton.small(
           heroTag: 'report',
           tooltip: S.of(context).report,
-          backgroundColor: Colors.orange.withAlpha(200),
+          backgroundColor: Colors.orange.withValues(alpha: 200),
           child: const Icon(Icons.report_outlined),
           onPressed: () {
             context.read<ZikrViewerBloc>().add(

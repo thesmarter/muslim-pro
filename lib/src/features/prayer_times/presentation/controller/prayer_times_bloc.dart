@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/features/prayer_times/data/repository/ip_location_service.dart';
 import 'package:muslim/src/features/prayer_times/data/repository/prayer_times_repo.dart';
 import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_event.dart';
@@ -112,7 +113,7 @@ class PrayerTimesBloc extends Bloc<PrayerTimesEvent, PrayerTimesState> {
   Future<void> _onDetectLocationByIP(DetectLocationByIP event, Emitter<PrayerTimesState> emit) async {
     emit(state.copyWith(status: PrayerTimesStatus.loading));
     try {
-      final ipLocationService = IPLocationService();
+      final ipLocationService = sl<IPLocationService>();
       final ipLocation = await ipLocationService.getLocationByIP();
 
       if (ipLocation == null) {

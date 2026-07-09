@@ -43,9 +43,8 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
         ),
         child: Scaffold(
           body: Navigator(
-            onPopPage: (route, result) {
+            onDidRemovePage: (Page<Object?> page) {
               widget.onBack?.call();
-              return false;
             },
             pages: [
               MaterialPage(

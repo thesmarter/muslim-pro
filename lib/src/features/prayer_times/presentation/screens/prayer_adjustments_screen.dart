@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
@@ -131,9 +132,7 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
                     title: Text(S.of(context).getValue(e.key)),
                     leading: Radio<String>(
                       value: e.key,
-                      // ignore: deprecated_member_use
-                      groupValue: state.settings.muadhin,
-                      // ignore: deprecated_member_use
+                      toggleable: true,
                       onChanged: (value) {
                         if (value != null) {
                           final newSettings = state.settings.copyWith(muadhin: value);

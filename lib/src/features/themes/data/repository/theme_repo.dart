@@ -113,9 +113,7 @@ class ThemeRepo {
       if (languageCode == null) {
         locale = null;
       } else {
-        ///TODO use languageCode
-        // locale = Locale(languageCode);
-        locale = const Locale("ar");
+        locale = Locale(languageCode);
       }
     } else {
       locale = Locale(value);

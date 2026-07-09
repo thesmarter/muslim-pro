@@ -12,19 +12,6 @@ class HomeAppBar extends StatelessWidget {
   final TabController tabController;
   const HomeAppBar({super.key, required this.tabController});
 
-  String _getGreeting(BuildContext context) {
-    final hour = DateTime.now().hour;
-    final locale = Localizations.localeOf(context).languageCode;
-    if (locale == 'ar') {
-      return hour < 12 ? 'صباح الخير ☀️' : 'مساء الخير 🌙';
-    } else if (locale == 'fr') {
-      return hour < 12 ? 'Bonjour ☀️' : 'Bonsoir 🌙';
-    } else if (locale == 'tr') {
-      return hour < 12 ? 'Günaydın ☀️' : 'İyi akşamlar 🌙';
-    }
-    return hour < 12 ? 'Good Morning ☀️' : 'Good Evening 🌙';
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
@@ -58,7 +45,9 @@ class HomeAppBar extends StatelessWidget {
           flexibleSpace: FlexibleSpaceBar(
             titlePadding: const EdgeInsetsDirectional.only(start: 102, bottom: 68),
             title: Text(
-              _getGreeting(context),
+              DateTime.now().hour < 12
+                  ? S.of(context).goodMorning
+                  : S.of(context).goodEvening,
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w500,

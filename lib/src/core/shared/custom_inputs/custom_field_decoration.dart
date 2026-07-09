@@ -4,7 +4,7 @@ InputDecoration customInputDecoration(BuildContext context) {
   final colorScheme = Theme.of(context).colorScheme;
   return InputDecoration(
     filled: true,
-    fillColor: colorScheme.surfaceContainerHighest.withAlpha(125),
+    fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 125),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(20),

@@ -23,7 +23,7 @@ class AlarmCard extends StatelessWidget {
         motion: const BehindMotion(),
         children: [
           SlidableAction(
-            backgroundColor: Colors.green.withAlpha((.5 * 255).round()),
+            backgroundColor: Colors.green.withValues(alpha: 0.5),
             onPressed: (val) async {
               final EditorResult<DbAlarm>? result = await showAlarmEditorDialog(
                 context: context,
@@ -57,7 +57,7 @@ class AlarmCard extends StatelessWidget {
             onPressed: (val) {
               context.read<AlarmsBloc>().add(AlarmsRemoveEvent(dbAlarm));
             },
-            backgroundColor: Colors.red.withAlpha((.5 * 255).round()),
+            backgroundColor: Colors.red.withValues(alpha: 0.5),
             icon: Icons.delete,
             label: S.of(context).delete,
           ),
@@ -90,7 +90,7 @@ class AlarmCardBody extends StatelessWidget {
               if (dbAlarm.body.isNotEmpty)
                 RoundTagCard(
                   name: dbAlarm.body,
-                  color: Colors.brown.withAlpha((.5 * 255).round()),
+                  color: Colors.brown.withValues(alpha: 0.5),
                 ),
               Row(
                 children: [
@@ -99,13 +99,13 @@ class AlarmCardBody extends StatelessWidget {
                       name: DateFormat(
                         "hh:mm a",
                       ).format(DateTime(1, 1, 1, dbAlarm.hour, dbAlarm.minute)),
-                      color: Colors.green.withAlpha((.5 * 255).round()),
+                      color: Colors.green.withValues(alpha: 0.5),
                     ),
                   ),
                   Expanded(
                     child: RoundTagCard(
                       name: dbAlarm.repeatType.getUserFriendlyName(context),
-                      color: Colors.yellow.withAlpha((.5 * 255).round()),
+                      color: Colors.yellow.withValues(alpha: 0.5),
                     ),
                   ),
                 ],

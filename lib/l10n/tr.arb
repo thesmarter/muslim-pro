@@ -381,5 +381,7 @@
   "showcaseTourDrawerSettingsDesc": "Uygulamanın tüm ayarları: zikirleri özelleştirin (kaynaklar, hükümler), yazı tiplerini, temaları ve renkleri ayarlayın, alarmları ve hatırlatıcıları yönetin, verileri yedekleyin ve geri yükleyin, çoklu dil desteği",
   "showcaseTourDrawerMoreTitle": "Daha Fazla",
   "showcaseTourDrawerMoreDesc": "Geliştiriciyle iletişime geçin, diğer uygulamaları keşfedin ve Elmoslem Pro ile geliştirme ekibi hakkında daha fazla bilgi edinin",
-  "restartShowcaseTour": "Tanıtım Turunu Yeniden Başlat"
+  "restartShowcaseTour": "Tanıtım Turunu Yeniden Başlat",
+  "goodMorning": "Günaydın ☀️",
+  "goodEvening": "İyi akşamlar 🌙"
 }

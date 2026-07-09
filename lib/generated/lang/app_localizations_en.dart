@@ -1217,4 +1217,10 @@ class SEn extends S {
 
   @override
   String get restartShowcaseTour => 'Restart Showcase Tour';
+
+  @override
+  String get goodMorning => 'Good Morning ☀️';
+
+  @override
+  String get goodEvening => 'Good Evening 🌙';
 }

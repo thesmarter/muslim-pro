@@ -198,7 +198,7 @@ class SettingsGeneralSection extends StatelessWidget {
             ),
             SwitchListTile(
               secondary: const Icon(Icons.numbers),
-              tileColor: Colors.amber.withAlpha((.1 * 255).round()),
+              tileColor: Colors.amber.withValues(alpha: 0.1),
               value: state.useHindiDigits,
               title: Text(S.of(context).useHindiDigits),
               subtitle: Text(S.of(context).requiresAppRestart),

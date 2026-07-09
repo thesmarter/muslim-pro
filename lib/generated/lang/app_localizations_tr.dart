@@ -1218,4 +1218,10 @@ class STr extends S {
 
   @override
   String get restartShowcaseTour => 'Tanıtım Turunu Yeniden Başlat';
+
+  @override
+  String get goodMorning => 'Günaydın ☀️';
+
+  @override
+  String get goodEvening => 'İyi akşamlar 🌙';
 }

@@ -1215,4 +1215,10 @@ class SAr extends S {
 
   @override
   String get restartShowcaseTour => 'إعادة الجولة التعريفية';
+
+  @override
+  String get goodMorning => 'صباح الخير ☀️';
+
+  @override
+  String get goodEvening => 'مساء الخير 🌙';
 }

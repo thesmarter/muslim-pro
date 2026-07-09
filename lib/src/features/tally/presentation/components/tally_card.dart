@@ -37,7 +37,7 @@ class TallyCard extends StatelessWidget {
         color: isActivated
             ? Theme.of(context).brightness == Brightness.light
                   ? null
-                  : primary.withAlpha((.05 * 255).round())
+                  : primary.withValues(alpha: 0.05)
             : colorScheme.surfaceContainerLow,
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
@@ -55,7 +55,7 @@ class TallyCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               border: isActivated
                   ? Border.all(
-                      color: primary.withAlpha((.4 * 255).round()),
+                      color: primary.withValues(alpha: 0.4),
                       width: 1.5,
                     )
                   : null,
@@ -105,7 +105,7 @@ class TallyCard extends StatelessWidget {
                       Text(
                         dbTally.lastUpdate.humanize,
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: colorScheme.onSurface.withAlpha(125),
+                          color: colorScheme.onSurface.withValues(alpha: 0.49),
                         ),
                       ),
                     ],
@@ -123,7 +123,7 @@ class TallyCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: isActivated
-                            ? primary.withAlpha((.2 * 255).round())
+                            ? primary.withValues(alpha: 0.2)
                             : colorScheme.surfaceContainerHighest,
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -147,7 +147,7 @@ class TallyCard extends StatelessWidget {
                     IconButton(
                       tooltip: S.of(context).edit,
                       style: IconButton.styleFrom(
-                        foregroundColor: colorScheme.onSurface.withAlpha(130),
+                        foregroundColor: colorScheme.onSurface.withValues(alpha: 0.51),
                       ),
                       onPressed: () async {
                         final EditorResult<DbTally>? result = await showTallyEditorDialog(
