@@ -2175,6 +2175,30 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Try a different search term'**
   String get tryDifferentQuery;
+
+  /// No description provided for @adhanCountdownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Adhan {prayerName}'**
+  String adhanCountdownTitle(Object prayerName);
+
+  /// No description provided for @iqamahCountdownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Iqamah {prayerName}'**
+  String iqamahCountdownTitle(Object prayerName);
+
+  /// No description provided for @sunriseEndCountdownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise End'**
+  String get sunriseEndCountdownTitle;
+
+  /// No description provided for @countdownRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get countdownRemaining;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

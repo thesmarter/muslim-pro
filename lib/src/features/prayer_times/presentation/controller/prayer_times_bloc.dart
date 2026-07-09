@@ -97,7 +97,7 @@ class PrayerTimesBloc extends Bloc<PrayerTimesEvent, PrayerTimesState> {
       final newSettings = state.settings.copyWith(
         latitude: position.latitude,
         longitude: position.longitude,
-        cityName: placemark?.locality,
+        cityName: placemark?.locality ?? placemark?.name,
         countryName: placemark?.country,
       );
 

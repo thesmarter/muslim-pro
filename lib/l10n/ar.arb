@@ -344,10 +344,13 @@
   "countdownSunriseEndBody": "انتهاء وقت الشروق بعد {hours} ساعة و {minutes} دقيقة",
   "searchCityHint": "ابحث عن اسم المدينة...",
   "searchResults": "نتائج البحث",
-  "noResultsFound": "لم يتم العثور على نتائج",
   "detectByIP": "تحديد الموقع بالـ IP",
   "detectByGPS": "تحديد الموقع بالـ GPS",
   "selectLocation": "اختيار الموقع",
   "currentLocation": "الموقع الحالي",
-  "tryDifferentQuery": "جرب البحث بكلمة مختلفة"
+  "tryDifferentQuery": "جرب البحث بكلمة مختلفة",
+  "adhanCountdownTitle": "أذان {prayerName}",
+  "iqamahCountdownTitle": "إقامة {prayerName}",
+  "sunriseEndCountdownTitle": "انتهاء وقت الشروق",
+  "countdownRemaining": "المتبقي"
 }

@@ -144,8 +144,10 @@ class LocalNotificationManager {
             'countdown_channel',
             'عداد تنازلي',
             description: 'إشعارات العد التنازلي للصلوات',
-            importance: Importance.high,
+            importance: Importance.low,
             enableLights: true,
+            playSound: false,
+            enableVibration: false,
           );
 
           await androidPlugin.createNotificationChannel(countdownChannel);

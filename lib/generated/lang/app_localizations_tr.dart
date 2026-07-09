@@ -1092,4 +1092,20 @@ class STr extends S {
 
   @override
   String get tryDifferentQuery => 'Farklı bir arama terimi deneyin';
+
+  @override
+  String adhanCountdownTitle(Object prayerName) {
+    return '$prayerName Ezanı';
+  }
+
+  @override
+  String iqamahCountdownTitle(Object prayerName) {
+    return '$prayerName İkameti';
+  }
+
+  @override
+  String get sunriseEndCountdownTitle => 'Güneşin Doğuşu Sonu';
+
+  @override
+  String get countdownRemaining => 'Kalan';
 }

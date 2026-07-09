@@ -36,7 +36,7 @@ class PrayerTimesRepo {
         final newSettings = settings.copyWith(
           latitude: position.latitude,
           longitude: position.longitude,
-          cityName: placemark?.locality,
+          cityName: placemark?.locality ?? placemark?.name,
           countryName: placemark?.country,
         );
         await saveSettings(newSettings);
@@ -175,6 +175,8 @@ class PrayerTimesRepo {
           prayerName: prayerName,
           adhanTime: prayerTime,
           minutesBefore: preAdhanMinutes,
+          cityName: settings.cityName,
+          countryName: settings.countryName,
         );
         return; // Only show one notification
       }
@@ -197,7 +199,9 @@ class PrayerTimesRepo {
           prayerIndex: pIndex,
           prayerName: prayerName,
           adhanTime: prayerTime,
-          durationMinutes: const Duration(minutes: postAdhanMinutes).inMinutes,
+          durationMinutes: postAdhanMinutes,
+          cityName: settings.cityName,
+          countryName: settings.countryName,
         );
         return; // Only show one notification
       }
@@ -220,6 +224,8 @@ class PrayerTimesRepo {
           prayerName: prayerName,
           adhanTime: prayerTime,
           minutesBefore: preAdhanMinutes,
+          cityName: settings.cityName,
+          countryName: settings.countryName,
         );
         return; // Only show one notification
       }
@@ -234,6 +240,8 @@ class PrayerTimesRepo {
         await countdownService.startSunriseEndCountdown(
           sunriseTime: sunriseTime,
           durationMinutes: 15,
+          cityName: settings.cityName,
+          countryName: settings.countryName,
         );
         return;
       }

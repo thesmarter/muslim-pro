@@ -1100,4 +1100,20 @@ class SFr extends S {
 
   @override
   String get tryDifferentQuery => 'Essayez un autre terme de recherche';
+
+  @override
+  String adhanCountdownTitle(Object prayerName) {
+    return 'Adhan $prayerName';
+  }
+
+  @override
+  String iqamahCountdownTitle(Object prayerName) {
+    return 'Iqamah $prayerName';
+  }
+
+  @override
+  String get sunriseEndCountdownTitle => 'Fin du lever du soleil';
+
+  @override
+  String get countdownRemaining => 'Restant';
 }
