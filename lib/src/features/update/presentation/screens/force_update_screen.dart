@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/features/update/data/models/update_info_model.dart';
 import 'package:muslim/src/features/update/data/repository/update_repo.dart';
@@ -39,7 +40,7 @@ class ForceUpdateScreen extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               Text(
-                'تحديث جديد متاح',
+                S.of(context).newUpdateAvailable,
                 style: theme.textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -69,7 +70,7 @@ class ForceUpdateScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'الإصدار الجديد: ${updateInfo.latestVersion}',
+                      S.of(context).newVersion(updateInfo.latestVersion),
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -99,9 +100,9 @@ class ForceUpdateScreen extends StatelessWidget {
                     ),
                     elevation: 5,
                   ),
-                  child: const Text(
-                    'تحديث الآن',
-                    style: TextStyle(
+                  child: Text(
+                    S.of(context).updateNow,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),

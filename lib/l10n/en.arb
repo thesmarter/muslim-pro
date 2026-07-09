@@ -384,5 +384,10 @@
   "showcaseTourDrawerMoreDesc": "Contact the developer, discover other apps, and learn more about Elmoslem Pro and the development team",
   "restartShowcaseTour": "Restart Showcase Tour",
   "goodMorning": "Good Morning ☀️",
-  "goodEvening": "Good Evening 🌙"
+  "goodEvening": "Good Evening 🌙",
+  "newUpdateAvailable": "New update available",
+  "newVersion": "New Version: {version}",
+  "updateNow": "Update Now",
+  "onboardingUpdateTitle": "App Update",
+  "onboardingUpdateDesc": "Fixing Adhan issues and text rendering.\nAdded French, Turkish, and English to display and Azkar."
 }

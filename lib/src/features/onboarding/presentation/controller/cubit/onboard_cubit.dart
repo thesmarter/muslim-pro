@@ -3,7 +3,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
-import 'package:muslim/src/core/shared/widgets/empty.dart';
 import 'package:muslim/src/core/utils/volume_button_manager.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -42,29 +41,12 @@ class OnboardCubit extends Cubit<OnboardState> {
     });
   }
 
-  List<Empty> get pageData {
-    return [
-      const Empty(
-        title: "الجديد في هذا الإصدار",
-        isImage: false,
-        isItemList: true,
-        description: """
-مواقيت الصلاة: أضفنا نظاماً متكاملاً لمواقيت الصلاة مع تحديد تلقائي للموقع، وبحث يدوي عن المدن، وإمكانية تعديل الأوقات بدقة.
-المصحف الشامل: قسم جديد للقرآن الكريم (بالرسم العثماني) مع إمكانية القراءة، البحث، والتفسير، والاستماع بأصوات مشاهير القراء.
-تكامل ذكي: الوصول للمصحف ومواقيت الصلاة مباشرة من التبويبات الرئيسية لسهولة التنقل.
-تحسينات الأداء: ضغط حجم التطبيق عبر نظام عرض تقني حديث وأكثر سلاسة.
-إصلاحات عامة: تحسين استقرار نظام الإشعارات ومعالجة بعض الأخطاء في عرض الأذكار.
-""",
-      ),
-    ];
-  }
-
   Future start() async {
     emit(
-      OnboardLoadedState(
+      const OnboardLoadedState(
         showSkipBtn: true,
         currentPageIndex: 0,
-        pages: pageData,
+        pageCount: 1,
       ),
     );
   }

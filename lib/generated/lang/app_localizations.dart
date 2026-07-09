@@ -2403,6 +2403,36 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Good Evening 🌙'**
   String get goodEvening;
+
+  /// No description provided for @newUpdateAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'New update available'**
+  String get newUpdateAvailable;
+
+  /// No description provided for @newVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'New Version: {version}'**
+  String newVersion(Object version);
+
+  /// No description provided for @updateNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Now'**
+  String get updateNow;
+
+  /// No description provided for @onboardingUpdateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App Update'**
+  String get onboardingUpdateTitle;
+
+  /// No description provided for @onboardingUpdateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixing Adhan issues and text rendering.\nAdded French, Turkish, and English to display and Azkar.'**
+  String get onboardingUpdateDesc;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

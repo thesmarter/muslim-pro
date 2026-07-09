@@ -386,5 +386,10 @@
   "showcaseTourDrawerMoreDesc": "تواصل مع المطور، اكتشف التطبيقات الأخرى، وتعرف على المزيد عن تطبيق المسلم برو وفريق التطوير",
   "restartShowcaseTour": "إعادة الجولة التعريفية",
   "goodMorning": "صباح الخير ☀️",
-  "goodEvening": "مساء الخير 🌙"
+  "goodEvening": "مساء الخير 🌙",
+  "newUpdateAvailable": "تحديث جديد متاح",
+  "newVersion": "الإصدار الجديد: {version}",
+  "updateNow": "تحديث الآن",
+  "onboardingUpdateTitle": "تحديث التطبيق",
+  "onboardingUpdateDesc": "إصلاح مشاكل الأذان وعرض النصوص.\nتمت إضافة اللغات الفرنسية والتركية والإنجليزية في العرض والأذكار."
 }
