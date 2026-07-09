@@ -14,8 +14,10 @@ import 'package:muslim/src/features/home/presentation/components/side_menu/side_
 import 'package:muslim/src/features/home/presentation/controller/bloc/home_bloc.dart';
 import 'package:muslim/src/features/home_search/presentation/screens/search_screen.dart';
 import 'package:muslim/src/features/quran/presentation/screens/quran_read_screen.dart';
+import 'package:muslim/src/features/showcase_tour/presentation/showcase_tour_coordinator.dart';
 import 'package:muslim/src/features/tally/presentation/screens/tally_dashboard_screen.dart';
 import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_cubit.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -68,6 +70,54 @@ class _DashboardScreenState extends State<DashboardScreen>
     WidgetsBinding.instance.addObserver(this);
     _brightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
     super.initState();
+
+    ShowcaseView.register(
+      overlayColor: Colors.black,
+      overlayOpacity: 0.6,
+      enableAutoScroll: true,
+      scrollDuration: const Duration(milliseconds: 500),
+      skipIfTargetNotPresent: true,
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _initShowcaseTour();
+      }
+    });
+  }
+
+  void _initShowcaseTour() {
+    final arrangement =
+        (context.read<HomeBloc>().state as HomeLoadedState).dashboardArrangement;
+
+    final int azkarTabIdx = arrangement.indexOf(
+      appDashboardTabs.indexWhere((t) => t.id == 'index'),
+    );
+    final int favoritesTitlesTabIdx = arrangement.indexOf(
+      appDashboardTabs.indexWhere((t) => t.id == 'favorites_content'),
+    );
+    final int favoritesZikrTabIdx = arrangement.indexOf(
+      appDashboardTabs.indexWhere((t) => t.id == 'favorites_zikr'),
+    );
+    ShowcaseTourCoordinator.instance.initialize(
+      tabController: tabController,
+      azkarTabIndex: azkarTabIdx >= 0 ? azkarTabIdx : 0,
+      favoritesTitlesTabIndex: favoritesTitlesTabIdx >= 0 ? favoritesTitlesTabIdx : 0,
+      favoritesZikrTabIndex: favoritesZikrTabIdx >= 0 ? favoritesZikrTabIdx : 0,
+    );
+    ShowcaseTourCoordinator.instance.setContext(context);
+
+    final sv = ShowcaseView.get();
+    sv.addOnStartCallback((index, key) {
+      ShowcaseTourCoordinator.instance.onTourStart(index, key);
+    });
+    sv.addOnFinishCallback(() {
+      ShowcaseTourCoordinator.instance.completeTour();
+    });
+
+    if (!ShowcaseTourCoordinator.instance.isTourCompleted) {
+      ShowcaseTourCoordinator.instance.startTour();
+    }
   }
 
   void _handleTabSelection() {
@@ -92,6 +142,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   void dispose() {
     tabController.removeListener(_handleTabSelection);
     tabController.dispose();
+    ShowcaseTourCoordinator.instance.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -158,12 +209,18 @@ class _DashboardScreenState extends State<DashboardScreen>
                 ),
                 floatingActionButton: isQuranTab
                     ? null
-                    : FloatingActionButton(
-                        tooltip: S.of(context).tally,
-                        child: const Icon(Icons.onetwothree, size: 35),
-                        onPressed: () {
-                          context.push(const TallyDashboardScreen());
-                        },
+                    : Showcase(
+                        key: ShowcaseTourKeys.fabTally,
+                        title: S.of(context).showcaseTourTallyFabTitle,
+                        description: S.of(context).showcaseTourTallyFabDesc,
+                        targetShapeBorder: const CircleBorder(),
+                        child: FloatingActionButton(
+                          tooltip: S.of(context).tally,
+                          child: const Icon(Icons.onetwothree, size: 35),
+                          onPressed: () {
+                            context.push(const TallyDashboardScreen());
+                          },
+                        ),
                       ),
               ),
             );

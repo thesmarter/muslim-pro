@@ -1105,4 +1105,114 @@ class SAr extends S {
 
   @override
   String get countdownRemaining => 'المتبقي';
+
+  @override
+  String get showcaseTourNext => 'التالي';
+
+  @override
+  String get showcaseTourSkip => 'تخطي الجولة';
+
+  @override
+  String get showcaseTourDone => 'تم';
+
+  @override
+  String get showcaseTourWelcomeTitle => 'مرحباً بك في تطبيق المسلم برو';
+
+  @override
+  String get showcaseTourWelcomeDesc =>
+      'دعنا نأخذك في جولة سريعة للتعرف على الميزات الرئيسية للتطبيق';
+
+  @override
+  String get showcaseTourAzkar => 'الأذكار';
+
+  @override
+  String get showcaseTourAzkarDesc =>
+      'من هنا يمكنك تصفح جميع الأذكار اليومية من حصن المسلم مع إمكانية القراءة والسماع والتسبيح';
+
+  @override
+  String get showcaseTourQuran => 'القرآن الكريم';
+
+  @override
+  String get showcaseTourQuranDesc =>
+      'اقرأ القرآن الكريم بالرسم العثماني مع التفسير والاستماع لأشهر القراء والبحث عن الآيات';
+
+  @override
+  String get showcaseTourPrayer => 'مواقيت الصلاة والأذان';
+
+  @override
+  String get showcaseTourPrayerDesc =>
+      'اعرض مواقيت الصلاة بدقة مع إمكانية سماع الأذان لأشهر المؤذنين وتعديل أوقات الصلاة';
+
+  @override
+  String get showcaseTourSettings => 'الإعدادات';
+
+  @override
+  String get showcaseTourSettingsDesc =>
+      'من هنا يمكنك الوصول للإعدادات لتخصيص التطبيق: الثيمات، الخطوط، التنبيهات والمزيد';
+
+  @override
+  String get showcaseTourSearchTitle => 'بحث';
+
+  @override
+  String get showcaseTourSearchDesc =>
+      'ابحث في جميع محتوى التطبيق: الأذكار وعناوينها، القرآن الكريم والآيات، والأحاديث. يمكنك البحث بالكلمات المفتاحية للعثور على ما تريد بسرعة';
+
+  @override
+  String get showcaseTourFavoritesTitles => 'المفضلة - عناوين الأذكار';
+
+  @override
+  String get showcaseTourFavoritesTitlesDesc =>
+      'احفظ عناوين الأذكار المفضلة لديك للوصول السريع إليها. يمكنك إضافة أي ذكر إلى المفضلة من علامة النجمة الموجودة بجانب كل عنوان في قائمة الأذكار';
+
+  @override
+  String get showcaseTourFavoritesZikr => 'المفضلة - محتوى الأذكار';
+
+  @override
+  String get showcaseTourFavoritesZikrDesc =>
+      'راجع الأذكار الفردية التي حفظتها من قبل. هذا التبويب يضم المحتوى الذي أضفته إلى المفضلة أثناء قراءة الأذكار، لتتمكن من العودة إليه مباشرة';
+
+  @override
+  String get showcaseTourTallyFabTitle => 'المسبحة';
+
+  @override
+  String get showcaseTourTallyFabDesc =>
+      'سبح الله بضغطة زر! المسبحة الرقمية تتيح لك تتبع التسبيح والتهليل والتكبير والتحميد. يمكنك إنشاء عدادات متعددة، تحديد عدد الجولات، ومشاركة إنجازاتك اليومية في الذكر';
+
+  @override
+  String get showcaseTourDrawerTallyTitle => 'المسبحة';
+
+  @override
+  String get showcaseTourDrawerTallyDesc =>
+      'من القائمة الجانبية يمكنك فتح المسبحة الرقمية لتسبيح الله بسهولة مع إمكانية تتبع عدد الأذكار اليومية والأسبوعية';
+
+  @override
+  String get showcaseTourDrawerQuranTitle => 'القرآن الكريم';
+
+  @override
+  String get showcaseTourDrawerQuranDesc =>
+      'اقرأ القرآن الكريم كاملاً بالرسم العثماني مع إمكانية الاستماع لأشهر القراء والتفسير والترجمة';
+
+  @override
+  String get showcaseTourDrawerFakeHadithTitle => 'الأحاديث الضعيفة والموضوعة';
+
+  @override
+  String get showcaseTourDrawerFakeHadithDesc =>
+      'تعرف على الأحاديث الضعيفة والموضوعة المنتشرة بين الناس. هذا القسم يساعدك على التمييز بين الأحاديث الصحيحة والضعيفة لحماية دينك وعقيدتك';
+
+  @override
+  String get showcaseTourDrawerSettingsTitle => 'الإعدادات';
+
+  @override
+  String get showcaseTourDrawerSettingsDesc =>
+      'الإعدادات الكاملة للتطبيق: تخصيص الأذكار (مصادر الأذكار، أحكام الأذكار)، تعديل الخطوط والثيمات والألوان، إدارة التنبيهات والتذكيرات، النسخ الاحتياطي واستعادة البيانات، ولغات التطبيق المتعددة';
+
+  @override
+  String get showcaseTourDrawerMoreTitle => 'المزيد';
+
+  @override
+  String get showcaseTourDrawerMoreDesc =>
+      'تواصل مع المطور، اكتشف التطبيقات الأخرى، وتعرف على المزيد عن تطبيق المسلم برو وفريق التطوير';
+
+  @override
+  String get restartShowcaseTour => 'إعادة الجولة التعريفية';
 }

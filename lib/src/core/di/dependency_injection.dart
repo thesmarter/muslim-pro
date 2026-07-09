@@ -34,6 +34,7 @@ import 'package:muslim/src/features/settings/data/repository/zikr_text_repo.dart
 import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
 import 'package:muslim/src/features/share_as_image/data/repository/share_as_image_repo.dart';
 import 'package:muslim/src/features/share_as_image/presentation/controller/cubit/share_image_cubit.dart';
+import 'package:muslim/src/features/showcase_tour/data/repository/showcase_tour_repo.dart';
 import 'package:muslim/src/features/tally/data/repository/tally_database_helper.dart';
 import 'package:muslim/src/features/tally/data/repository/tally_repo.dart';
 import 'package:muslim/src/features/tally/presentation/controller/bloc/tally_bloc.dart';
@@ -58,6 +59,7 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => EffectsManagerRepo(sl()));
   sl.registerLazySingleton(() => ShareAsImageRepo(sl()));
   sl.registerLazySingleton(() => AppSettingsRepo(sl()));
+  sl.registerLazySingleton(() => ShowcaseTourRepo(sl()));
   sl.registerLazySingleton(() => AlarmsRepo(sl()));
   sl.registerLazySingleton(() => ZikrTextRepo(sl()));
   sl.registerLazySingleton(() => ZikrViewerRepo(sl()));

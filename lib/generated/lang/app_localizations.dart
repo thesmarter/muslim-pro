@@ -2199,6 +2199,198 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Remaining'**
   String get countdownRemaining;
+
+  /// No description provided for @showcaseTourNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get showcaseTourNext;
+
+  /// No description provided for @showcaseTourSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip Tour'**
+  String get showcaseTourSkip;
+
+  /// No description provided for @showcaseTourDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get showcaseTourDone;
+
+  /// No description provided for @showcaseTourWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Elmoslem Pro'**
+  String get showcaseTourWelcomeTitle;
+
+  /// No description provided for @showcaseTourWelcomeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Let us take you on a quick tour of the main features of the app'**
+  String get showcaseTourWelcomeDesc;
+
+  /// No description provided for @showcaseTourAzkar.
+  ///
+  /// In en, this message translates to:
+  /// **'Azkar (Remembrances)'**
+  String get showcaseTourAzkar;
+
+  /// No description provided for @showcaseTourAzkarDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse all daily remembrances from Hisn Al-Muslim with reading, audio, and tasbeeh capabilities'**
+  String get showcaseTourAzkarDesc;
+
+  /// No description provided for @showcaseTourQuran.
+  ///
+  /// In en, this message translates to:
+  /// **'Holy Quran'**
+  String get showcaseTourQuran;
+
+  /// No description provided for @showcaseTourQuranDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Read the Holy Quran in Uthmani script with tafsir, listening to famous reciters, and search for verses'**
+  String get showcaseTourQuranDesc;
+
+  /// No description provided for @showcaseTourPrayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Times & Adhan'**
+  String get showcaseTourPrayer;
+
+  /// No description provided for @showcaseTourPrayerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View accurate prayer times with the ability to hear the Adhan from famous muadhins and adjust prayer times'**
+  String get showcaseTourPrayerDesc;
+
+  /// No description provided for @showcaseTourSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get showcaseTourSettings;
+
+  /// No description provided for @showcaseTourSettingsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'From here you can access settings to customize the app: themes, fonts, notifications and more'**
+  String get showcaseTourSettingsDesc;
+
+  /// No description provided for @showcaseTourSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get showcaseTourSearchTitle;
+
+  /// No description provided for @showcaseTourSearchDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Search across all app content: azkar titles and content, the Holy Quran and verses, and hadiths. Find what you need quickly with keyword search'**
+  String get showcaseTourSearchDesc;
+
+  /// No description provided for @showcaseTourFavoritesTitles.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites - Azkar Titles'**
+  String get showcaseTourFavoritesTitles;
+
+  /// No description provided for @showcaseTourFavoritesTitlesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Save your favorite azkar titles for quick access. You can add any zikr to favorites using the star icon next to each title in the azkar list'**
+  String get showcaseTourFavoritesTitlesDesc;
+
+  /// No description provided for @showcaseTourFavoritesZikr.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites - Zikr Content'**
+  String get showcaseTourFavoritesZikr;
+
+  /// No description provided for @showcaseTourFavoritesZikrDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Review individual zikr content you\'ve bookmarked. This tab contains the content you saved while reading azkar, allowing you to return to it directly'**
+  String get showcaseTourFavoritesZikrDesc;
+
+  /// No description provided for @showcaseTourTallyFabTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasbeeh Counter'**
+  String get showcaseTourTallyFabTitle;
+
+  /// No description provided for @showcaseTourTallyFabDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Glorify Allah at the touch of a button! The digital tasbeeh lets you track Subhan Allah, Alhamdulillah, Allahu Akbar, and La ilaha illallah. Create multiple counters, set cycle counts, and share your daily dhikr achievements'**
+  String get showcaseTourTallyFabDesc;
+
+  /// No description provided for @showcaseTourDrawerTallyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasbeeh Counter'**
+  String get showcaseTourDrawerTallyTitle;
+
+  /// No description provided for @showcaseTourDrawerTallyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the digital tasbeeh from the side menu to glorify Allah easily with daily and weekly dhikr tracking'**
+  String get showcaseTourDrawerTallyDesc;
+
+  /// No description provided for @showcaseTourDrawerQuranTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Holy Quran'**
+  String get showcaseTourDrawerQuranTitle;
+
+  /// No description provided for @showcaseTourDrawerQuranDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Read the complete Holy Quran in Uthmani script with audio from famous reciters, tafsir, and translation'**
+  String get showcaseTourDrawerQuranDesc;
+
+  /// No description provided for @showcaseTourDrawerFakeHadithTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak & Fabricated Hadiths'**
+  String get showcaseTourDrawerFakeHadithTitle;
+
+  /// No description provided for @showcaseTourDrawerFakeHadithDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn about weak and fabricated hadiths circulating among people. This section helps you distinguish authentic hadiths from weak ones to protect your faith'**
+  String get showcaseTourDrawerFakeHadithDesc;
+
+  /// No description provided for @showcaseTourDrawerSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get showcaseTourDrawerSettingsTitle;
+
+  /// No description provided for @showcaseTourDrawerSettingsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Full app settings: customize azkar (sources, rulings), adjust fonts, themes and colors, manage alarms and reminders, backup and restore data, and multi-language support'**
+  String get showcaseTourDrawerSettingsDesc;
+
+  /// No description provided for @showcaseTourDrawerMoreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get showcaseTourDrawerMoreTitle;
+
+  /// No description provided for @showcaseTourDrawerMoreDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact the developer, discover other apps, and learn more about Elmoslem Pro and the development team'**
+  String get showcaseTourDrawerMoreDesc;
+
+  /// No description provided for @restartShowcaseTour.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart Showcase Tour'**
+  String get restartShowcaseTour;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

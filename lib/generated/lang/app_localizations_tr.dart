@@ -1108,4 +1108,114 @@ class STr extends S {
 
   @override
   String get countdownRemaining => 'Kalan';
+
+  @override
+  String get showcaseTourNext => 'İleri';
+
+  @override
+  String get showcaseTourSkip => 'Turu Geç';
+
+  @override
+  String get showcaseTourDone => 'Tamam';
+
+  @override
+  String get showcaseTourWelcomeTitle => 'Hisnü\'l Müslim\'e Hoş Geldiniz';
+
+  @override
+  String get showcaseTourWelcomeDesc =>
+      'Uygulamanın ana özelliklerini tanıtmak için size hızlı bir tur düzenleyelim';
+
+  @override
+  String get showcaseTourAzkar => 'Zikirler';
+
+  @override
+  String get showcaseTourAzkarDesc =>
+      'Hisnü\'l-Müslim\'den tüm günlük zikirleri okuyabilir, dinleyebilir ve tesbih yapabilirsiniz';
+
+  @override
+  String get showcaseTourQuran => 'Kuran-ı Kerim';
+
+  @override
+  String get showcaseTourQuranDesc =>
+      'Kuran-ı Kerim\'i Osman hatlıyla okuyun, tefsir ve mealiyle birlikte ünlü okuyuculardan dinleyin';
+
+  @override
+  String get showcaseTourPrayer => 'Namaz Vakitleri ve Ezan';
+
+  @override
+  String get showcaseTourPrayerDesc =>
+      'Doğru namaz vakitlerini görüntüleyin, ünlü müezzinlerden ezan dinleyin ve vakit ayarlarını yapın';
+
+  @override
+  String get showcaseTourSettings => 'Ayarlar';
+
+  @override
+  String get showcaseTourSettingsDesc =>
+      'Buradan uygulamayı özelleştirmek için ayarlara erişebilirsiniz: temalar, yazı tipleri, bildirimler ve daha fazlası';
+
+  @override
+  String get showcaseTourSearchTitle => 'Arama';
+
+  @override
+  String get showcaseTourSearchDesc =>
+      'Uygulamanın tüm içeriğinde arama yapın: zikirler ve başlıkları, Kuran-ı Kerim ve ayetler, hadisler. Anahtar kelime aramasıyla ihtiyacınız olanı hızlıca bulun';
+
+  @override
+  String get showcaseTourFavoritesTitles => 'Favoriler - Zikir Başlıkları';
+
+  @override
+  String get showcaseTourFavoritesTitlesDesc =>
+      'Hızlı erişim için favori zikir başlıklarınızı kaydedin. Zikir listesindeki her başlığın yanındaki yıldız simgesiyle herhangi bir zikri favorilere ekleyebilirsiniz';
+
+  @override
+  String get showcaseTourFavoritesZikr => 'Favoriler - Zikir İçeriği';
+
+  @override
+  String get showcaseTourFavoritesZikrDesc =>
+      'Kaydettiğiniz bireysel zikir içeriğini gözden geçirin. Bu sekme, zikir okurken kaydettiğiniz içeriği doğrudan geri dönmek için içerir';
+
+  @override
+  String get showcaseTourTallyFabTitle => 'Tesbih';
+
+  @override
+  String get showcaseTourTallyFabDesc =>
+      'Bir düğmeye dokunarak Allah\'ı tesbih edin! Dijital tesbih ile Subhanallah, Elhamdülillah, Allahu Ekber ve La ilahe illallah\'ı takip edin. Birden çok sayaç oluşturun, devir sayısı belirleyin ve günlük zikir başarılarınızı paylaşın';
+
+  @override
+  String get showcaseTourDrawerTallyTitle => 'Tesbih';
+
+  @override
+  String get showcaseTourDrawerTallyDesc =>
+      'Yan menüden dijital tesbihi açarak günlük ve haftalık zikir takibiyle kolayca Allah\'ı tesbih edin';
+
+  @override
+  String get showcaseTourDrawerQuranTitle => 'Kuran-ı Kerim';
+
+  @override
+  String get showcaseTourDrawerQuranDesc =>
+      'Kuran-ı Kerim\'in tamamını Osman hatlıyla okuyun, ünlü okuyuculardan dinleyin, tefsir ve tercüme ile birlikte';
+
+  @override
+  String get showcaseTourDrawerFakeHadithTitle => 'Zayıf ve Uydurma Hadisler';
+
+  @override
+  String get showcaseTourDrawerFakeHadithDesc =>
+      'İnsanlar arasında dolaşan zayıf ve uydurma hadisleri öğrenin. Bu bölüm, sahih hadisleri zayıf olanlardan ayırt etmenize yardımcı olarak dininizi korur';
+
+  @override
+  String get showcaseTourDrawerSettingsTitle => 'Ayarlar';
+
+  @override
+  String get showcaseTourDrawerSettingsDesc =>
+      'Uygulamanın tüm ayarları: zikirleri özelleştirin (kaynaklar, hükümler), yazı tiplerini, temaları ve renkleri ayarlayın, alarmları ve hatırlatıcıları yönetin, verileri yedekleyin ve geri yükleyin, çoklu dil desteği';
+
+  @override
+  String get showcaseTourDrawerMoreTitle => 'Daha Fazla';
+
+  @override
+  String get showcaseTourDrawerMoreDesc =>
+      'Geliştiriciyle iletişime geçin, diğer uygulamaları keşfedin ve Elmoslem Pro ile geliştirme ekibi hakkında daha fazla bilgi edinin';
+
+  @override
+  String get restartShowcaseTour => 'Tanıtım Turunu Yeniden Başlat';
 }
