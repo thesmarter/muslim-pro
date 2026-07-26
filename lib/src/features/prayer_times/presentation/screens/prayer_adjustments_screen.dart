@@ -72,121 +72,126 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
           title: Text(S.of(context).repeatAdhan),
           subtitle: Text(S.of(context).repeatAdhanDesc),
           value: state.settings.repeatAdhan,
-          onChanged: (value) {
+          onChanged: state.settings.playAdhanSound ? (value) {
             final newSettings = state.settings.copyWith(repeatAdhan: value);
             context.read<PrayerTimesBloc>().add(UpdatePrayerSettings(newSettings));
-          },
+          } : null,
         ),
       ],
     );
   }
 
   Widget _buildVolumeSlider(BuildContext context, PrayerTimesState state) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Row(
-        children: [
-          const Icon(Icons.volume_down),
-          Expanded(
-            child: Slider(
-              value: state.settings.adhanVolume,
-              onChanged: (value) {
-                // Update local service volume
-                AdhanAudioService().setVolume(value);
-                // Update settings in state
-                final newSettings = state.settings.copyWith(adhanVolume: value);
-                context.read<PrayerTimesBloc>().add(UpdatePrayerSettings(newSettings));
-              },
+    return Opacity(
+      opacity: state.settings.playAdhanSound ? 1.0 : 0.5,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Row(
+          children: [
+            const Icon(Icons.volume_down),
+            Expanded(
+              child: Slider(
+                value: state.settings.adhanVolume,
+                onChanged: state.settings.playAdhanSound ? (value) {
+                  AdhanAudioService().setVolume(value);
+                  final newSettings = state.settings.copyWith(adhanVolume: value);
+                  context.read<PrayerTimesBloc>().add(UpdatePrayerSettings(newSettings));
+                } : null,
+              ),
             ),
-          ),
-          const Icon(Icons.volume_up),
-        ],
+            const Icon(Icons.volume_up),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildMuadhinSelection(BuildContext context, PrayerTimesState state) {
     final adhanService = AdhanAudioService();
+    final soundEnabled = state.settings.playAdhanSound;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text(S.of(context).chooseMuadhin, style: Theme.of(context).textTheme.bodyMedium),
-        ),
-        ...adhanService.muadhins.entries.map((e) {
-          return StreamBuilder<String?>(
-            stream: adhanService.currentMuadhinStream,
-            builder: (context, muadhinSnapshot) {
-              final playingMuadhinId = muadhinSnapshot.data;
-              final isThisMuadhinPlaying = playingMuadhinId == e.key;
-              
-              return StreamBuilder<bool>(
-                stream: adhanService.isPlayingStream,
-                builder: (context, playingSnapshot) {
-                  final isPlaying = playingSnapshot.data ?? false;
-                  final showTimer = isPlaying && isThisMuadhinPlaying;
+    return Opacity(
+      opacity: soundEnabled ? 1.0 : 0.5,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Text(S.of(context).chooseMuadhin, style: Theme.of(context).textTheme.bodyMedium),
+          ),
+          ...adhanService.muadhins.entries.map((e) {
+            return StreamBuilder<String?>(
+              stream: adhanService.currentMuadhinStream,
+              builder: (context, muadhinSnapshot) {
+                final playingMuadhinId = muadhinSnapshot.data;
+                final isThisMuadhinPlaying = playingMuadhinId == e.key;
+                
+                return StreamBuilder<bool>(
+                  stream: adhanService.isPlayingStream,
+                  builder: (context, playingSnapshot) {
+                    final isPlaying = playingSnapshot.data ?? false;
+                    final showTimer = isPlaying && isThisMuadhinPlaying;
 
-                  return ListTile(
-                    title: Text(S.of(context).getValue(e.key)),
-                    leading: Radio<String>(
-                      value: e.key,
-                      toggleable: true,
-                      onChanged: (value) {
-                        if (value != null) {
-                          final newSettings = state.settings.copyWith(muadhin: value);
-                          context.read<PrayerTimesBloc>().add(UpdatePrayerSettings(newSettings));
-                        }
-                      },
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (showTimer) ...[
-                          StreamBuilder<Duration>(
-                            stream: adhanService.positionStream,
-                            builder: (context, posSnapshot) {
-                              final position = posSnapshot.data ?? Duration.zero;
-                              return StreamBuilder<Duration?>(
-                                stream: adhanService.durationStream,
-                                builder: (context, durSnapshot) {
-                                  final duration = durSnapshot.data ?? Duration.zero;
-                                  final progress = duration.inMilliseconds > 0 
-                                      ? position.inMilliseconds / duration.inMilliseconds 
-                                      : 0.0;
-                                  return SizedBox(
-                                    width: 32,
-                                    height: 32,
-                                    child: CircularProgressIndicator(
-                                      value: progress,
-                                      strokeWidth: 2,
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                          const SizedBox(width: 8),
-                          IconButton(
-                            icon: const Icon(Icons.stop_circle_outlined, color: Colors.red),
-                            onPressed: () => adhanService.stopAdhan(),
-                          ),
-                        ] else ...[
-                          IconButton(
-                            icon: const Icon(Icons.play_circle_outline),
-                            onPressed: () => adhanService.previewAdhan(e.key),
-                          ),
+                    return ListTile(
+                      title: Text(S.of(context).getValue(e.key)),
+                      leading: Radio<String>(
+                        value: e.key,
+                        toggleable: true,
+                        onChanged: soundEnabled ? (value) {
+                          if (value != null) {
+                            final newSettings = state.settings.copyWith(muadhin: value);
+                            context.read<PrayerTimesBloc>().add(UpdatePrayerSettings(newSettings));
+                          }
+                        } : null,
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (showTimer) ...[
+                            StreamBuilder<Duration>(
+                              stream: adhanService.positionStream,
+                              builder: (context, posSnapshot) {
+                                final position = posSnapshot.data ?? Duration.zero;
+                                return StreamBuilder<Duration?>(
+                                  stream: adhanService.durationStream,
+                                  builder: (context, durSnapshot) {
+                                    final duration = durSnapshot.data ?? Duration.zero;
+                                    final progress = duration.inMilliseconds > 0 
+                                        ? position.inMilliseconds / duration.inMilliseconds 
+                                        : 0.0;
+                                    return SizedBox(
+                                      width: 32,
+                                      height: 32,
+                                      child: CircularProgressIndicator(
+                                        value: progress,
+                                        strokeWidth: 2,
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                            const SizedBox(width: 8),
+                            IconButton(
+                              icon: const Icon(Icons.stop_circle_outlined, color: Colors.red),
+                              onPressed: () => adhanService.stopAdhan(),
+                            ),
+                          ] else ...[
+                            IconButton(
+                              icon: const Icon(Icons.play_circle_outline),
+                              onPressed: soundEnabled ? () => adhanService.previewAdhan(e.key) : null,
+                            ),
+                          ],
                         ],
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-          );
-        }),
-      ],
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          }),
+        ],
+      ),
     );
   }
 
@@ -196,7 +201,7 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
       child: ElevatedButton.icon(
         icon: const Icon(Icons.playlist_play),
         label: Text(S.of(context).testFullAdhan),
-        onPressed: () async {
+        onPressed: state.settings.playAdhanSound ? () async {
           final adhanService = AdhanAudioService();
           final muadhinId = state.settings.muadhin;
 
@@ -228,7 +233,8 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
               ),
             );
           }
-        },
+        }
+        : null,
       ),
     );
   }

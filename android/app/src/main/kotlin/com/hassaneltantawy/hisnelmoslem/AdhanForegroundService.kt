@@ -22,6 +22,7 @@ class AdhanForegroundService : Service() {
         const val EXTRA_MUADHIN = "extra_muadhin"
         const val EXTRA_PRAYER_NAME = "extra_prayer_name"
         const val EXTRA_VOLUME = "extra_volume"
+        const val EXTRA_PLAY_SOUND = "extra_play_sound"
 
         private var mediaPlayer: MediaPlayer? = null
         private var wakeLock: PowerManager.WakeLock? = null
@@ -60,10 +61,13 @@ class AdhanForegroundService : Service() {
                 val muadhin = intent?.getStringExtra(EXTRA_MUADHIN) ?: "wadie_alyamani"
                 val prayerName = intent?.getStringExtra(EXTRA_PRAYER_NAME) ?: ""
                 val volume = intent?.getFloatExtra(EXTRA_VOLUME, 0.5f) ?: 0.5f
+                val playSound = intent?.getBooleanExtra(EXTRA_PLAY_SOUND, true) ?: true
 
                 val notification = buildNotification(prayerName)
                 startForeground(NOTIFICATION_ID, notification)
-                playAdhan(muadhin, volume)
+                if (playSound) {
+                    playAdhan(muadhin, volume)
+                }
             }
         }
         return START_NOT_STICKY

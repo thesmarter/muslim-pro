@@ -23,6 +23,7 @@ class AdhanScheduler(private val context: Context) {
         timestamp: Long,
         volume: Float,
         id: Int,
+        playSound: Boolean = true,
     ) {
         scope.launch {
             val json = prefs.getString("schedules", "[]") ?: "[]"
@@ -40,11 +41,12 @@ class AdhanScheduler(private val context: Context) {
                 put("timestamp", timestamp)
                 put("volume", volume.toDouble())
                 put("id", id)
+                put("playSound", playSound)
             }
             newArr.put(obj)
             prefs.edit().putString("schedules", newArr.toString()).apply()
 
-            scheduleAlarm(muadhin, prayerName, timestamp, volume, id)
+            scheduleAlarm(muadhin, prayerName, timestamp, volume, id, playSound)
         }
     }
 
@@ -94,11 +96,13 @@ class AdhanScheduler(private val context: Context) {
         timestamp: Long,
         volume: Float,
         id: Int,
+        playSound: Boolean = true,
     ) {
         val alarmIntent = Intent(context, AdhanAlarmReceiver::class.java).apply {
             putExtra(AdhanForegroundService.EXTRA_MUADHIN, muadhin)
             putExtra(AdhanForegroundService.EXTRA_PRAYER_NAME, prayerName)
             putExtra(AdhanForegroundService.EXTRA_VOLUME, volume)
+            putExtra(AdhanForegroundService.EXTRA_PLAY_SOUND, playSound)
         }
         val pending = PendingIntent.getBroadcast(
             context, id, alarmIntent,
