@@ -98,8 +98,18 @@ class AppState extends State<App> {
             builder: (context, child) {
               return BlocBuilder<UpdateCubit, UpdateState>(
                 builder: (context, updateState) {
-                  if (updateState is UpdateRequired) {
-                    return ForceUpdateScreen(updateInfo: updateState.updateInfo);
+                  if (updateState is ForceUpdateRequired) {
+                    return ForceUpdateScreen(
+                      updateInfo: updateState.updateInfo,
+                      canDismiss: false,
+                    );
+                  }
+
+                  if (updateState is OptionalUpdateAvailable) {
+                    return ForceUpdateScreen(
+                      updateInfo: updateState.updateInfo,
+                      canDismiss: true,
+                    );
                   }
 
                   if (PlatformExtension.isDesktop) {

@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/features/update/data/models/update_info_model.dart';
 import 'package:muslim/src/features/update/data/repository/update_repo.dart';
+import 'package:muslim/src/features/update/presentation/controller/update_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ForceUpdateScreen extends StatelessWidget {
   final UpdateInfo updateInfo;
+  final bool canDismiss;
 
-  const ForceUpdateScreen({super.key, required this.updateInfo});
+  const ForceUpdateScreen({
+    super.key,
+    required this.updateInfo,
+    this.canDismiss = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     
     return PopScope(
-      canPop: false, // Prevent back button
+      canPop: canDismiss,
       child: Scaffold(
         body: Container(
           width: double.infinity,
@@ -84,7 +91,6 @@ class ForceUpdateScreen extends StatelessWidget {
                 height: 55,
                 child: ElevatedButton(
                   onPressed: () async {
-                    // Log that user clicked update
                     sl<UpdateRepo>().logUpdateAction('updated');
                     
                     final url = Uri.parse(updateInfo.updateUrl);
@@ -109,6 +115,21 @@ class ForceUpdateScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              if (canDismiss) ...[
+                const SizedBox(height: 16),
+                TextButton(
+                  onPressed: () {
+                    context.read<UpdateCubit>().dismissUpdate();
+                  },
+                  child: Text(
+                    S.of(context).later,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white.withValues(alpha: 0.8),
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
         ),

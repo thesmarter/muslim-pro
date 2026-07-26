@@ -7,9 +7,13 @@ abstract class UpdateState {}
 class UpdateInitial extends UpdateState {}
 class UpdateLoading extends UpdateState {}
 class UpdateNoNeeded extends UpdateState {}
-class UpdateRequired extends UpdateState {
+class ForceUpdateRequired extends UpdateState {
   final UpdateInfo updateInfo;
-  UpdateRequired(this.updateInfo);
+  ForceUpdateRequired(this.updateInfo);
+}
+class OptionalUpdateAvailable extends UpdateState {
+  final UpdateInfo updateInfo;
+  OptionalUpdateAvailable(this.updateInfo);
 }
 
 class UpdateCubit extends Cubit<UpdateState> {
@@ -23,15 +27,23 @@ class UpdateCubit extends Cubit<UpdateState> {
     final updateInfo = await _repo.fetchUpdateInfo();
     
     if (updateInfo != null) {
-      // ⚠️ رقم الإصدار الحالي للتطبيق - يتم تغييره يدوياً قبل أي تحديث
-      const int currentAppVersion = 1; 
+      //todo: ⚠️ رقم الإصدار الحالي للتطبيق - يتم تغييره يدوياً قبل أي تحديث
+      const int currentAppVersion = 2; 
       
       if (_isUpdateRequired(currentAppVersion, updateInfo.latestVersion)) {
-        emit(UpdateRequired(updateInfo));
+        if (updateInfo.forceUpdate) {
+          emit(ForceUpdateRequired(updateInfo));
+        } else {
+          emit(OptionalUpdateAvailable(updateInfo));
+        }
         return;
       }
     }
     
+    emit(UpdateNoNeeded());
+  }
+
+  void dismissUpdate() {
     emit(UpdateNoNeeded());
   }
 
