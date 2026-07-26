@@ -2433,6 +2433,78 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Fixing Adhan issues and text rendering.\nAdded French, Turkish, and English to display and Azkar.'**
   String get onboardingUpdateDesc;
+
+  /// No description provided for @calcMethod_muslim_world_league.
+  ///
+  /// In en, this message translates to:
+  /// **'Muslim World League'**
+  String get calcMethod_muslim_world_league;
+
+  /// No description provided for @calcMethod_egyptian.
+  ///
+  /// In en, this message translates to:
+  /// **'Egyptian General Authority of Survey'**
+  String get calcMethod_egyptian;
+
+  /// No description provided for @calcMethod_karachi.
+  ///
+  /// In en, this message translates to:
+  /// **'University of Islamic Sciences, Karachi'**
+  String get calcMethod_karachi;
+
+  /// No description provided for @calcMethod_umm_al_qura.
+  ///
+  /// In en, this message translates to:
+  /// **'Umm al-Qura University, Makkah'**
+  String get calcMethod_umm_al_qura;
+
+  /// No description provided for @calcMethod_dubai.
+  ///
+  /// In en, this message translates to:
+  /// **'Dubai'**
+  String get calcMethod_dubai;
+
+  /// No description provided for @calcMethod_moon_sighting_committee.
+  ///
+  /// In en, this message translates to:
+  /// **'Moon Sighting Committee'**
+  String get calcMethod_moon_sighting_committee;
+
+  /// No description provided for @calcMethod_north_america.
+  ///
+  /// In en, this message translates to:
+  /// **'ISNA'**
+  String get calcMethod_north_america;
+
+  /// No description provided for @calcMethod_kuwait.
+  ///
+  /// In en, this message translates to:
+  /// **'Kuwait'**
+  String get calcMethod_kuwait;
+
+  /// No description provided for @calcMethod_qatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Qatar'**
+  String get calcMethod_qatar;
+
+  /// No description provided for @calcMethod_singapore.
+  ///
+  /// In en, this message translates to:
+  /// **'Singapore'**
+  String get calcMethod_singapore;
+
+  /// No description provided for @calcMethod_tehran.
+  ///
+  /// In en, this message translates to:
+  /// **'Institute of Geophysics, University of Tehran'**
+  String get calcMethod_tehran;
+
+  /// No description provided for @calcMethod_turkey.
+  ///
+  /// In en, this message translates to:
+  /// **'Turkey'**
+  String get calcMethod_turkey;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

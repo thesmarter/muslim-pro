@@ -1250,4 +1250,40 @@ class SFr extends S {
   @override
   String get onboardingUpdateDesc =>
       'Correction des problèmes d\'Adhan et d\'affichage du texte.\nAjout du français, du turc et de l\'anglais dans l\'affichage et les Azkar.';
+
+  @override
+  String get calcMethod_muslim_world_league => 'Ligue Islamique Mondiale';
+
+  @override
+  String get calcMethod_egyptian => 'Autorité Générale Égyptienne de la Survey';
+
+  @override
+  String get calcMethod_karachi => 'Université des Sciences Islamiques, Karachi';
+
+  @override
+  String get calcMethod_umm_al_qura => 'Université Umm al-Qura, La Mecque';
+
+  @override
+  String get calcMethod_dubai => 'Dubaï';
+
+  @override
+  String get calcMethod_moon_sighting_committee => 'Comité d\'observation de la lune';
+
+  @override
+  String get calcMethod_north_america => 'ISNA';
+
+  @override
+  String get calcMethod_kuwait => 'Koweït';
+
+  @override
+  String get calcMethod_qatar => 'Qatar';
+
+  @override
+  String get calcMethod_singapore => 'Singapour';
+
+  @override
+  String get calcMethod_tehran => 'Institut de Géophysique, Université de Téhéran';
+
+  @override
+  String get calcMethod_turkey => 'Turquie';
 }

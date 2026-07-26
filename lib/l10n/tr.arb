@@ -388,5 +388,17 @@
   "newVersion": "Yeni Sürüm: {version}",
   "updateNow": "Şimdi Güncelle",
   "onboardingUpdateTitle": "Uygulama Güncellemesi",
-  "onboardingUpdateDesc": "Ezan sorunları ve metin oluşturma düzeltildi.\nEkran ve Zikirlere Fransızca, Türkçe ve İngilizce dilleri eklendi."
+  "onboardingUpdateDesc": "Ezan sorunları ve metin oluşturma düzeltildi.\nEkran ve Zikirlere Fransızca, Türkçe ve İngilizce dilleri eklendi.",
+  "calcMethod_muslim_world_league": "Dünya Müslüman Birliği",
+  "calcMethod_egyptian": "Mısır Genel Ölçüm Otoritesi",
+  "calcMethod_karachi": "İslami Bilimler Üniversitesi, Karaçi",
+  "calcMethod_umm_al_qura": "Umm el-Kura Üniversitesi, Mekke",
+  "calcMethod_dubai": "Dubai",
+  "calcMethod_moon_sighting_committee": "Hilal Gözleme Komitesi",
+  "calcMethod_north_america": "Kuzey Amerika İslam Birliği (ISNA)",
+  "calcMethod_kuwait": "Kuveyt",
+  "calcMethod_qatar": "Katar",
+  "calcMethod_singapore": "Singapur",
+  "calcMethod_tehran": "Jeofizik Enstitüsü, Tahran Üniversitesi",
+  "calcMethod_turkey": "Türkiye"
 }

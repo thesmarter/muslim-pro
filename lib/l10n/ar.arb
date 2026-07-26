@@ -391,5 +391,17 @@
   "newVersion": "الإصدار الجديد: {version}",
   "updateNow": "تحديث الآن",
   "onboardingUpdateTitle": "تحديث التطبيق",
-  "onboardingUpdateDesc": "إصلاح مشاكل الأذان وعرض النصوص.\nتمت إضافة اللغات الفرنسية والتركية والإنجليزية في العرض والأذكار."
+  "onboardingUpdateDesc": "إصلاح مشاكل الأذان وعرض النصوص.\nتمت إضافة اللغات الفرنسية والتركية والإنجليزية في العرض والأذكار.",
+  "calcMethod_muslim_world_league": "الرابطة الإسلامية العالمية",
+  "calcMethod_egyptian": "الهيئة المصرية العامة للمساحة",
+  "calcMethod_karachi": "جامعة العلوم الإسلامية، كراتشي",
+  "calcMethod_umm_al_qura": "جامعة أم القرى، مكة المكرمة",
+  "calcMethod_dubai": "دبي",
+  "calcMethod_moon_sighting_committee": "لجنة رؤية الهلال",
+  "calcMethod_north_america": "الجمعية الإسلامية لأمريكا الشمالية (ISNA)",
+  "calcMethod_kuwait": "الكويت",
+  "calcMethod_qatar": "قطر",
+  "calcMethod_singapore": "سنغافورة",
+  "calcMethod_tehran": "معهد الجيوفيزياء، جامعة طهران",
+  "calcMethod_turkey": "تركيا"
 }

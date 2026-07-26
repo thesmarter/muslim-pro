@@ -1242,4 +1242,40 @@ class STr extends S {
   @override
   String get onboardingUpdateDesc =>
       'Ezan sorunları ve metin oluşturma düzeltildi.\nEkran ve Zikirlere Fransızca, Türkçe ve İngilizce dilleri eklendi.';
+
+  @override
+  String get calcMethod_muslim_world_league => 'Dünya Müslüman Birliği';
+
+  @override
+  String get calcMethod_egyptian => 'Mısır Genel Ölçüm Otoritesi';
+
+  @override
+  String get calcMethod_karachi => 'İslami Bilimler Üniversitesi, Karaçi';
+
+  @override
+  String get calcMethod_umm_al_qura => 'Umm el-Kura Üniversitesi, Mekke';
+
+  @override
+  String get calcMethod_dubai => 'Dubai';
+
+  @override
+  String get calcMethod_moon_sighting_committee => 'Hilal Gözleme Komitesi';
+
+  @override
+  String get calcMethod_north_america => 'Kuzey Amerika İslam Birliği (ISNA)';
+
+  @override
+  String get calcMethod_kuwait => 'Kuveyt';
+
+  @override
+  String get calcMethod_qatar => 'Katar';
+
+  @override
+  String get calcMethod_singapore => 'Singapur';
+
+  @override
+  String get calcMethod_tehran => 'Jeofizik Enstitüsü, Tahran Üniversitesi';
+
+  @override
+  String get calcMethod_turkey => 'Türkiye';
 }

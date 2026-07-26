@@ -1239,4 +1239,40 @@ class SAr extends S {
   @override
   String get onboardingUpdateDesc =>
       'إصلاح مشاكل الأذان وعرض النصوص.\nتمت إضافة اللغات الفرنسية والتركية والإنجليزية في العرض والأذكار.';
+
+  @override
+  String get calcMethod_muslim_world_league => 'الرابطة الإسلامية العالمية';
+
+  @override
+  String get calcMethod_egyptian => 'الهيئة المصرية العامة للمساحة';
+
+  @override
+  String get calcMethod_karachi => 'جامعة العلوم الإسلامية، كراتشي';
+
+  @override
+  String get calcMethod_umm_al_qura => 'جامعة أم القرى، مكة المكرمة';
+
+  @override
+  String get calcMethod_dubai => 'دبي';
+
+  @override
+  String get calcMethod_moon_sighting_committee => 'لجنة رؤية الهلال';
+
+  @override
+  String get calcMethod_north_america => 'الجمعية الإسلامية لأمريكا الشمالية (ISNA)';
+
+  @override
+  String get calcMethod_kuwait => 'الكويت';
+
+  @override
+  String get calcMethod_qatar => 'قطر';
+
+  @override
+  String get calcMethod_singapore => 'سنغافورة';
+
+  @override
+  String get calcMethod_tehran => 'معهد الجيوفيزياء، جامعة طهران';
+
+  @override
+  String get calcMethod_turkey => 'تركيا';
 }

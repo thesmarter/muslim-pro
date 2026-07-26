@@ -387,5 +387,17 @@
   "newVersion": "Nouvelle version : {version}",
   "updateNow": "Mettre à jour maintenant",
   "onboardingUpdateTitle": "Mise à jour de l'application",
-  "onboardingUpdateDesc": "Correction des problèmes d'Adhan et d'affichage du texte.\nAjout du français, du turc et de l'anglais dans l'affichage et les Azkar."
+  "onboardingUpdateDesc": "Correction des problèmes d'Adhan et d'affichage du texte.\nAjout du français, du turc et de l'anglais dans l'affichage et les Azkar.",
+  "calcMethod_muslim_world_league": "Ligue Islamique Mondiale",
+  "calcMethod_egyptian": "Autorité Générale Égyptienne de la Survey",
+  "calcMethod_karachi": "Université des Sciences Islamiques, Karachi",
+  "calcMethod_umm_al_qura": "Université Umm al-Qura, La Mecque",
+  "calcMethod_dubai": "Dubaï",
+  "calcMethod_moon_sighting_committee": "Comité d'observation de la lune",
+  "calcMethod_north_america": "ISNA",
+  "calcMethod_kuwait": "Koweït",
+  "calcMethod_qatar": "Qatar",
+  "calcMethod_singapore": "Singapour",
+  "calcMethod_tehran": "Institut de Géophysique, Université de Téhéran",
+  "calcMethod_turkey": "Turquie"
 }
