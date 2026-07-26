@@ -1241,4 +1241,40 @@ class SEn extends S {
   @override
   String get onboardingUpdateDesc =>
       'Fixing Adhan issues and text rendering.\nAdded French, Turkish, and English to display and Azkar.';
+
+  @override
+  String get calcMethod_muslim_world_league => 'Muslim World League';
+
+  @override
+  String get calcMethod_egyptian => 'Egyptian General Authority of Survey';
+
+  @override
+  String get calcMethod_karachi => 'University of Islamic Sciences, Karachi';
+
+  @override
+  String get calcMethod_umm_al_qura => 'Umm al-Qura University, Makkah';
+
+  @override
+  String get calcMethod_dubai => 'Dubai';
+
+  @override
+  String get calcMethod_moon_sighting_committee => 'Moon Sighting Committee';
+
+  @override
+  String get calcMethod_north_america => 'ISNA';
+
+  @override
+  String get calcMethod_kuwait => 'Kuwait';
+
+  @override
+  String get calcMethod_qatar => 'Qatar';
+
+  @override
+  String get calcMethod_singapore => 'Singapore';
+
+  @override
+  String get calcMethod_tehran => 'Institute of Geophysics, University of Tehran';
+
+  @override
+  String get calcMethod_turkey => 'Turkey';
 }

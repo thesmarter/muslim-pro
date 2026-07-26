@@ -266,19 +266,20 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
   }
 
   Widget _buildCalculationMethodDropdown(BuildContext context, PrayerTimesState state) {
-    final methods = {
-      'muslim_world_league': 'Muslim World League',
-      'egyptian': 'Egyptian General Authority of Survey',
-      'karachi': 'University of Islamic Sciences, Karachi',
-      'umm_al_qura': 'Umm al-Qura University, Makkah',
-      'dubai': 'Dubai',
-      'moon_sighting_committee': 'Moon Sighting Committee',
-      'north_america': 'ISNA',
-      'kuwait': 'Kuwait',
-      'qatar': 'Qatar',
-      'singapore': 'Singapore',
-      'tehran': 'Institute of Geophysics, University of Tehran',
-      'turkey': 'Turkey',
+    final s = S.of(context);
+    final methods = <String, String>{
+      'muslim_world_league': s.calcMethod_muslim_world_league,
+      'egyptian': s.calcMethod_egyptian,
+      'karachi': s.calcMethod_karachi,
+      'umm_al_qura': s.calcMethod_umm_al_qura,
+      'dubai': s.calcMethod_dubai,
+      'moon_sighting_committee': s.calcMethod_moon_sighting_committee,
+      'north_america': s.calcMethod_north_america,
+      'kuwait': s.calcMethod_kuwait,
+      'qatar': s.calcMethod_qatar,
+      'singapore': s.calcMethod_singapore,
+      'tehran': s.calcMethod_tehran,
+      'turkey': s.calcMethod_turkey,
     };
 
     return DropdownButtonFormField<String>(
