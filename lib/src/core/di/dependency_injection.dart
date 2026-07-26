@@ -68,7 +68,7 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => TallyRepo(sl()));
   sl.registerLazySingleton(() => SearchRepo(sl()));
   sl.registerLazySingleton(() => ZikrAudioPlayerRepo(sl()));
-  sl.registerLazySingleton(() => UpdateRepo(sl()));
+  sl.registerLazySingleton(() => UpdateRepo());
   sl.registerLazySingleton(() => PrayerTimesRepo());
   sl.registerLazySingleton(() => AdhanAudioService());
   sl.registerLazySingleton(() => CountdownNotificationService());

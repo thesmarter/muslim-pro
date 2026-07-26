@@ -62,3 +62,15 @@ graph TD
     style H3 fill:#4CAF50,stroke:#fff,color:#fff
     style H4 fill:#4CAF50,stroke:#fff,color:#fff
 ```
+
+
+# Development (لن يحذف نسخة المتجر - باكدج مختلف)
+flutter run --flavor dev --dart-define=FLAVOR=dev
+# Production
+flutter run --flavor production --dart-define=FLAVOR=production
+# Build APK dev
+flutter build apk --flavor dev --dart-define=FLAVOR=dev
+# Build APK production
+flutter build apk --flavor production --dart-define=FLAVOR=production
+# Build App Bundle (لل متجر)
+flutter build appbundle --flavor production --dart-define=FLAVOR=production
