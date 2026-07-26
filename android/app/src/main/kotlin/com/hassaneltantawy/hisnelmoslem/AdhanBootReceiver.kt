@@ -33,6 +33,7 @@ class AdhanBootReceiver : BroadcastReceiver() {
                     putExtra(AdhanForegroundService.EXTRA_MUADHIN, obj.getString("muadhin"))
                     putExtra(AdhanForegroundService.EXTRA_PRAYER_NAME, obj.getString("prayerName"))
                     putExtra(AdhanForegroundService.EXTRA_VOLUME, obj.getDouble("volume").toFloat())
+                    putExtra(AdhanForegroundService.EXTRA_PLAY_SOUND, obj.optBoolean("playSound", true))
                 }
                 val pending = PendingIntent.getBroadcast(
                     context, id, alarmIntent,

@@ -88,6 +88,7 @@ class PrayerTimesRepo {
           time: prayerTime,
           volume: settings.adhanVolume,
           id: id,
+          playSound: settings.playAdhanSound,
         );
         hisnPrint("Scheduled adhan alarm [$id] for $prayerKey on $date at $prayerTime");
       }
