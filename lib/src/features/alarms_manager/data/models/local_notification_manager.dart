@@ -322,6 +322,7 @@ class LocalNotificationManager {
     NotifyChannel channel, {
     String? title,
     String? body,
+    Color color = const Color(0xFF1B5E20),
   }) {
     final BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
       body ?? '',
@@ -339,7 +340,7 @@ class LocalNotificationManager {
       styleInformation: bigTextStyleInformation,
       icon: '@mipmap/ic_launcher',
       largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
-      color: const Color(0xFF1B5E20),
+      color: color,
     );
 
     const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
@@ -559,11 +560,75 @@ class LocalNotificationManager {
     );
   }
 
+  Future<void> schedulePreAdhanNotification({
+    required int id,
+    required String title,
+    required String body,
+    required DateTime scheduledDate,
+    required String payload,
+  }) async {
+    hisnPrint("Scheduling pre-adhan notification [$id] at $scheduledDate");
+    await _safeZonedSchedule(
+      id: id,
+      title: title,
+      body: body,
+      scheduledDate: tz.TZDateTime.from(scheduledDate, tz.local),
+      notificationDetails: _buildRegularNotificationDetails(
+        NotificationsChannels.scheduled,
+        title: title,
+        body: body,
+        color: const Color(0xFFE53935),
+      ),
+      payload: payload,
+    );
+  }
+
+  Future<void> schedulePostAdhanNotification({
+    required int id,
+    required String title,
+    required String body,
+    required DateTime scheduledDate,
+    required String payload,
+  }) async {
+    hisnPrint("Scheduling post-adhan notification [$id] at $scheduledDate");
+    await _safeZonedSchedule(
+      id: id,
+      title: title,
+      body: body,
+      scheduledDate: tz.TZDateTime.from(scheduledDate, tz.local),
+      notificationDetails: _buildRegularNotificationDetails(
+        NotificationsChannels.scheduled,
+        title: title,
+        body: body,
+        color: const Color(0xFFE53935),
+      ),
+      payload: payload,
+    );
+  }
+
+  Future<void> cancelScheduledNotificationById({required int id}) async {
+    await flutterLocalNotificationsPlugin.cancel(id: id);
+  }
+
+  Future<void> cancelPreAdhanScheduledNotifications() async {
+    for (int i = 7000; i <= 7300; i++) {
+      await flutterLocalNotificationsPlugin.cancel(id: i);
+    }
+  }
+
+  Future<void> cancelPostAdhanScheduledNotifications() async {
+    for (int i = 8000; i <= 8300; i++) {
+      await flutterLocalNotificationsPlugin.cancel(id: i);
+    }
+  }
+
   static void onNotificationClick(String payload) {
     final context = App.navigatorKey.currentState?.context;
     if (context == null) return;
 
     if (payload.startsWith('adhan_') || payload.startsWith('test_adhan_')) {
+      context.push(const PrayerTimesScreen());
+    } else if (payload.startsWith('prayer_time_pre_adhan_') || payload.startsWith('prayer_time_post_adhan_')) {
       context.push(const PrayerTimesScreen());
     } else if (payload == "الكهف") {
       context.push(const QuranReadScreen(startPage: 293));
