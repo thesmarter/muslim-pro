@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.KeyEvent
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import androidx.core.content.ContextCompat
 
 class MainActivity : AudioServiceActivity() {
     private lateinit var volumeChannel: MethodChannel
@@ -50,6 +51,40 @@ class MainActivity : AudioServiceActivity() {
                         }
                         startService(stopIntent)
                         result.success(true)
+                    }
+                    else -> result.notImplemented()
+                }
+            }
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "countdown_service")
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "startCountdown" -> {
+                        val args = call.arguments as Map<*, *>
+                        val intent = Intent(this@MainActivity, CountdownForegroundService::class.java).apply {
+                            action = "start"
+                            putExtra(
+                                CountdownForegroundService.EXTRA_TARGET_TIME,
+                                (args["targetTimeMillis"] as Number).toLong()
+                            )
+                            putExtra(CountdownForegroundService.EXTRA_PRAYER_NAME, args["prayerName"] as? String ?: "")
+                            putExtra(CountdownForegroundService.EXTRA_TITLE, args["title"] as? String ?: "")
+                            putExtra(CountdownForegroundService.EXTRA_CITY, args["city"] as? String ?: "")
+                            putExtra(CountdownForegroundService.EXTRA_COUNTRY, args["country"] as? String ?: "")
+                            putExtra(CountdownForegroundService.EXTRA_TYPE, args["type"] as? String ?: "")
+                        }
+                        ContextCompat.startForegroundService(this@MainActivity, intent)
+                        result.success(true)
+                    }
+                    "stopCountdown" -> {
+                        val intent = Intent(this@MainActivity, CountdownForegroundService::class.java).apply {
+                            action = CountdownForegroundService.ACTION_STOP
+                        }
+                        startService(intent)
+                        result.success(true)
+                    }
+                    "isRunning" -> {
+                        result.success(false)
                     }
                     else -> result.notImplemented()
                 }

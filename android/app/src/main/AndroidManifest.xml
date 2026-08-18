@@ -55,6 +55,16 @@
             android:foregroundServiceType="mediaPlayback"
             android:exported="false" />
 
+        <!-- Countdown Foreground Service -->
+        <service
+            android:name="com.detatech.Azkar.CountdownForegroundService"
+            android:foregroundServiceType="specialUse"
+            android:exported="false">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Prayer countdown timer service that shows remaining time until adhan/iqamah" />
+        </service>
+
         <!-- Adhan Alarm Receiver -->
         <receiver
             android:name="com.detatech.Azkar.AdhanAlarmReceiver"
@@ -98,5 +108,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 </manifest>
