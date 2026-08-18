@@ -705,6 +705,19 @@ class SFr extends S {
   String get themePresets => 'Préréglages de couleurs';
 
   @override
+  String get themeMigrationTitle => 'Nouveau thème disponible!';
+
+  @override
+  String get themeMigrationDesc =>
+      'Nous avons ajouté un nouveau thème Rawh avec une palette de couleurs islamique distinctive. Voulez-vous l\'essayer?';
+
+  @override
+  String get themeMigrationTry => 'Essayer le nouveau thème';
+
+  @override
+  String get themeMigrationKeep => 'Garder l\'actuel';
+
+  @override
   String get themeOverrideBackground => 'Remplacer l\'arrière-plan';
 
   @override

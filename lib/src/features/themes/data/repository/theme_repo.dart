@@ -114,6 +114,24 @@ class ThemeRepo {
   }
 
   ///
+  static const String _themeMigrationShownKey = "themeMigrationShown";
+
+  bool getThemeMigrationShown() {
+    return box.read(_themeMigrationShownKey) as bool? ?? false;
+  }
+
+  Future setThemeMigrationShown() async {
+    await box.write(_themeMigrationShownKey, true);
+  }
+
+  bool get isExistingUser {
+    final hasColor = box.read(_themeColorKey) != null;
+    final hasPreset = box.read(_themePresetKey) != null;
+    final hasBrightness = box.read(_themeBrightnessModeKey) != null;
+    return hasColor || hasPreset || hasBrightness;
+  }
+
+  ///
   static const _appLocaleKey = 'app_locale';
   Locale? get appLocale {
     final value = box.read<String?>(_appLocaleKey);

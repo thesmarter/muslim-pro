@@ -140,3 +140,12 @@ flutter:
     - family: Rakkas
       fonts:
         - asset: assets/fonts/Rakkas-Regular.ttf
+    - family: JannaLT
+      fonts:
+        - asset: assets/fonts/JannaLTBold.ttf
+    - family: Gabriola
+      fonts:
+        - asset: assets/fonts/Gabriola.ttf
+    - family: Miqdad
+      fonts:
+        - asset: assets/fonts/MiqdadPersonalUse.otf

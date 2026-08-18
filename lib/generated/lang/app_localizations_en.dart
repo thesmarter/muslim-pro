@@ -698,6 +698,19 @@ class SEn extends S {
   String get themePresets => 'Color Presets';
 
   @override
+  String get themeMigrationTitle => 'New Theme Available!';
+
+  @override
+  String get themeMigrationDesc =>
+      'We\'ve added a new Rawh theme with a distinctive Islamic color palette. Would you like to try it?';
+
+  @override
+  String get themeMigrationTry => 'Try New Theme';
+
+  @override
+  String get themeMigrationKeep => 'Keep Current';
+
+  @override
   String get themeOverrideBackground => 'Override Background';
 
   @override

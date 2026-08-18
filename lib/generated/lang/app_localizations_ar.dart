@@ -698,6 +698,19 @@ class SAr extends S {
   String get themePresets => 'سمات الألوان';
 
   @override
+  String get themeMigrationTitle => 'ثيم جديد متاح!';
+
+  @override
+  String get themeMigrationDesc =>
+      'أضفنا ثيم Rawh الجديد بخريطة ألوان إسلامية مميزة. هل تريد تجربته؟';
+
+  @override
+  String get themeMigrationTry => 'جرّب الثيم الجديد';
+
+  @override
+  String get themeMigrationKeep => 'الاحتفاظ بال الحالي';
+
+  @override
   String get themeOverrideBackground => 'تحديد لون الخلفية';
 
   @override
