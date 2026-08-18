@@ -226,6 +226,7 @@
   "themeApperance": "Apperance",
   "themeBackgroundColor": "Background Color",
   "themeManager": "Theme Control",
+  "themePresets": "Color Presets",
   "themeOverrideBackground": "Override Background",
   "themeSelectColor": "Select Color",
   "themeUseMaterial3": "Use Material3",

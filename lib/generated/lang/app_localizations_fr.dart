@@ -702,6 +702,9 @@ class SFr extends S {
   String get themeManager => 'Contrôle du thème';
 
   @override
+  String get themePresets => 'Préréglages de couleurs';
+
+  @override
   String get themeOverrideBackground => 'Remplacer l\'arrière-plan';
 
   @override
