@@ -114,14 +114,14 @@ class ThemeRepo {
   }
 
   ///
-  static const String _themeMigrationShownKey = "themeMigrationShown";
+  static const String _themeSelectionShownKey = "themeSelectionShown";
 
-  bool getThemeMigrationShown() {
-    return box.read(_themeMigrationShownKey) as bool? ?? false;
+  bool getThemeSelectionShown() {
+    return box.read(_themeSelectionShownKey) as bool? ?? false;
   }
 
-  Future setThemeMigrationShown() async {
-    await box.write(_themeMigrationShownKey, true);
+  Future setThemeSelectionShown() async {
+    await box.write(_themeSelectionShownKey, true);
   }
 
   bool get isExistingUser {

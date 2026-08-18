@@ -21,6 +21,7 @@ import 'package:muslim/src/features/onboarding/presentation/screens/onboarding_s
 import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_bloc.dart';
 import 'package:muslim/src/features/settings/data/repository/app_settings_repo.dart';
 import 'package:muslim/src/features/settings/presentation/controller/cubit/settings_cubit.dart';
+import 'package:muslim/src/features/themes/presentation/components/theme_selection_dialog.dart';
 import 'package:muslim/src/features/themes/presentation/controller/cubit/theme_cubit.dart';
 import 'package:muslim/src/features/ui/presentation/components/desktop_window_wrapper.dart';
 import 'package:muslim/src/features/update/presentation/controller/update_cubit.dart';
@@ -55,60 +56,27 @@ class AppState extends State<App> {
         hisnPrint(e);
       }
 
-      _showMigrationDialogIfNeeded();
+      _showThemeSelectionDialogIfNeeded();
     });
   }
 
-  void _showMigrationDialogIfNeeded() {
+  void _showThemeSelectionDialogIfNeeded() {
     if (_migrationDialogShown) return;
     final themeCubit = context.read<ThemeCubit>();
-    if (themeCubit.shouldShowMigrationDialog) {
+    if (themeCubit.shouldShowThemeSelection) {
       _migrationDialogShown = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showThemeMigrationDialog(context, themeCubit);
+        _showThemeSelectionDialog(context, themeCubit);
       });
     }
   }
 
-  void _showThemeMigrationDialog(BuildContext context, ThemeCubit themeCubit) {
+  void _showThemeSelectionDialog(BuildContext context, ThemeCubit themeCubit) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) {
-        return AlertDialog(
-          icon: Icon(
-            Icons.palette,
-            color: Theme.of(context).colorScheme.primary,
-            size: 40,
-          ),
-          title: Text(
-            S.of(context).themeMigrationTitle,
-            textAlign: TextAlign.center,
-          ),
-          content: Text(
-            S.of(context).themeMigrationDesc,
-            textAlign: TextAlign.center,
-          ),
-          actionsAlignment: MainAxisAlignment.center,
-          actions: [
-            TextButton(
-              onPressed: () {
-                themeCubit.dismissMigration();
-                Navigator.of(dialogContext).pop();
-              },
-              child: Text(S.of(context).themeMigrationKeep),
-            ),
-            FilledButton(
-              onPressed: () async {
-                await themeCubit.applyRawhPresetForMigration();
-                if (dialogContext.mounted) {
-                  Navigator.of(dialogContext).pop();
-                }
-              },
-              child: Text(S.of(context).themeMigrationTry),
-            ),
-          ],
-        );
+        return const ThemeSelectionDialog();
       },
     );
   }

@@ -51,25 +51,16 @@ class ThemeCubit extends Cubit<ThemeState> {
     );
   }
 
-  bool get shouldShowMigrationDialog {
-    if (themeRepo.getThemeMigrationShown()) return false;
-    return themeRepo.isExistingUser;
+  bool get shouldShowThemeSelection {
+    return !themeRepo.getThemeSelectionShown();
   }
 
-  void markMigrationShown() {
-    themeRepo.setThemeMigrationShown();
+  void markThemeSelectionShown() {
+    themeRepo.setThemeSelectionShown();
   }
 
-  Future<void> applyRawhPresetForMigration() async {
-    final rawh = AppThemePreset.findById('rawh');
-    if (rawh != null) {
-      await changePreset(rawh);
-      markMigrationShown();
-    }
-  }
-
-  void dismissMigration() {
-    markMigrationShown();
+  void dismissThemeSelection() {
+    markThemeSelectionShown();
   }
 
   Future start() async {}
