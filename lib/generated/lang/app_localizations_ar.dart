@@ -695,6 +695,9 @@ class SAr extends S {
   String get themeManager => 'إدارة ألوان التطبيق';
 
   @override
+  String get themePresets => 'سمات الألوان';
+
+  @override
   String get themeOverrideBackground => 'تحديد لون الخلفية';
 
   @override

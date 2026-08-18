@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:muslim/src/features/themes/data/models/app_theme_preset.dart';
 import 'package:muslim/src/features/themes/data/models/theme_brightness_mode_enum.dart';
 import 'package:muslim/src/features/themes/data/repository/theme_repo.dart';
 import 'package:muslim/src/features/themes/presentation/components/app_back_button.dart';
@@ -12,31 +13,91 @@ class ThemeCubit extends Cubit<ThemeState> {
   final ThemeRepo themeRepo;
   ThemeCubit(this.themeRepo)
     : super(
-        ThemeState(
-          deviceBrightness: Brightness.dark,
-          color: themeRepo.getColor(),
-          useMaterial3: themeRepo.getUseMaterial3(),
-          useOldTheme: themeRepo.getUseOldTheme(),
-          fontFamily: themeRepo.fontFamily,
-          backgroundColor: themeRepo.getBackgroundColor(),
-          overrideBackgroundColor: themeRepo.getOverrideBackgroundColor(),
-          locale: themeRepo.appLocale,
-          themeBrightnessMode: themeRepo.getThemeBrightnessMode(),
-        ),
+        _buildInitialState(themeRepo),
       );
+
+  static ThemeState _buildInitialState(ThemeRepo themeRepo) {
+    final presetId = themeRepo.getThemePreset();
+    final preset = presetId != null ? AppThemePreset.findById(presetId) : null;
+
+    return ThemeState(
+      deviceBrightness: Brightness.light,
+      color: preset?.schemeFor(Brightness.light).primary ?? themeRepo.getColor(),
+      useMaterial3: themeRepo.getUseMaterial3(),
+      useOldTheme: themeRepo.getUseOldTheme(),
+      fontFamily: themeRepo.fontFamily,
+      backgroundColor: preset?.schemeFor(Brightness.light).surface ?? themeRepo.getBackgroundColor(),
+      overrideBackgroundColor: preset != null || themeRepo.getOverrideBackgroundColor(),
+      locale: themeRepo.appLocale,
+      themeBrightnessMode: themeRepo.getThemeBrightnessMode(),
+      themePresetId: presetId,
+      themePreset: preset,
+    );
+  }
 
   Future start() async {}
 
-  ///MARK: Theme
+  ///MARK: Theme Preset
+  Future<void> changePreset(AppThemePreset preset) async {
+    await themeRepo.setThemePreset(preset.id);
+    final scheme = preset.schemeFor(state.appBrightness);
+    await themeRepo.setColor(scheme.primary);
+    await themeRepo.setBackgroundColor(scheme.surface);
+    await themeRepo.setOverrideBackgroundColor(true);
+    emit(
+      state.copyWith(
+        themePresetId: preset.id,
+        themePreset: preset,
+        color: scheme.primary,
+        backgroundColor: scheme.surface,
+        overrideBackgroundColor: true,
+      ),
+    );
+  }
+
+  ///MARK:Theme
   Future<void> changeDeviceBrightness(Brightness brightness) async {
-    emit(state.copyWith(deviceBrightness: brightness));
+    final preset = state.themePreset;
+    if (preset != null) {
+      final scheme = preset.schemeFor(brightness);
+      emit(
+        state.copyWith(
+          deviceBrightness: brightness,
+          color: scheme.primary,
+          backgroundColor: scheme.surface,
+        ),
+      );
+    } else {
+      emit(state.copyWith(deviceBrightness: brightness));
+    }
   }
 
   Future<void> changeBrightnessMode(
     ThemeBrightnessModeEnum brightnessMode,
   ) async {
     await themeRepo.setThemeBrightnessMode(brightnessMode);
-    emit(state.copyWith(themeBrightnessMode: brightnessMode));
+    final preset = state.themePreset;
+    Brightness newBrightness;
+    switch (brightnessMode) {
+      case ThemeBrightnessModeEnum.system:
+        newBrightness = state.deviceBrightness;
+      case ThemeBrightnessModeEnum.dark:
+        newBrightness = Brightness.dark;
+      case ThemeBrightnessModeEnum.light:
+        newBrightness = Brightness.light;
+    }
+    if (preset != null) {
+      final scheme = preset.schemeFor(newBrightness);
+      emit(
+        state.copyWith(
+          themeBrightnessMode: brightnessMode,
+          color: scheme.primary,
+          backgroundColor: scheme.surface,
+        ),
+      );
+    } else {
+      emit(state.copyWith(themeBrightnessMode: brightnessMode));
+    }
   }
 
   Future<void> toggleBrightnessMode() async {
@@ -55,7 +116,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   Future<void> changeColor(Color color) async {
     await themeRepo.setColor(color);
-    emit(state.copyWith(color: color));
+    emit(state.copyWith(color: color, themePresetId: null, themePreset: null));
   }
 
   Future<void> changeBackgroundColor(Color color) async {

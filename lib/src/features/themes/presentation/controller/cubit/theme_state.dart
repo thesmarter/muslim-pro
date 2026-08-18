@@ -10,6 +10,8 @@ class ThemeState extends Equatable {
   final String fontFamily;
   final Locale? locale;
   final ThemeBrightnessModeEnum themeBrightnessMode;
+  final String? themePresetId;
+  final AppThemePreset? themePreset;
   const ThemeState({
     required this.color,
     required this.deviceBrightness,
@@ -20,6 +22,8 @@ class ThemeState extends Equatable {
     required this.fontFamily,
     required this.locale,
     required this.themeBrightnessMode,
+    this.themePresetId,
+    this.themePreset,
   });
 
   Brightness get appBrightness {
@@ -36,10 +40,27 @@ class ThemeState extends Equatable {
   }
 
   ThemeData get theme {
+    final brightness = appBrightness;
+
+    if (themePreset != null) {
+      final scheme = themePreset!.schemeFor(brightness);
+      return ThemeData(
+        colorScheme: scheme,
+        useMaterial3: useMaterial3,
+        fontFamily: fontFamily,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        appBarTheme: appBarTheme(),
+        scaffoldBackgroundColor: scheme.surface,
+        actionIconTheme: ActionIconThemeData(
+          backButtonIconBuilder: (context) => const AppBackButton(),
+        ),
+      );
+    }
+
     if (useOldTheme && !useMaterial3) {
       return ThemeData(
         useMaterial3: false,
-        brightness: appBrightness,
+        brightness: brightness,
         colorSchemeSeed: color,
         fontFamily: fontFamily,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -52,7 +73,7 @@ class ThemeState extends Equatable {
     return ThemeData(
       colorScheme: ColorScheme.fromSeed(
         seedColor: color,
-        brightness: appBrightness,
+        brightness: brightness,
         surface: overrideBackgroundColor ? backgroundColor : null,
       ),
       appBarTheme: appBarTheme(),
@@ -83,6 +104,8 @@ class ThemeState extends Equatable {
     String? fontFamily,
     Locale? locale,
     ThemeBrightnessModeEnum? themeBrightnessMode,
+    String? themePresetId,
+    AppThemePreset? themePreset,
   }) {
     return ThemeState(
       color: color ?? this.color,
@@ -94,6 +117,8 @@ class ThemeState extends Equatable {
       fontFamily: fontFamily ?? this.fontFamily,
       locale: locale ?? this.locale,
       themeBrightnessMode: themeBrightnessMode ?? this.themeBrightnessMode,
+      themePresetId: themePresetId ?? this.themePresetId,
+      themePreset: themePreset ?? this.themePreset,
     );
   }
 
@@ -109,6 +134,8 @@ class ThemeState extends Equatable {
       fontFamily,
       locale,
       themeBrightnessMode,
+      themePresetId,
+      themePreset,
     ];
   }
 }

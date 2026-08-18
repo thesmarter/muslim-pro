@@ -103,7 +103,17 @@ class ThemeRepo {
   }
 
   ///
+  static const String _themePresetKey = "themePreset";
 
+  String? getThemePreset() {
+    return box.read(_themePresetKey) as String?;
+  }
+
+  Future setThemePreset(String presetId) async {
+    await box.write(_themePresetKey, presetId);
+  }
+
+  ///
   static const _appLocaleKey = 'app_locale';
   Locale? get appLocale {
     final value = box.read<String?>(_appLocaleKey);

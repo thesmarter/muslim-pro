@@ -1456,6 +1456,12 @@ abstract class S {
   /// **'Theme Control'**
   String get themeManager;
 
+  /// No description provided for @themePresets.
+  ///
+  /// In en, this message translates to:
+  /// **'Color Presets'**
+  String get themePresets;
+
   /// No description provided for @themeOverrideBackground.
   ///
   /// In en, this message translates to:

@@ -695,6 +695,9 @@ class SEn extends S {
   String get themeManager => 'Theme Control';
 
   @override
+  String get themePresets => 'Color Presets';
+
+  @override
   String get themeOverrideBackground => 'Override Background';
 
   @override

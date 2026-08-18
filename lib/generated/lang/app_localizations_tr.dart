@@ -696,6 +696,9 @@ class STr extends S {
   String get themeManager => 'Tema Kontrolü';
 
   @override
+  String get themePresets => 'Renk Önayarları';
+
+  @override
   String get themeOverrideBackground => 'Arka Planı Değiştir';
 
   @override
