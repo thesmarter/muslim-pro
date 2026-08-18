@@ -708,7 +708,30 @@ class SAr extends S {
   String get themeMigrationTry => 'جرّب الثيم الجديد';
 
   @override
-  String get themeMigrationKeep => 'الاحتفاظ بال الحالي';
+  String get themeMigrationKeep => 'الاحتفاظ بالحالي';
+
+  @override
+  String get themeSelectionTitle => 'اختر ثيم التطبيق';
+
+  @override
+  String get themeSelectionSubtitle => 'اضغط على أي ثيم لتجربته لمدة 10 ثوانٍ، ثم أكّد اختيارك';
+
+  @override
+  String get themeSelectionConfirm => 'تأكيد الاختيار';
+
+  @override
+  String get themeSelectionTapToPreview => 'اضغط للتجربة';
+
+  @override
+  String themePreviewCountdown(Object seconds) {
+    return 'متبقي $seconds ثانية - يمكنك تجربة ثيم آخر';
+  }
+
+  @override
+  String get themePreviewActive => 'جاري التجربة';
+
+  @override
+  String get themePreviewCancel => 'إلغاء';
 
   @override
   String get themeOverrideBackground => 'تحديد لون الخلفية';

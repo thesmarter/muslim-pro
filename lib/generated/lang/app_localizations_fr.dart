@@ -718,6 +718,30 @@ class SFr extends S {
   String get themeMigrationKeep => 'Garder l\'actuel';
 
   @override
+  String get themeSelectionTitle => 'Choisissez votre thème';
+
+  @override
+  String get themeSelectionSubtitle =>
+      'Appuyez sur un thème pour le prévisualiser pendant 10 secondes, puis confirmez votre choix';
+
+  @override
+  String get themeSelectionConfirm => 'Confirmer';
+
+  @override
+  String get themeSelectionTapToPreview => 'Appuyez pour prévisualiser';
+
+  @override
+  String themePreviewCountdown(Object seconds) {
+    return '${seconds}s restantes - Essayez un autre thème';
+  }
+
+  @override
+  String get themePreviewActive => 'Aperçu';
+
+  @override
+  String get themePreviewCancel => 'Annuler';
+
+  @override
   String get themeOverrideBackground => 'Remplacer l\'arrière-plan';
 
   @override
