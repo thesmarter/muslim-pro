@@ -20,19 +20,56 @@ class ThemeCubit extends Cubit<ThemeState> {
     final presetId = themeRepo.getThemePreset();
     final preset = presetId != null ? AppThemePreset.findById(presetId) : null;
 
+    if (preset != null) {
+      return ThemeState(
+        deviceBrightness: Brightness.light,
+        color: preset.schemeFor(Brightness.light).primary,
+        useMaterial3: themeRepo.getUseMaterial3(),
+        useOldTheme: themeRepo.getUseOldTheme(),
+        fontFamily: themeRepo.fontFamily,
+        backgroundColor: preset.schemeFor(Brightness.light).surface,
+        overrideBackgroundColor: true,
+        locale: themeRepo.appLocale,
+        themeBrightnessMode: themeRepo.getThemeBrightnessMode(),
+        themePresetId: presetId,
+        themePreset: preset,
+      );
+    }
+
     return ThemeState(
       deviceBrightness: Brightness.light,
-      color: preset?.schemeFor(Brightness.light).primary ?? themeRepo.getColor(),
+      color: themeRepo.getColor(),
       useMaterial3: themeRepo.getUseMaterial3(),
       useOldTheme: themeRepo.getUseOldTheme(),
       fontFamily: themeRepo.fontFamily,
-      backgroundColor: preset?.schemeFor(Brightness.light).surface ?? themeRepo.getBackgroundColor(),
-      overrideBackgroundColor: preset != null || themeRepo.getOverrideBackgroundColor(),
+      backgroundColor: themeRepo.getBackgroundColor(),
+      overrideBackgroundColor: themeRepo.getOverrideBackgroundColor(),
       locale: themeRepo.appLocale,
       themeBrightnessMode: themeRepo.getThemeBrightnessMode(),
-      themePresetId: presetId,
-      themePreset: preset,
+      themePresetId: null,
+      themePreset: null,
     );
+  }
+
+  bool get shouldShowMigrationDialog {
+    if (themeRepo.getThemeMigrationShown()) return false;
+    return themeRepo.isExistingUser;
+  }
+
+  void markMigrationShown() {
+    themeRepo.setThemeMigrationShown();
+  }
+
+  Future<void> applyRawhPresetForMigration() async {
+    final rawh = AppThemePreset.findById('rawh');
+    if (rawh != null) {
+      await changePreset(rawh);
+      markMigrationShown();
+    }
+  }
+
+  void dismissMigration() {
+    markMigrationShown();
   }
 
   Future start() async {}

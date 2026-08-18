@@ -1462,6 +1462,30 @@ abstract class S {
   /// **'Color Presets'**
   String get themePresets;
 
+  /// No description provided for @themeMigrationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New Theme Available!'**
+  String get themeMigrationTitle;
+
+  /// No description provided for @themeMigrationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve added a new Rawh theme with a distinctive Islamic color palette. Would you like to try it?'**
+  String get themeMigrationDesc;
+
+  /// No description provided for @themeMigrationTry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try New Theme'**
+  String get themeMigrationTry;
+
+  /// No description provided for @themeMigrationKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Current'**
+  String get themeMigrationKeep;
+
   /// No description provided for @themeOverrideBackground.
   ///
   /// In en, this message translates to:

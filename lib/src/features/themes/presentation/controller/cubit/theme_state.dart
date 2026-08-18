@@ -43,6 +43,10 @@ class ThemeState extends Equatable {
     final brightness = appBrightness;
 
     if (themePreset != null) {
+      final customTheme = themePreset!.themeFor(brightness);
+      if (customTheme != null) {
+        return customTheme;
+      }
       final scheme = themePreset!.schemeFor(brightness);
       return ThemeData(
         colorScheme: scheme,

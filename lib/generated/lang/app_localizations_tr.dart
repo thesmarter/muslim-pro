@@ -699,6 +699,19 @@ class STr extends S {
   String get themePresets => 'Renk Önayarları';
 
   @override
+  String get themeMigrationTitle => 'Yeni Tema Mevcut!';
+
+  @override
+  String get themeMigrationDesc =>
+      'Özgün bir İslami renk paletiyle yeni Rawh temasını ekledik. Denemek ister misiniz?';
+
+  @override
+  String get themeMigrationTry => 'Yeni Temayı Dene';
+
+  @override
+  String get themeMigrationKeep => 'Mevcut Olanı Koru';
+
+  @override
   String get themeOverrideBackground => 'Arka Planı Değiştir';
 
   @override

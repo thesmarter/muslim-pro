@@ -38,6 +38,8 @@ class App extends StatefulWidget {
 }
 
 class AppState extends State<App> {
+  bool _migrationDialogShown = false;
+
   @override
   void initState() {
     super.initState();
@@ -52,7 +54,63 @@ class AppState extends State<App> {
       } catch (e) {
         hisnPrint(e);
       }
+
+      _showMigrationDialogIfNeeded();
     });
+  }
+
+  void _showMigrationDialogIfNeeded() {
+    if (_migrationDialogShown) return;
+    final themeCubit = context.read<ThemeCubit>();
+    if (themeCubit.shouldShowMigrationDialog) {
+      _migrationDialogShown = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showThemeMigrationDialog(context, themeCubit);
+      });
+    }
+  }
+
+  void _showThemeMigrationDialog(BuildContext context, ThemeCubit themeCubit) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) {
+        return AlertDialog(
+          icon: Icon(
+            Icons.palette,
+            color: Theme.of(context).colorScheme.primary,
+            size: 40,
+          ),
+          title: Text(
+            S.of(context).themeMigrationTitle,
+            textAlign: TextAlign.center,
+          ),
+          content: Text(
+            S.of(context).themeMigrationDesc,
+            textAlign: TextAlign.center,
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            TextButton(
+              onPressed: () {
+                themeCubit.dismissMigration();
+                Navigator.of(dialogContext).pop();
+              },
+              child: Text(S.of(context).themeMigrationKeep),
+            ),
+            FilledButton(
+              onPressed: () async {
+                await themeCubit.applyRawhPresetForMigration();
+                if (dialogContext.mounted) {
+                  Navigator.of(dialogContext).pop();
+                }
+              },
+              child: Text(S.of(context).themeMigrationTry),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
