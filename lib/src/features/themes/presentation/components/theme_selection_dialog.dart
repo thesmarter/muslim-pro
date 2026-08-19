@@ -231,7 +231,7 @@ class _ThemePresetTile extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Icon(
                       Icons.palette_rounded,
                       color: Colors.white,
