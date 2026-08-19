@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/features/showcase_tour/data/repository/showcase_tour_repo.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 class ShowcaseTourKeys {
@@ -27,7 +28,7 @@ class ShowcaseTourCoordinator {
   static final _instance = ShowcaseTourCoordinator._();
   static ShowcaseTourCoordinator get instance => _instance;
 
-  TabController? _tabController;
+  PersistentTabController? _navController;
   int _azkarTabIndex = 0;
   int _favoritesTitlesTabIndex = 0;
   int _favoritesZikrTabIndex = 0;
@@ -54,12 +55,12 @@ class ShowcaseTourCoordinator {
   ];
 
   void initialize({
-    required TabController tabController,
+    required PersistentTabController persistentNavController,
     required int azkarTabIndex,
     required int favoritesTitlesTabIndex,
     required int favoritesZikrTabIndex,
   }) {
-    _tabController = tabController;
+    _navController = persistentNavController;
     _azkarTabIndex = azkarTabIndex;
     _favoritesTitlesTabIndex = favoritesTitlesTabIndex;
     _favoritesZikrTabIndex = favoritesZikrTabIndex;
@@ -67,13 +68,13 @@ class ShowcaseTourCoordinator {
   }
 
   void onTourStart(int? index, GlobalKey key) {
-    if (_tabController == null) return;
+    if (_navController == null) return;
     if (key == ShowcaseTourKeys.azkarTab) {
-      _tabController!.animateTo(_azkarTabIndex);
+      _navController!.jumpToTab(_azkarTabIndex);
     } else if (key == ShowcaseTourKeys.favoritesTitlesTab) {
-      _tabController!.animateTo(_favoritesTitlesTabIndex);
+      _navController!.jumpToTab(_favoritesTitlesTabIndex);
     } else if (key == ShowcaseTourKeys.favoritesZikrTab) {
-      _tabController!.animateTo(_favoritesZikrTabIndex);
+      _navController!.jumpToTab(_favoritesZikrTabIndex);
     } else if (key == ShowcaseTourKeys.quranTab || key == ShowcaseTourKeys.prayerTab) {
       // Don't switch tabs — stay on current tab so SliverAppBar stays visible
     } else if (key == ShowcaseTourKeys.settingsBtn) {
@@ -128,8 +129,8 @@ class ShowcaseTourCoordinator {
       sv.dismiss();
     }
     _closeDrawer();
-    if (_tabController != null) {
-      _tabController!.animateTo(0);
+    if (_navController != null) {
+      _navController!.jumpToTab(0);
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final sv2 = ShowcaseView.get();
@@ -140,7 +141,7 @@ class ShowcaseTourCoordinator {
   }
 
   void dispose() {
-    _tabController = null;
+    _navController = null;
     _appContext = null;
     _initialized = false;
   }

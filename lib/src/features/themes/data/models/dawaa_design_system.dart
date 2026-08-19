@@ -143,32 +143,32 @@ class DawaaDesignSystem {
           borderRadius: BorderRadius.circular(14),
         ),
       ),
-      tabBarTheme: TabBarThemeData(
+      tabBarTheme: const TabBarThemeData(
         labelColor: primary,
         unselectedLabelColor: gray,
         indicatorColor: accent,
-        labelStyle: const TextStyle(
+        labelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontWeight: FontWeight.w700,
           fontSize: 14,
         ),
-        unselectedLabelStyle: const TextStyle(
+        unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontSize: 14,
         ),
       ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: white,
         selectedItemColor: primary,
         unselectedItemColor: gray,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
-        selectedLabelStyle: const TextStyle(
+        selectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontWeight: FontWeight.w700,
           fontSize: 12,
         ),
-        unselectedLabelStyle: const TextStyle(
+        unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontSize: 12,
         ),
@@ -362,32 +362,32 @@ class DawaaDesignSystem {
           borderRadius: BorderRadius.circular(14),
         ),
       ),
-      tabBarTheme: TabBarThemeData(
-        labelColor: const Color(0xFF80DEEA),
-        unselectedLabelColor: const Color(0xFF7B9293),
-        indicatorColor: const Color(0xFFFFCC80),
-        labelStyle: const TextStyle(
+      tabBarTheme: const TabBarThemeData(
+        labelColor: Color(0xFF80DEEA),
+        unselectedLabelColor: Color(0xFF7B9293),
+        indicatorColor: Color(0xFFFFCC80),
+        labelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontWeight: FontWeight.w700,
           fontSize: 14,
         ),
-        unselectedLabelStyle: const TextStyle(
+        unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontSize: 14,
         ),
       ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: const Color(0xFF1A2A2C),
-        selectedItemColor: const Color(0xFF80DEEA),
-        unselectedItemColor: const Color(0xFF7B9293),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Color(0xFF1A2A2C),
+        selectedItemColor: Color(0xFF80DEEA),
+        unselectedItemColor: Color(0xFF7B9293),
         type: BottomNavigationBarType.fixed,
         elevation: 8,
-        selectedLabelStyle: const TextStyle(
+        selectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontWeight: FontWeight.w700,
           fontSize: 12,
         ),
-        unselectedLabelStyle: const TextStyle(
+        unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontSize: 12,
         ),

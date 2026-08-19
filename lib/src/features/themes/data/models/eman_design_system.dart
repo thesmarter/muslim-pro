@@ -144,32 +144,32 @@ class EmanDesignSystem {
           borderRadius: BorderRadius.circular(14),
         ),
       ),
-      tabBarTheme: TabBarThemeData(
+      tabBarTheme: const TabBarThemeData(
         labelColor: primary,
         unselectedLabelColor: gray,
         indicatorColor: accent,
-        labelStyle: const TextStyle(
+        labelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontWeight: FontWeight.w700,
           fontSize: 14,
         ),
-        unselectedLabelStyle: const TextStyle(
+        unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontSize: 14,
         ),
       ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: white,
         selectedItemColor: primary,
         unselectedItemColor: gray,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
-        selectedLabelStyle: const TextStyle(
+        selectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontWeight: FontWeight.w700,
           fontSize: 12,
         ),
-        unselectedLabelStyle: const TextStyle(
+        unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontSize: 12,
         ),
@@ -364,32 +364,32 @@ class EmanDesignSystem {
           borderRadius: BorderRadius.circular(14),
         ),
       ),
-      tabBarTheme: TabBarThemeData(
-        labelColor: const Color(0xFFA8B4FF),
-        unselectedLabelColor: const Color(0xFF90909A),
-        indicatorColor: const Color(0xFFFFD54F),
-        labelStyle: const TextStyle(
+      tabBarTheme: const TabBarThemeData(
+        labelColor: Color(0xFFA8B4FF),
+        unselectedLabelColor: Color(0xFF90909A),
+        indicatorColor: Color(0xFFFFD54F),
+        labelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontWeight: FontWeight.w700,
           fontSize: 14,
         ),
-        unselectedLabelStyle: const TextStyle(
+        unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontSize: 14,
         ),
       ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: const Color(0xFF181835),
-        selectedItemColor: const Color(0xFFA8B4FF),
-        unselectedItemColor: const Color(0xFF90909A),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Color(0xFF181835),
+        selectedItemColor: Color(0xFFA8B4FF),
+        unselectedItemColor: Color(0xFF90909A),
         type: BottomNavigationBarType.fixed,
         elevation: 8,
-        selectedLabelStyle: const TextStyle(
+        selectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontWeight: FontWeight.w700,
           fontSize: 12,
         ),
-        unselectedLabelStyle: const TextStyle(
+        unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontSize: 12,
         ),
