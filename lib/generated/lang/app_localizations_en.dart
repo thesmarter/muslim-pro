@@ -714,25 +714,13 @@ class SEn extends S {
   String get themeSelectionTitle => 'Choose Your Theme';
 
   @override
-  String get themeSelectionSubtitle =>
-      'Tap any theme to preview it for 10 seconds, then confirm your choice';
+  String get themeSelectionSubtitle => 'Tap any theme to preview it instantly';
 
   @override
   String get themeSelectionConfirm => 'Confirm Selection';
 
   @override
-  String get themeSelectionTapToPreview => 'Tap to preview';
-
-  @override
-  String themePreviewCountdown(Object seconds) {
-    return '${seconds}s remaining - Try another theme';
-  }
-
-  @override
-  String get themePreviewActive => 'Previewing';
-
-  @override
-  String get themePreviewCancel => 'Cancel';
+  String get themeSelectionTapToPreview => 'Tap to switch';
 
   @override
   String get themeOverrideBackground => 'Override Background';

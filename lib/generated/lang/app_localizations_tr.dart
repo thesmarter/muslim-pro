@@ -715,25 +715,13 @@ class STr extends S {
   String get themeSelectionTitle => 'Temanızı Seçin';
 
   @override
-  String get themeSelectionSubtitle =>
-      'Herhangi bir temaya dokunarak 10 saniye boyunca önizleyebilir, sonra seçiminizi onaylayabilirsiniz';
+  String get themeSelectionSubtitle => 'Herhangi bir temaya dokunarak anında önizleyebilirsiniz';
 
   @override
   String get themeSelectionConfirm => 'Seçimi Onayla';
 
   @override
-  String get themeSelectionTapToPreview => 'Önizleme için dokunun';
-
-  @override
-  String themePreviewCountdown(Object seconds) {
-    return '${seconds}s kaldı - Başka bir tema deneyin';
-  }
-
-  @override
-  String get themePreviewActive => 'Önizleniyor';
-
-  @override
-  String get themePreviewCancel => 'İptal';
+  String get themeSelectionTapToPreview => 'Dokunarak değiştirin';
 
   @override
   String get themeOverrideBackground => 'Arka Planı Değiştir';

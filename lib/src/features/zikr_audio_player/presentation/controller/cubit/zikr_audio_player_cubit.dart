@@ -77,6 +77,10 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
     _positionSub?.cancel();
     _durationSub?.cancel();
 
+    _completionSub?.cancel();
+    _positionSub?.cancel();
+    _durationSub?.cancel();
+
     _completionSub = _player.onPlayerComplete.listen((_) async {
       await _onPlaybackCompleted();
     });
@@ -135,6 +139,8 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
   }
 
   Future<void> _onPlaybackCompleted() async {
+    if (isClosed) return;
+
     emit(state.copyWith(position: Duration.zero));
 
     final currentZikr = state.currentZikr;
@@ -147,46 +153,38 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
     if (currentCount > 1 && state.repeatType == AudioRepeatTypeEnum.byZikrCount) {
       hisnPrint('count: $currentCount');
 
-      // Set delay state TRUE synchronously
       emit(state.copyWith(isDelayingBetweenZikr: true));
 
-      // Notify Bloc to decrease count.
-      // It won't turn page because count > 1.
       onDonePlaying?.call(currentZikr);
 
       await _handleDelayAndWait();
 
       if (!state.isPlaying || state.isPaused || isClosed || state.currentIndex != savedIndex) {
-        emit(state.copyWith(isDelayingBetweenZikr: false));
+        if (!isClosed) emit(state.copyWith(isDelayingBetweenZikr: false));
         return;
       }
 
       emit(state.copyWith(isDelayingBetweenZikr: false));
-      playZikrAt(state.currentIndex);
+      await playZikrAt(state.currentIndex);
       return;
     }
 
     if (state.autoPlay) {
       emit(state.copyWith(isDelayingBetweenZikr: true));
 
-      // Decrease count in UI! This will make count 0.
-      // The bloc will see `zikrAudioPlayerCubit.state.isDelayingBetweenZikr` is true,
-      // preventing the immediate page turn.
       onDonePlaying?.call(currentZikr);
 
       await _handleDelayAndWait();
 
       if (!state.isPlaying || state.isPaused || isClosed || state.currentIndex != savedIndex) {
-        emit(state.copyWith(isDelayingBetweenZikr: false));
+        if (!isClosed) emit(state.copyWith(isDelayingBetweenZikr: false));
         return;
       }
 
       emit(state.copyWith(isDelayingBetweenZikr: false));
-      // By now, stream emits false. The bloc receives false and turns the page.
 
       await _playNextZikr();
     } else {
-      // If no autoplay, just finish the zikr track.
       onDonePlaying?.call(currentZikr);
     }
   }
@@ -198,7 +196,7 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
     if (!zikr.hasAudio) return;
 
     if (zikr.count == 0) {
-      emit(state.copyWith(currentIndex: index, isPlaying: true));
+      if (!isClosed) emit(state.copyWith(currentIndex: index, isPlaying: true));
       _onPlaybackCompleted();
       return;
     }
@@ -210,31 +208,35 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
 
     try {
       await _player.stop();
+      await Future.delayed(const Duration(milliseconds: 50));
 
-      emit(
-        state.copyWith(
-          currentIndex: index,
-          isPlaying: true,
-          isPaused: false,
-          position: Duration.zero,
-        ),
-      );
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            currentIndex: index,
+            isPlaying: true,
+            isPaused: false,
+            position: Duration.zero,
+          ),
+        );
+      }
 
       await _player.play(source);
       await _player.setPlaybackRate(state.playbackSpeed);
       await _player.setVolume(state.volume);
     } catch (e) {
       hisnPrint('AudioPlayer Error playing Zikr: $e');
-      emit(state.copyWith(isPlaying: false, isPaused: false));
+      if (!isClosed) emit(state.copyWith(isPlaying: false, isPaused: false));
     }
   }
 
   Future<void> _playNextZikr() async {
+    if (isClosed) return;
     final nextIndex = state.currentIndex + 1;
     if (nextIndex < state.zikrList.length) {
       await playZikrAt(nextIndex);
     } else {
-      emit(state.copyWith(isPlaying: false));
+      if (!isClosed) emit(state.copyWith(isPlaying: false));
     }
   }
 
@@ -250,7 +252,7 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
   Future<void> pause() async {
     try {
       await _player.pause();
-      emit(state.copyWith(isPaused: true, isPlaying: false));
+      if (!isClosed) emit(state.copyWith(isPaused: true, isPlaying: false));
     } catch (e) {
       hisnPrint('AudioPlayer Error pause: $e');
     }
@@ -260,7 +262,7 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
     if (state.currentZikr != null && state.position > Duration.zero) {
       try {
         await _player.resume();
-        emit(state.copyWith(isPaused: false, isPlaying: true));
+        if (!isClosed) emit(state.copyWith(isPaused: false, isPlaying: true));
       } catch (e) {
         hisnPrint('AudioPlayer Error resume: $e');
       }
@@ -272,16 +274,18 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
   Future<void> stop() async {
     try {
       await _player.stop();
-      emit(
-        state.copyWith(
-          isPlaying: false,
-          isPaused: false,
-          position: Duration.zero,
-        ),
-      );
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            isPlaying: false,
+            isPaused: false,
+            position: Duration.zero,
+          ),
+        );
+      }
     } catch (e) {
       hisnPrint('AudioPlayer Error stop: $e');
-      emit(state.copyWith(isPlaying: false, isPaused: false));
+      if (!isClosed) emit(state.copyWith(isPlaying: false, isPaused: false));
     }
   }
 
@@ -304,6 +308,9 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
 
   @override
   Future<void> close() async {
+    try {
+      await _player.stop();
+    } catch (_) {}
     await _completionSub?.cancel();
     await _positionSub?.cancel();
     await _durationSub?.cancel();

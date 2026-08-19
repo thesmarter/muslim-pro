@@ -77,77 +77,78 @@ class AppState extends State<App> {
         BlocProvider(create: (_) => sl<UpdateCubit>()..checkForUpdate()),
         BlocProvider(create: (_) => sl<PrayerTimesBloc>()),
       ],
-      child: Builder(
-        builder: (providerContext) {
-          if (!_migrationDialogShown) {
-            final themeCubit = providerContext.read<ThemeCubit>();
-            if (themeCubit.shouldShowThemeSelection) {
-              _migrationDialogShown = true;
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                showDialog(
-                  context: providerContext,
-                  barrierDismissible: false,
-                  builder: (_) => const ThemeSelectionDialog(),
-                );
-              });
-            }
-          }
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            navigatorKey: App.navigatorKey,
+            onGenerateTitle: (context) => S.of(context).elmoslemPro,
+            scrollBehavior: AppScrollBehavior(),
+            locale: state.locale,
+            supportedLocales: S.supportedLocales,
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            localeResolutionCallback: (locale, supportedLocales) {
+              return locale != null && supportedLocales.contains(locale)
+                  ? locale
+                  : supportedLocales.first;
+            },
+            debugShowCheckedModeBanner: false,
+            theme: state.theme,
+            navigatorObservers: [BotToastNavigatorObserver()],
+            builder: (context, child) {
+                if (!_migrationDialogShown) {
+                final themeCubit = context.read<ThemeCubit>();
+                if (themeCubit.shouldShowThemeSelection) {
+                  _migrationDialogShown = true;
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    final nav = App.navigatorKey.currentState;
+                    if (nav != null) {
+                      nav.push(
+                        DialogRoute(
+                          context: nav.context,
+                          barrierDismissible: false,
+                          builder: (_) => const ThemeSelectionDialog(),
+                        ),
+                      );
+                    }
+                  });
+                }
+              }
 
-          return BlocBuilder<ThemeCubit, ThemeState>(
-            builder: (context, state) {
-              return MaterialApp(
-                navigatorKey: App.navigatorKey,
-                onGenerateTitle: (context) => S.of(context).elmoslemPro,
-                scrollBehavior: AppScrollBehavior(),
-                locale: state.locale,
-                supportedLocales: S.supportedLocales,
-                localizationsDelegates: const [
-                  S.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                localeResolutionCallback: (locale, supportedLocales) {
-                  return locale != null && supportedLocales.contains(locale)
-                      ? locale
-                      : supportedLocales.first;
+              return BlocBuilder<UpdateCubit, UpdateState>(
+                builder: (context, updateState) {
+                  if (updateState is ForceUpdateRequired) {
+                    return ForceUpdateScreen(
+                      updateInfo: updateState.updateInfo,
+                    );
+                  }
+
+                  if (updateState is OptionalUpdateAvailable) {
+                    return ForceUpdateScreen(
+                      updateInfo: updateState.updateInfo,
+                      canDismiss: true,
+                    );
+                  }
+
+                  if (PlatformExtension.isDesktop) {
+                    final botToastBuilder = BotToastInit();
+                    return DesktopWindowWrapper(
+                      child: botToastBuilder(context, child),
+                    );
+                  }
+                  return child ?? const SizedBox();
                 },
-                debugShowCheckedModeBanner: false,
-                theme: state.theme,
-                navigatorObservers: [BotToastNavigatorObserver()],
-                builder: (context, child) {
-                  return BlocBuilder<UpdateCubit, UpdateState>(
-                    builder: (context, updateState) {
-                      if (updateState is ForceUpdateRequired) {
-                        return ForceUpdateScreen(
-                          updateInfo: updateState.updateInfo,
-                        );
-                      }
-
-                      if (updateState is OptionalUpdateAvailable) {
-                        return ForceUpdateScreen(
-                          updateInfo: updateState.updateInfo,
-                          canDismiss: true,
-                        );
-                      }
-
-                      if (PlatformExtension.isDesktop) {
-                        final botToastBuilder = BotToastInit();
-                        return DesktopWindowWrapper(
-                          child: botToastBuilder(context, child),
-                        );
-                      }
-                      return child ?? const SizedBox();
-                    },
-                  );
-                },
-                home: sl<GetStorage>().read('language_chosen') != true
-                    ? const LanguageSelectionScreen()
-                    : sl<AppSettingsRepo>().currentVersion != sl<PackageInfo>().version
-                        ? const OnBoardingScreen()
-                        : const HomeScreen(),
               );
             },
+            home: sl<GetStorage>().read('language_chosen') != true
+                ? const LanguageSelectionScreen()
+                : sl<AppSettingsRepo>().currentVersion != sl<PackageInfo>().version
+                    ? const OnBoardingScreen()
+                    : const HomeScreen(),
           );
         },
       ),
