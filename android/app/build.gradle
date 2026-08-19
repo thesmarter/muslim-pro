@@ -44,7 +44,7 @@ android {
     }
 
     productFlavors {
-        prod {
+        production {
             dimension "default"
         }
         dev {

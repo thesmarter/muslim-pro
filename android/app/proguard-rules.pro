@@ -39,3 +39,7 @@
 -dontwarn com.google.android.play.core.splitcompat.**
 -dontwarn com.google.android.play.core.splitinstall.**
 -dontwarn com.google.android.play.core.tasks.**
+
+# Android Window Extensions (optional on older APIs, referenced by Flutter embedding)
+-dontwarn androidx.window.extensions.**
+-dontwarn androidx.window.sidecar.**

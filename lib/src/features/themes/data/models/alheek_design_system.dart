@@ -51,19 +51,19 @@ class AlHeekDesignSystem {
       fontFamily: _fontFamily,
       scaffoldBackgroundColor: scheme.surface,
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         centerTitle: true,
         elevation: 0,
         scrolledUnderElevation: 3,
         backgroundColor: primary,
         foregroundColor: onPrimary,
-        titleTextStyle: const TextStyle(
+        titleTextStyle: TextStyle(
           fontFamily: _fontFamily,
           fontSize: 22,
           fontWeight: FontWeight.bold,
           color: onPrimary,
         ),
-        iconTheme: const IconThemeData(color: onPrimary),
+        iconTheme: IconThemeData(color: onPrimary),
       ),
       cardTheme: CardThemeData(
         color: primary,
@@ -363,32 +363,32 @@ class AlHeekDesignSystem {
           borderRadius: BorderRadius.circular(12),
         ),
       ),
-      tabBarTheme: TabBarThemeData(
-        labelColor: const Color(0xFFbc8a5f),
-        unselectedLabelColor: const Color(0xFF938F99),
-        indicatorColor: const Color(0xFFbc8a5f),
-        labelStyle: const TextStyle(
+      tabBarTheme: const TabBarThemeData(
+        labelColor: Color(0xFFbc8a5f),
+        unselectedLabelColor: Color(0xFF938F99),
+        indicatorColor: Color(0xFFbc8a5f),
+        labelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
-        unselectedLabelStyle: const TextStyle(
+        unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontSize: 14,
         ),
       ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: const Color(0xFF1E1E1E),
-        selectedItemColor: const Color(0xFFbc8a5f),
-        unselectedItemColor: const Color(0xFF938F99),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Color(0xFF1E1E1E),
+        selectedItemColor: Color(0xFFbc8a5f),
+        unselectedItemColor: Color(0xFF938F99),
         type: BottomNavigationBarType.fixed,
         elevation: 8,
-        selectedLabelStyle: const TextStyle(
+        selectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontWeight: FontWeight.bold,
           fontSize: 12,
         ),
-        unselectedLabelStyle: const TextStyle(
+        unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
           fontSize: 12,
         ),
