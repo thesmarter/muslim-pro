@@ -1495,7 +1495,7 @@ abstract class S {
   /// No description provided for @themeSelectionSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Tap any theme to preview it for 10 seconds, then confirm your choice'**
+  /// **'Tap any theme to preview it instantly'**
   String get themeSelectionSubtitle;
 
   /// No description provided for @themeSelectionConfirm.
@@ -1507,26 +1507,8 @@ abstract class S {
   /// No description provided for @themeSelectionTapToPreview.
   ///
   /// In en, this message translates to:
-  /// **'Tap to preview'**
+  /// **'Tap to switch'**
   String get themeSelectionTapToPreview;
-
-  /// No description provided for @themePreviewCountdown.
-  ///
-  /// In en, this message translates to:
-  /// **'{seconds}s remaining - Try another theme'**
-  String themePreviewCountdown(Object seconds);
-
-  /// No description provided for @themePreviewActive.
-  ///
-  /// In en, this message translates to:
-  /// **'Previewing'**
-  String get themePreviewActive;
-
-  /// No description provided for @themePreviewCancel.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
-  String get themePreviewCancel;
 
   /// No description provided for @themeOverrideBackground.
   ///
