@@ -23,6 +23,7 @@ class EffectsManager {
       if (_zikrAudioPlayerCubit.state.isPlaying) return;
       hisnPrint(_player.playerId);
       await _player.stop();
+      _player.setReleaseMode(ReleaseMode.stop);
       await Future.delayed(const Duration(milliseconds: 50));
       await _player.setVolume(_effectsManagerRepo.soundEffectVolume);
       await _player.play(source);
@@ -121,7 +122,8 @@ class EffectsManager {
     }
   }
 
-  void dispose() {
+  Future<void> dispose() async {
     _player.dispose();
+    await Future.delayed(const Duration(milliseconds: 100));
   }
 }

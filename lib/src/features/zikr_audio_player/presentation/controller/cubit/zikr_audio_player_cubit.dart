@@ -68,14 +68,11 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
     }
 
     try {
+      _player.setReleaseMode(ReleaseMode.stop);
       await _player.stop();
     } catch (e) {
       hisnPrint('AudioPlayer Error stopping in init: $e');
     }
-
-    _completionSub?.cancel();
-    _positionSub?.cancel();
-    _durationSub?.cancel();
 
     _completionSub?.cancel();
     _positionSub?.cancel();
@@ -224,6 +221,7 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
       await _player.play(source);
       await _player.setPlaybackRate(state.playbackSpeed);
       await _player.setVolume(state.volume);
+      _player.setReleaseMode(ReleaseMode.stop);
     } catch (e) {
       hisnPrint('AudioPlayer Error playing Zikr: $e');
       if (!isClosed) emit(state.copyWith(isPlaying: false, isPaused: false));
@@ -315,6 +313,7 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
     await _positionSub?.cancel();
     await _durationSub?.cancel();
     await _player.dispose();
+    await Future.delayed(const Duration(milliseconds: 100));
     return super.close();
   }
 }
