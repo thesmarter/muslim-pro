@@ -356,39 +356,42 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: isCurrent ? Theme.of(context).colorScheme.primaryContainer : Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         border: isCurrent
             ? Border.all(color: Theme.of(context).colorScheme.primary, width: 2)
             : Border.all(color: Theme.of(context).dividerColor.withValues(alpha:0.1)),
       ),
-      child: ListTile(
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: isCurrent
-                ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.2)
-                : Theme.of(context).colorScheme.surfaceContainerHighest,
-            shape: BoxShape.circle,
+      child: Material(
+        color: isCurrent ? Theme.of(context).colorScheme.primaryContainer : Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(16),
+        child: ListTile(
+          leading: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: isCurrent
+                  ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.2)
+                  : Theme.of(context).colorScheme.surfaceContainerHighest,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              icon,
+              color: isCurrent ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
-          child: Icon(
-            icon,
-            color: isCurrent ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurfaceVariant,
+          title: Text(
+            name,
+            style: TextStyle(
+              fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
+              color: isCurrent ? Theme.of(context).colorScheme.primary : null,
+            ),
           ),
-        ),
-        title: Text(
-          name,
-          style: TextStyle(
-            fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
-            color: isCurrent ? Theme.of(context).colorScheme.primary : null,
-          ),
-        ),
-        trailing: Text(
-          timeFormat.format(time.toLocal()),
-          style: TextStyle(
-            fontWeight: isCurrent ? FontWeight.bold : FontWeight.w500,
-            fontSize: 16,
-            color: isCurrent ? Theme.of(context).colorScheme.primary : null,
+          trailing: Text(
+            timeFormat.format(time.toLocal()),
+            style: TextStyle(
+              fontWeight: isCurrent ? FontWeight.bold : FontWeight.w500,
+              fontSize: 16,
+              color: isCurrent ? Theme.of(context).colorScheme.primary : null,
+            ),
           ),
         ),
       ),

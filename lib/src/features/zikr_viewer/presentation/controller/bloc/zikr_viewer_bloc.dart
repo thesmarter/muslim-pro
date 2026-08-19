@@ -58,7 +58,12 @@ class ZikrViewerBloc extends Bloc<ZikrViewerEvent, ZikrViewerState> {
   }
 
   StreamSubscription? _volumeSubscription;
+  StreamSubscription? _audioStateSubscription;
   void _initZikrPageMode(ZikrViewerMode zikrViewerMode) {
+    _volumeSubscription?.cancel();
+    _audioStateSubscription?.cancel();
+    pageController.removeListener(_onPageChanged);
+
     if (zikrViewerMode != ZikrViewerMode.page) return;
 
     volumeButtonManager.toggleActivation(
@@ -71,10 +76,12 @@ class ZikrViewerBloc extends Bloc<ZikrViewerEvent, ZikrViewerState> {
       }
     });
 
-    pageController.addListener(() {
-      final int index = pageController.page!.round();
-      add(ZikrViewerPageChangeEvent(index));
-    });
+    pageController.addListener(_onPageChanged);
+  }
+
+  void _onPageChanged() {
+    final int index = pageController.page!.round();
+    add(ZikrViewerPageChangeEvent(index));
   }
 
   void _initHandlers() {
@@ -191,6 +198,7 @@ class ZikrViewerBloc extends Bloc<ZikrViewerEvent, ZikrViewerState> {
         ZikrViewerAudioDelayStateChangedEvent(audioState.isDelayingBetweenZikr),
       );
     });
+    _audioStateSubscription = audioStateSubscription;
 
     emit(
       ZikrViewerLoadedState(
@@ -490,8 +498,10 @@ class ZikrViewerBloc extends Bloc<ZikrViewerEvent, ZikrViewerState> {
   @override
   Future<void> close() {
     WakelockPlus.disable();
+    pageController.removeListener(_onPageChanged);
     pageController.dispose();
     _volumeSubscription?.cancel();
+    _audioStateSubscription?.cancel();
     volumeButtonManager.dispose();
     zikrAudioPlayerCubit.stop();
     return super.close();
