@@ -179,7 +179,7 @@ class PrayerTimesRepo {
         final prayerName = SX.current.getValue(prayerKey);
 
         // Pre-adhan notification (20 min before)
-        final preAdhanTime = prayerTime.subtract(Duration(minutes: _preAdhanMinutes));
+        final preAdhanTime = prayerTime.subtract(const Duration(minutes: _preAdhanMinutes));
         if (preAdhanTime.isAfter(now)) {
           final preId = _preAdhanScheduledBaseId + dayOffset * 10 + pIndex;
           await notificationManager.schedulePreAdhanNotification(
@@ -192,7 +192,7 @@ class PrayerTimesRepo {
         }
 
         // Post-adhan (iqamah) notification (10 min after)
-        final iqamahTime = prayerTime.add(Duration(minutes: _postAdhanMinutes));
+        final iqamahTime = prayerTime.add(const Duration(minutes: _postAdhanMinutes));
         if (iqamahTime.isAfter(now)) {
           final postId = _postAdhanScheduledBaseId + dayOffset * 10 + pIndex;
           await notificationManager.schedulePostAdhanNotification(

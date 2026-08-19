@@ -46,8 +46,6 @@ class ThemeCubit extends Cubit<ThemeState> {
       overrideBackgroundColor: themeRepo.getOverrideBackgroundColor(),
       locale: themeRepo.appLocale,
       themeBrightnessMode: themeRepo.getThemeBrightnessMode(),
-      themePresetId: null,
-      themePreset: null,
     );
   }
 
@@ -144,7 +142,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   Future<void> changeColor(Color color) async {
     await themeRepo.setColor(color);
-    emit(state.copyWith(color: color, themePresetId: null, themePreset: null));
+    emit(state.copyWith(color: color));
   }
 
   Future<void> changeBackgroundColor(Color color) async {

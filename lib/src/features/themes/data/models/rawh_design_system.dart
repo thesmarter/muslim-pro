@@ -10,7 +10,7 @@ class RawhDesignSystem {
   static const Color white = Color(0xFFFFFFFF);
   static const Color offWhite = Color(0xFFFFF5E3);
 
-  static const String _fontFamily = 'Miqdad';
+  static const String _fontFamily = 'Cairo';
   static const String _headingFont = 'JannaLT';
 
   static ThemeData lightTheme() {

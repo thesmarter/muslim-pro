@@ -151,7 +151,12 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
 
   Widget _buildHeader(BuildContext context, PrayerSettings settings) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
+      padding: EdgeInsets.fromLTRB(
+            16,
+            16 + MediaQuery.of(context).padding.top,
+            16,
+            16,
+          ),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),

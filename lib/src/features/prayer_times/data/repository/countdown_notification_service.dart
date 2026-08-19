@@ -91,7 +91,6 @@ class CountdownNotificationService {
         title: SX.current.iqamahCountdownTitle(prayerName),
         cityName: cityName,
         countryName: countryName,
-        onComplete: null,
       );
     }
   }
@@ -116,7 +115,6 @@ class CountdownNotificationService {
         title: sunriseName,
         cityName: cityName,
         countryName: countryName,
-        onComplete: null,
       );
     }
   }

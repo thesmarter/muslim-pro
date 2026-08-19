@@ -52,7 +52,8 @@ dependencies:
   package_info_plus: ^9.0.0
   path: ^1.9.1
   path_provider: ^2.1.5
-  quran_library: ^4.2.0
+  persistent_bottom_nav_bar_v2: ^6.4.0
+  quran_library: ^4.2.1
   rxdart: ^0.28.0
   share_plus: ^12.0.0
   showcaseview: ^5.0.2
@@ -146,6 +147,3 @@ flutter:
     - family: Gabriola
       fonts:
         - asset: assets/fonts/Gabriola.ttf
-    - family: Miqdad
-      fonts:
-        - asset: assets/fonts/MiqdadPersonalUse.otf
