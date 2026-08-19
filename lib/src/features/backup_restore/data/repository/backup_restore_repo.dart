@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
@@ -81,18 +82,14 @@ class BackupRestoreRepo {
             '${now.year}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}_${now.hour.toString().padLeft(2, '0')}${now.minute.toString().padLeft(2, '0')}${now.second.toString().padLeft(2, '0')}';
         final defaultFileName = 'muslim_backup_$timestamp.hisn';
 
-        final outputFile = await FilePicker.platform.saveFile(
+        final result = await FilePicker.saveFile(
           dialogTitle: 'Save Backup',
           fileName: defaultFileName,
+          bytes: zipBytes as Uint8List,
           type: FileType.custom,
           allowedExtensions: ['hisn'],
         );
-        if (outputFile != null) {
-          final targetPath = outputFile.endsWith('.hisn') ? outputFile : '$outputFile.hisn';
-          await File(targetPath).writeAsBytes(zipBytes);
-          return true;
-        }
-        return false;
+        return result != null;
       } else {
         final now = DateTime.now();
         final timestamp =
@@ -121,11 +118,11 @@ class BackupRestoreRepo {
 
   Future<bool> importData() async {
     try {
-      final result = await FilePicker.platform.pickFiles();
+      final result = await FilePicker.pickFiles();
 
-      if (result == null || result.files.isEmpty) return false;
+      if (result.isEmpty) return false;
 
-      final filePath = result.files.single.path;
+      final filePath = result.first.path;
       if (filePath == null) return false;
 
       final bytes = await File(filePath).readAsBytes();

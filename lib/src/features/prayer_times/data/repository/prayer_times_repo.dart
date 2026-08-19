@@ -13,6 +13,7 @@ import 'package:muslim/src/features/prayer_times/data/repository/countdown_notif
 class PrayerTimesRepo {
   late final GetStorage _box = GetStorage();
   static const String _settingsKey = 'prayer_settings';
+  final Geocoding _geocoding = Geocoding();
 
   static const String defaultMuadhin = 'wadie_alyamani';
 
@@ -357,7 +358,7 @@ class PrayerTimesRepo {
 
   Future<Placemark?> getPlacemark(double latitude, double longitude) async {
     try {
-      final placemarks = await placemarkFromCoordinates(latitude, longitude);
+      final placemarks = await _geocoding.placemarkFromCoordinates(latitude, longitude);
       if (placemarks.isNotEmpty) {
         return placemarks.first;
       }
@@ -369,7 +370,7 @@ class PrayerTimesRepo {
 
   Future<List<Location>> searchLocation(String query) async {
     try {
-      return await locationFromAddress(query);
+      return await _geocoding.locationFromAddress(query);
     } catch (e) {
       return [];
     }
