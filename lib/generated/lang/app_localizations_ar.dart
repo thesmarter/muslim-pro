@@ -993,7 +993,10 @@ class SAr extends S {
       'نحتاج للوصول إلى موقعك لتحديد مواقيت الصلاة بدقة لمدينتك الحالية. هذا الأمر اختياري، يمكنك دائماً إدخال موقعك يدوياً عبر البحث.';
 
   @override
-  String get testFullAdhan => 'اختبار الأذان بالكامل';
+  String get testFullAdhan => 'اختبار إشعار الأذان';
+
+  @override
+  String get testCountdown => 'اختبار إشعار العد التنازلي';
 
   @override
   String get startingFullAdhanTest => 'بدء اختبار الأذان لجميع الصلوات...';

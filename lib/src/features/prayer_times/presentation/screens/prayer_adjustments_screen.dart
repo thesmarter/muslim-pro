@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/features/prayer_times/data/repository/adhan_audio_service.dart';
@@ -9,6 +11,8 @@ import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_
 
 class PrayerAdjustmentsScreen extends StatelessWidget {
   const PrayerAdjustmentsScreen({super.key});
+
+  static const MethodChannel _countdownChannel = MethodChannel('countdown_service');
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,8 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
               _buildAdhanAudioToggle(context, state),
               _buildVolumeSlider(context, state),
               _buildMuadhinSelection(context, state),
-              _buildFullAdhanTestButton(context, state),
+              if (kDebugMode) _buildFullAdhanTestButton(context, state),
+              if (kDebugMode) _buildCountdownTestButton(context),
               const Divider(height: 32),
               _buildSectionTitle(context, S.of(context).prayerNotifications),
               _buildNotificationTile(context, S.of(context).fajr, 'fajr', settings.notifications['fajr'] ?? true, state),
@@ -235,6 +240,42 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
           }
         }
         : null,
+      ),
+    );
+  }
+
+  Widget _buildCountdownTestButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+      child: ElevatedButton.icon(
+        icon: const Icon(Icons.timer),
+        label: Text(S.of(context).testCountdown),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFFE53935),
+          foregroundColor: Colors.white,
+        ),
+        onPressed: () async {
+          final targetTime = DateTime.now().add(const Duration(minutes: 2));
+
+          await _countdownChannel.invokeMethod('startCountdown', {
+            'targetTimeMillis': targetTime.millisecondsSinceEpoch,
+            'prayerName': 'اختبار',
+            'title': 'عد تنازلي',
+            'city': 'الرياض',
+            'country': 'السعودية',
+            'type': 'test',
+            'header': 'الرياض - اختبار العد التنازلي',
+          });
+
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('بدأ العد التنازلي لمدة دقيقتين'),
+                duration: Duration(seconds: 3),
+              ),
+            );
+          }
+        },
       ),
     );
   }

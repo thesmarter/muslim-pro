@@ -2005,8 +2005,14 @@ abstract class S {
   /// No description provided for @testFullAdhan.
   ///
   /// In en, this message translates to:
-  /// **'Full Adhan Test'**
+  /// **'Test Adhan Notification'**
   String get testFullAdhan;
+
+  /// No description provided for @testCountdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Test Countdown Notification'**
+  String get testCountdown;
 
   /// No description provided for @startingFullAdhanTest.
   ///
