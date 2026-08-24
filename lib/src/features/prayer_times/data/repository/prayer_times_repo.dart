@@ -329,19 +329,19 @@ class PrayerTimesRepo {
 
       serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        return Future.error('Location services are disabled.');
+        throw 'Location services are disabled.';
       }
 
       permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          return Future.error('Location permissions are denied');
+          throw 'Location permissions are denied';
         }
       }
 
       if (permission == LocationPermission.deniedForever) {
-        return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+        throw 'Location permissions are permanently denied, we cannot request permissions.';
       }
 
       return await Geolocator.getCurrentPosition(
@@ -352,7 +352,7 @@ class PrayerTimesRepo {
       );
     } catch (e) {
       hisnPrint("Error getting current position: $e");
-      return Future.error('Failed to get location: $e');
+      throw 'Failed to get location: $e';
     }
   }
 
