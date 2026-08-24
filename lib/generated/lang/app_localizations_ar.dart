@@ -37,7 +37,7 @@ class SAr extends S {
   String get alarmEditor => 'محرر التنبيهات';
 
   @override
-  String get allow => 'سماح';
+  String get allow => 'السماح';
 
   @override
   String get allowNotifications => 'هل تريد السماح بتشغيل الإشعارات؟';
