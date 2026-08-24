@@ -14,6 +14,9 @@ class AdhanBootReceiver : BroadcastReceiver() {
             intent.action == Intent.ACTION_MY_PACKAGE_REPLACED
         ) {
             rescheduleAll(context)
+            // AlarmManager alarms do not survive power-off, so re-arm the
+            // daily prayer-times maintenance chain after boot as well.
+            MaintenanceAlarmReceiver.scheduleNext(context)
         }
     }
 

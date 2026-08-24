@@ -45,6 +45,14 @@ class MainActivity : AudioServiceActivity() {
                         adhanScheduler?.cancelAll()
                         result.success(true)
                     }
+                    "scheduleMaintenance" -> {
+                        val args = call.arguments as Map<*, *>
+                        MaintenanceAlarmReceiver.scheduleNext(
+                            this@MainActivity,
+                            (args["timestamp"] as Number).toLong()
+                        )
+                        result.success(true)
+                    }
                     "stopAdhan" -> {
                         val stopIntent = Intent(this@MainActivity, AdhanForegroundService::class.java).apply {
                             action = AdhanForegroundService.ACTION_STOP

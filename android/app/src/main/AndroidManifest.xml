@@ -93,6 +93,11 @@
             </intent-filter>
         </receiver>
 
+        <!-- Daily prayer-times maintenance (recompute drifting times) -->
+        <receiver
+            android:name="com.detatech.Azkar.MaintenanceAlarmReceiver"
+            android:exported="false" />
+
     </application>
 
     <queries>
