@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:adhan/adhan.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -20,6 +22,7 @@ class PrayerTimesRepo {
   static const int _adhanIdBase = 3000;
   static const int _adhanScheduleDays = 30;
 
+  static const int _sunriseScheduleBaseId = 2000;
   static const int _preAdhanScheduledBaseId = 7000;
   static const int _postAdhanScheduledBaseId = 8000;
   static const int _preAdhanMinutes = 20;
@@ -56,7 +59,7 @@ class PrayerTimesRepo {
     if (settings.latitude == 0 && settings.longitude == 0) return;
 
     // Cancel ALL existing notifications and alarms
-    for (int i = 2000; i <= 2010; i++) {
+    for (int i = 2000; i <= 2070; i++) {
       await notificationManager.cancelNotificationById(id: i);
     }
     await adhanService.cancelAllAdhanAlarms();
@@ -104,51 +107,63 @@ class PrayerTimesRepo {
 
     // ─────────────────────────────────────────────────────
     // 2. NON-ADHAN NOTIFICATIONS: sunrise + sunrise_end
-    //    تستخدم flutter_local_notifications مع matchDateTimeComponents
-    //    لتكرار الإشعار يومياً تلقائياً
+    //    جدولة يومية لكل يوم من نافذة الجدولة لأن وقت الشروق
+    //    يتغير كل يوم — التكرار الدائم بوقت ثابت لا يتبع التغير
     // ─────────────────────────────────────────────────────
-    final todayPt = calculatePrayerTimes(settings, now);
-    final nonAdhanTimes = <String, DateTime>{
-      'sunrise': todayPt.sunrise,
-      'sunrise_end': todayPt.sunrise.add(const Duration(minutes: 15)),
-    };
 
-    for (final entry in nonAdhanTimes.entries) {
-      final prayerKey = entry.key;
-      final prayerTime = entry.value;
-      final isEnabled = settings.notifications[prayerKey] ?? false;
+    for (int dayOffset = 0; dayOffset < _adhanScheduleDays; dayOffset++) {
+      final date = now.add(Duration(days: dayOffset));
+      final pt = calculatePrayerTimes(settings, date);
 
-      if (!isEnabled) continue;
+      final nonAdhanTimes = <String, DateTime>{
+        'sunrise': pt.sunrise,
+        'sunrise_end': pt.sunrise.add(const Duration(minutes: 15)),
+      };
 
-      DateTime scheduledTime = prayerTime;
-      if (prayerTime.isBefore(now)) {
-        scheduledTime = prayerTime.add(const Duration(days: 1));
+      for (final entry in nonAdhanTimes.entries) {
+        final prayerKey = entry.key;
+        final prayerTime = entry.value;
+        final isEnabled = settings.notifications[prayerKey] ?? false;
+
+        if (!isEnabled) continue;
+        if (dayOffset == 0 && prayerTime.isBefore(now)) continue;
+
+        final id =
+            _sunriseScheduleBaseId + dayOffset * 2 + (prayerKey == 'sunrise' ? 0 : 1);
+        final title = prayerKey == 'sunrise' ? SX.current.sunrise : SX.current.sunriseEnd;
+
+        final body =
+            prayerKey == 'sunrise' ? SX.current.sunriseNotificationBody : SX.current.sunriseEndNotificationBody;
+
+        await notificationManager.schedulePreAdhanNotification(
+          id: id,
+          title: title,
+          body: body,
+          scheduledDate: prayerTime,
+          payload: 'prayer_time_$prayerKey',
+        );
       }
-
-      final title = prayerKey == 'sunrise'
-          ? SX.current.sunrise
-          : SX.current.sunriseEnd;
-
-      final body = prayerKey == 'sunrise'
-          ? SX.current.sunriseNotificationBody
-          : SX.current.sunriseEndNotificationBody;
-
-      await notificationManager.addCustomDailyReminder(
-        id: prayerKey == 'sunrise' ? 2001 : 2002,
-        title: title,
-        body: body,
-        time: Time(scheduledTime.hour, scheduledTime.minute),
-        payload: "prayer_time_$prayerKey",
-        requestPermission: false,
-      );
-    hisnPrint("Scheduled daily notification for $prayerKey at ${scheduledTime.hour}:${scheduledTime.minute}");
+      hisnPrint("Scheduled sunrise notifications for $date");
     }
 
     // ─────────────────────────────────────────────────────
     // 3. COUNTDOWN NOTIFICATIONS: Pre-adhan, Post-adhan, and Sunrise End
     //    إشعارات العد التنازلي قبل الأذان وبعده وانتهاء الشروق
     // ─────────────────────────────────────────────────────
+    final todayPt = calculatePrayerTimes(settings, now);
     await _scheduleCountdownNotifications(settings, todayPt, now);
+
+    // ─────────────────────────────────────────────────────
+    // 4. DAILY MAINTENANCE (Android): recompute everything tomorrow
+    //    after midnight so the 30-day window never lapses and all
+    //    times stay accurate as they drift through the year.
+    // ─────────────────────────────────────────────────────
+    if (Platform.isAndroid) {
+      final nextRun = DateTime.now().add(const Duration(days: 1));
+      final trigger = DateTime(nextRun.year, nextRun.month, nextRun.day, 0, 5);
+      await adhanService.scheduleMaintenanceAlarm(trigger);
+      hisnPrint("Scheduled daily prayer maintenance alarm at $trigger");
+    }
   }
 
   Future<void> _scheduleCountdownNotifications(

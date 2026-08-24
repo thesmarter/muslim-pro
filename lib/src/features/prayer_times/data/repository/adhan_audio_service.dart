@@ -253,6 +253,18 @@ class AdhanAudioService {
     }
   }
 
+  /// Arms the daily maintenance alarm that recomputes prayer times in the
+  /// background so scheduled alarms stay accurate as times drift.
+  Future<void> scheduleMaintenanceAlarm(DateTime time) async {
+    try {
+      await _adhanChannel.invokeMethod('scheduleMaintenance', {
+        'timestamp': time.millisecondsSinceEpoch,
+      });
+    } catch (e) {
+      hisnPrint('Error scheduling maintenance alarm: $e');
+    }
+  }
+
   Future<void> stopNativeAdhan() async {
     try {
       await _adhanChannel.invokeMethod('stopAdhan');

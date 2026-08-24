@@ -33,6 +33,37 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 }
 
+/// Headless entrypoint launched daily by MaintenanceAlarmReceiver (Android).
+/// Prayer times drift day by day through the year, so this recomputes and
+/// re-registers every alarm/notification from scratch to keep them accurate
+/// even when the user does not open the app.
+@pragma('vm:entry-point')
+Future<void> prayerMaintenanceMain() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    service_locator.initSL();
+
+    await loadLocalizations();
+
+    try {
+      await GetStorage.init(kAppStorageKey);
+      await sl<LocalNotificationManager>().init();
+    } catch (e) {
+      hisnPrint(e);
+    }
+
+    final repo = sl<PrayerTimesRepo>();
+    final settings = repo.getSettings();
+    await repo.schedulePrayerNotifications(settings);
+    hisnPrint("Daily prayer times reschedule completed in background.");
+  } catch (e) {
+    hisnPrint("Prayer maintenance error: $e");
+  }
+  try {
+    await const MethodChannel('prayer_maintenance').invokeMethod('done');
+  } catch (_) {}
+}
+
 // ignore: unreachable_member
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
