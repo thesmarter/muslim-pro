@@ -994,7 +994,10 @@ class SEn extends S {
       'We need access to your location to accurately determine prayer times for your current city. This is optional, you can always enter your location manually via search.';
 
   @override
-  String get testFullAdhan => 'Full Adhan Test';
+  String get testFullAdhan => 'Test Adhan Notification';
+
+  @override
+  String get testCountdown => 'Test Countdown Notification';
 
   @override
   String get startingFullAdhanTest => 'Starting adhan test for all prayers...';

@@ -1003,7 +1003,10 @@ class SFr extends S {
       'Nous avons besoin d\'accéder à votre emplacement pour déterminer avec précision les heures de prière pour votre ville actuelle. Ceci est facultatif, vous pouvez toujours saisir votre position manuellement via la recherche.';
 
   @override
-  String get testFullAdhan => 'Test Adhan complet';
+  String get testFullAdhan => 'Tester la notification Adhan';
+
+  @override
+  String get testCountdown => 'Tester la notification compteur';
 
   @override
   String get startingFullAdhanTest => 'Démarrage du test Adhan pour toutes les prières...';

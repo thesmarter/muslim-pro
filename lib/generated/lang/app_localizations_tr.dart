@@ -995,7 +995,10 @@ class STr extends S {
       'Namaz vakitlerini bulunduğunuz şehre göre doğru bir şekilde belirlemek için konumunuza erişmemiz gerekiyor. Bu isteğe bağlıdır, konumunuzu her zaman arama yoluyla manuel olarak girebilirsiniz.';
 
   @override
-  String get testFullAdhan => 'Tam Ezan Testi';
+  String get testFullAdhan => 'Bildirim Testi (Ezan)';
+
+  @override
+  String get testCountdown => 'Geri Sayım Bildirimi Testi';
 
   @override
   String get startingFullAdhanTest => 'Tüm namazlar için ezan testi başlatılıyor...';
