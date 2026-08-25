@@ -58,19 +58,12 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
           ayahSelectedBackgroundColor:
               Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
           ayahIconColor: Theme.of(context).colorScheme.primary,
-          surahNameStyle: SurahNameStyle(
-            surahNameSize: 27.0,
-            surahNameColor: Theme.of(context).textTheme.bodyLarge?.color,
-          ),
           surahInfoStyle:
               SurahInfoStyle.defaults(isDark: isDark, context: context)
                   .copyWith(
             ayahCount: S.of(context).ayaCount,
             firstTabText: S.of(context).surahNames,
             secondTabText: S.of(context).aboutSurah,
-          ),
-          basmalaStyle: BasmalaStyle(
-            basmalaColor: Theme.of(context).textTheme.bodyLarge?.color,
           ),
           ayahStyle: AyahAudioStyle.defaults(isDark: isDark, context: context)
               .copyWith(
