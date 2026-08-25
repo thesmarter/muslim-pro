@@ -4,8 +4,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:muslim/app.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart' as service_locator;
 import 'package:muslim/src/core/di/dependency_injection.dart';
@@ -73,6 +75,12 @@ Future<void> initServices() async {
   } catch (e) {
     hisnPrint("Error initializing QuranLibrary: $e");
   }
+
+  // quran_library تعتمد على GetX داخليًا (Get.context / Get.overlayContext)
+  // والتطبيق يستخدم MaterialApp عادية وليس GetMaterialApp، لذلك نربط مفتاح
+  // التنقل الخاص بالتطبيق بـ GetX لتفادي انهيار "Null check operator" في
+  // مسارات المكتبة التي تستخدم Get.context! (مثل صوت الكلمات بدون إنترنت).
+  Get.addKey(App.navigatorKey);
 
   Bloc.observer = AppBlocObserver();
 

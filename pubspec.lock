@@ -749,7 +749,7 @@ packages:
     source: hosted
     version: "0.2.5"
   get:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: get
       sha256: "5ed34a7925b85336e15d472cc4cfe7d9ebf4ab8e8b9f688585bf6b50f4c3d79a"

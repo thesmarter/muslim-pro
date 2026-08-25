@@ -3,7 +3,7 @@ description: muslim-pro start kit app.
 
 publish_to: "none"
 
-version: 3.3.2+38
+version: 3.3.3+39
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
@@ -42,6 +42,7 @@ dependencies:
   gal: ^2.3.3
   geocoding: ^5.0.0
   geolocator: ^14.0.3
+  get: ^4.7.3
   get_it: ^9.2.1
   get_storage: ^2.1.1
   hijri: ^3.0.0
@@ -53,7 +54,7 @@ dependencies:
   path: ^1.9.1
   path_provider: ^2.1.6
   persistent_bottom_nav_bar_v2: ^6.4.0
-  quran_library: ^4.2.1
+  quran_library: ^4.3.0
   rxdart: ^0.28.0
   share_plus: ^13.3.0
   showcaseview: ^5.0.2
