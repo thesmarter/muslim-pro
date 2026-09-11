@@ -84,9 +84,11 @@ class PrayerTimesBloc extends Bloc<PrayerTimesEvent, PrayerTimesState> {
   }
 
   Future<void> _onUpdatePrayerSettings(UpdatePrayerSettings event, Emitter<PrayerTimesState> emit) async {
-    await repo.saveSettings(event.settings);
+    // إصدار فوري أولاً (الراديو/السلايدر يستجيب لحظياً)، ثم الحفظ
+    // والجدولة الثقيلة في الخلفية — كانت تحجب الـ emit ثوانٍ.
     final prayerTimes = repo.calculatePrayerTimes(event.settings, DateTime.now());
     emit(state.copyWith(status: PrayerTimesStatus.loaded, settings: event.settings, prayerTimes: prayerTimes));
+    await repo.saveSettings(event.settings);
   }
 
   Future<void> _onDetectLocation(DetectLocation event, Emitter<PrayerTimesState> emit) async {

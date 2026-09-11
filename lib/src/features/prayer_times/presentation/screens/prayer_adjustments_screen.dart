@@ -9,10 +9,24 @@ import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_
 import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_event.dart';
 import 'package:muslim/src/features/prayer_times/presentation/controller/prayer_times_state.dart';
 
-class PrayerAdjustmentsScreen extends StatelessWidget {
+class PrayerAdjustmentsScreen extends StatefulWidget {
   const PrayerAdjustmentsScreen({super.key});
 
   static const MethodChannel _countdownChannel = MethodChannel('countdown_service');
+
+  @override
+  State<PrayerAdjustmentsScreen> createState() => _PrayerAdjustmentsScreenState();
+}
+
+class _PrayerAdjustmentsScreenState extends State<PrayerAdjustmentsScreen> {
+  @override
+  void dispose() {
+    // إيقاف معاينة المؤذن فقط عند مغادرة الشاشة — لا يمس أذاناً حقيقياً.
+    if (AdhanAudioService().isPreview) {
+      AdhanAudioService().stopAdhan();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,32 +42,57 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              _buildSectionTitle(context, S.of(context).calculationMethod),
-              _buildCalculationMethodDropdown(context, state),
-              const Divider(height: 32),
-              _buildSectionTitle(context, S.of(context).adhanAudioSettings),
-              _buildAdhanAudioToggle(context, state),
-              _buildVolumeSlider(context, state),
-              _buildMuadhinSelection(context, state),
-              if (kDebugMode) _buildFullAdhanTestButton(context, state),
-              if (kDebugMode) _buildCountdownTestButton(context),
-              const Divider(height: 32),
-              _buildSectionTitle(context, S.of(context).prayerNotifications),
-              _buildNotificationTile(context, S.of(context).fajr, 'fajr', settings.notifications['fajr'] ?? true, state),
-              _buildNotificationTile(context, S.of(context).sunrise, 'sunrise', settings.notifications['sunrise'] ?? true, state),
-              _buildNotificationTile(context, S.of(context).sunriseEnd, 'sunrise_end', settings.notifications['sunrise_end'] ?? true, state),
-              _buildNotificationTile(context, S.of(context).dhuhr, 'dhuhr', settings.notifications['dhuhr'] ?? true, state),
-              _buildNotificationTile(context, S.of(context).asr, 'asr', settings.notifications['asr'] ?? true, state),
-              _buildNotificationTile(context, S.of(context).maghrib, 'maghrib', settings.notifications['maghrib'] ?? true, state),
-              _buildNotificationTile(context, S.of(context).isha, 'isha', settings.notifications['isha'] ?? true, state),
-              const Divider(height: 32),
-              _buildSectionTitle(context, S.of(context).prayerAdjustments),
-              _buildAdjustmentTile(context, S.of(context).fajr, 'fajr', adjustments['fajr'] ?? 0, state),
-              _buildAdjustmentTile(context, S.of(context).sunrise, 'sunrise', adjustments['sunrise'] ?? 0, state),
-              _buildAdjustmentTile(context, S.of(context).dhuhr, 'dhuhr', adjustments['dhuhr'] ?? 0, state),
-              _buildAdjustmentTile(context, S.of(context).asr, 'asr', adjustments['asr'] ?? 0, state),
-              _buildAdjustmentTile(context, S.of(context).maghrib, 'maghrib', adjustments['maghrib'] ?? 0, state),
-              _buildAdjustmentTile(context, S.of(context).isha, 'isha', adjustments['isha'] ?? 0, state),
+              _buildSection(
+                context,
+                title: S.of(context).calculationMethod,
+                icon: Icons.calculate_outlined,
+                initiallyExpanded: false,
+                children: [
+                  _buildCalculationMethodDropdown(context, state),
+                ],
+              ),
+              _buildSection(
+                context,
+                title: S.of(context).adhanAudioSettings,
+                icon: Icons.volume_up_outlined,
+                initiallyExpanded: true,
+                children: [
+                  _buildAdhanAudioToggle(context, state),
+                  _buildVolumeSlider(context, state),
+                  _buildMuadhinSelection(context, state),
+                  if (kDebugMode) _buildFullAdhanTestButton(context, state),
+                  if (kDebugMode) _buildCountdownTestButton(context),
+                ],
+              ),
+              _buildSection(
+                context,
+                title: S.of(context).prayerNotifications,
+                icon: Icons.notifications_outlined,
+                initiallyExpanded: false,
+                children: [
+                  _buildNotificationTile(context, S.of(context).fajr, 'fajr', settings.notifications['fajr'] ?? true, state),
+                  _buildNotificationTile(context, S.of(context).sunrise, 'sunrise', settings.notifications['sunrise'] ?? true, state),
+                  _buildNotificationTile(context, S.of(context).sunriseEnd, 'sunrise_end', settings.notifications['sunrise_end'] ?? true, state),
+                  _buildNotificationTile(context, S.of(context).dhuhr, 'dhuhr', settings.notifications['dhuhr'] ?? true, state),
+                  _buildNotificationTile(context, S.of(context).asr, 'asr', settings.notifications['asr'] ?? true, state),
+                  _buildNotificationTile(context, S.of(context).maghrib, 'maghrib', settings.notifications['maghrib'] ?? true, state),
+                  _buildNotificationTile(context, S.of(context).isha, 'isha', settings.notifications['isha'] ?? true, state),
+                ],
+              ),
+              _buildSection(
+                context,
+                title: S.of(context).prayerAdjustments,
+                icon: Icons.tune_outlined,
+                initiallyExpanded: false,
+                children: [
+                  _buildAdjustmentTile(context, S.of(context).fajr, 'fajr', adjustments['fajr'] ?? 0, state),
+                  _buildAdjustmentTile(context, S.of(context).sunrise, 'sunrise', adjustments['sunrise'] ?? 0, state),
+                  _buildAdjustmentTile(context, S.of(context).dhuhr, 'dhuhr', adjustments['dhuhr'] ?? 0, state),
+                  _buildAdjustmentTile(context, S.of(context).asr, 'asr', adjustments['asr'] ?? 0, state),
+                  _buildAdjustmentTile(context, S.of(context).maghrib, 'maghrib', adjustments['maghrib'] ?? 0, state),
+                  _buildAdjustmentTile(context, S.of(context).isha, 'isha', adjustments['isha'] ?? 0, state),
+                ],
+              ),
             ],
           );
         },
@@ -115,19 +154,21 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
     final adhanService = AdhanAudioService();
     final soundEnabled = state.settings.playAdhanSound;
 
+    // الاختيار يحدّث الراديو فوراً (emit فوري في الـ bloc) ويشغّل
+    // معاينة 10 ثوانٍ تلقائياً. الضغط على نفس المؤذن يعيد المعاينة.
     void selectMuadhin(String muadhinId) {
-      if (!soundEnabled || muadhinId == state.settings.muadhin) return;
-      final newSettings = state.settings.copyWith(muadhin: muadhinId);
-      context.read<PrayerTimesBloc>().add(UpdatePrayerSettings(newSettings));
+      if (!soundEnabled) return;
+      if (muadhinId != state.settings.muadhin) {
+        final newSettings = state.settings.copyWith(muadhin: muadhinId);
+        context.read<PrayerTimesBloc>().add(UpdatePrayerSettings(newSettings));
+      }
+      adhanService.previewAdhan(muadhinId);
     }
 
     return Opacity(
       opacity: soundEnabled ? 1.0 : 0.5,
-      child: RadioGroup<String>(
-        groupValue: state.settings.muadhin,
-        onChanged: (value) {
-          if (value != null) selectMuadhin(value);
-        },
+      child: IgnorePointer(
+        ignoring: !soundEnabled,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -136,6 +177,7 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
               child: Text(S.of(context).chooseMuadhin, style: Theme.of(context).textTheme.bodyMedium),
             ),
             ...adhanService.muadhins.entries.map((e) {
+              final isSelected = e.key == state.settings.muadhin;
               return StreamBuilder<String?>(
                 stream: adhanService.currentMuadhinStream,
                 builder: (context, muadhinSnapshot) {
@@ -146,51 +188,67 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
                     stream: adhanService.isPlayingStream,
                     builder: (context, playingSnapshot) {
                       final isPlaying = playingSnapshot.data ?? false;
-                      final showTimer = isPlaying && isThisMuadhinPlaying;
+                      final showStop = isPlaying && isThisMuadhinPlaying;
 
-                      return ListTile(
-                        title: Text(S.of(context).getValue(e.key)),
-                        leading: Radio<String>(value: e.key),
-                        onTap: soundEnabled ? () => selectMuadhin(e.key) : null,
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (showTimer) ...[
-                              StreamBuilder<Duration>(
-                                stream: adhanService.positionStream,
-                                builder: (context, posSnapshot) {
-                                  final position = posSnapshot.data ?? Duration.zero;
-                                  return StreamBuilder<Duration?>(
-                                    stream: adhanService.durationStream,
-                                    builder: (context, durSnapshot) {
-                                      final duration = durSnapshot.data ?? Duration.zero;
-                                      final progress = duration.inMilliseconds > 0
-                                          ? position.inMilliseconds / duration.inMilliseconds
-                                          : 0.0;
-                                      return SizedBox(
-                                        width: 32,
-                                        height: 32,
-                                        child: CircularProgressIndicator(
-                                          value: progress,
-                                          strokeWidth: 2,
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                              const SizedBox(width: 8),
-                              IconButton(
-                                icon: const Icon(Icons.stop_circle_outlined, color: Colors.red),
-                                onPressed: () => adhanService.stopAdhan(),
-                              ),
-                            ] else ...[
-                              IconButton(
-                                icon: const Icon(Icons.play_circle_outline),
-                                onPressed: soundEnabled ? () => adhanService.previewAdhan(e.key) : null,
-                              ),
+                      return Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.primaryContainer
+                            : null,
+                        child: ListTile(
+                          title: Text(
+                            S.of(context).getValue(e.key),
+                            style: TextStyle(
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            ),
+                          ),
+                          leading: Radio<String>(
+                            value: e.key,
+                            groupValue: state.settings.muadhin,
+                            onChanged: (value) {
+                              if (value != null) selectMuadhin(value);
+                            },
+                          ),
+                          onTap: () => selectMuadhin(e.key),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (showStop) ...[
+                                StreamBuilder<Duration>(
+                                  stream: adhanService.positionStream,
+                                  builder: (context, posSnapshot) {
+                                    final position = posSnapshot.data ?? Duration.zero;
+                                    return StreamBuilder<Duration?>(
+                                      stream: adhanService.durationStream,
+                                      builder: (context, durSnapshot) {
+                                        final duration = durSnapshot.data ?? Duration.zero;
+                                        final progress = duration.inMilliseconds > 0
+                                            ? position.inMilliseconds / duration.inMilliseconds
+                                            : 0.0;
+                                        return SizedBox(
+                                          width: 32,
+                                          height: 32,
+                                          child: CircularProgressIndicator(
+                                            value: progress,
+                                            strokeWidth: 2,
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                                const SizedBox(width: 8),
+                                IconButton(
+                                  icon: const Icon(Icons.stop_circle_outlined, color: Colors.red),
+                                  onPressed: () => adhanService.stopAdhan(),
+                                ),
+                              ] else
+                                Icon(
+                                  Icons.play_circle_outline,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                             ],
-                          ],
+                          ),
                         ),
                       );
                     },
@@ -261,7 +319,7 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
         onPressed: () async {
           final targetTime = DateTime.now().add(const Duration(minutes: 2));
 
-          await _countdownChannel.invokeMethod('startCountdown', {
+          await PrayerAdjustmentsScreen._countdownChannel.invokeMethod('startCountdown', {
             'targetTimeMillis': targetTime.millisecondsSinceEpoch,
             'prayerName': 'اختبار',
             'title': 'عد تنازلي',
@@ -297,15 +355,27 @@ class PrayerAdjustmentsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionTitle(BuildContext context, String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-              fontWeight: FontWeight.bold,
-            ),
+  Widget _buildSection(
+    BuildContext context, {
+    required String title,
+    required IconData icon,
+    required bool initiallyExpanded,
+    required List<Widget> children,
+  }) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ExpansionTile(
+        leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
+        title: Text(
+          title,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        initiallyExpanded: initiallyExpanded,
+        childrenPadding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
+        children: children,
       ),
     );
   }

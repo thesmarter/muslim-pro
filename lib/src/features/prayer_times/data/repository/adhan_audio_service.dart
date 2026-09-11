@@ -92,6 +92,11 @@ class AdhanAudioService {
 
   int _playToken = 0;
   Timer? _previewStopTimer;
+  bool _isPreview = false;
+
+  /// true أثناء معاينة 10 ثوانٍ من الشاشة — تُستخدم لإيقاف المعاينة
+  /// فقط عند مغادرة الشاشة دون المساس بأذان حقيقي.
+  bool get isPreview => _isPreview;
 
   Future<void> playAdhan(String muadhinId, {double? volumeOverride}) async {
     final int token = ++_playToken;
@@ -158,6 +163,7 @@ class AdhanAudioService {
   Future<void> stopAdhan() async {
     ++_playToken;
     _previewStopTimer?.cancel();
+    _isPreview = false;
     try {
       if (_player.processingState != ProcessingState.idle) {
         await _player.stop();
@@ -173,6 +179,7 @@ class AdhanAudioService {
 
   Future<void> previewAdhan(String muadhinId) async {
     await stopAdhan();
+    _isPreview = true;
     double? override;
     try {
       final settings = sl<PrayerTimesRepo>().getSettings();
