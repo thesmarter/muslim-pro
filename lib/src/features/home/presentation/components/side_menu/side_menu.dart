@@ -44,6 +44,7 @@ class SideMenu extends StatelessWidget {
                               leading: const Icon(Icons.onetwothree),
                               title: Text(S.of(context).tally),
                               onTap: () {
+                                ZoomDrawer.of(context)?.close();
                                 context.push(const TallyDashboardScreen());
                               },
                             ),
@@ -68,6 +69,7 @@ class SideMenu extends StatelessWidget {
                             leading: const Icon(Icons.menu_book),
                             title: Text(S.of(context).fakeHadith),
                             onTap: () {
+                              ZoomDrawer.of(context)?.close();
                               context.push(const FakeHadithDashboardScreen());
                             },
                           ),
@@ -85,6 +87,7 @@ class SideMenu extends StatelessWidget {
                               leading: const Icon(Icons.settings),
                               title: Text(S.of(context).settings),
                               onTap: () {
+                                ZoomDrawer.of(context)?.close();
                                 context.push(const SettingsScreen());
                               },
                             ),

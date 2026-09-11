@@ -261,7 +261,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                 floatingActionButton: AnimatedBuilder(
                   animation: _navController,
                   builder: (context, child) {
-                    final isFabVisible = _isFabVisible(arrangement);
+                    final isFabVisible = _isFabVisible(arrangement) &&
+                        (ModalRoute.of(context)?.isCurrent ?? true);
                     return AnimatedSwitcher(
                       duration: const Duration(milliseconds: 300),
                       child: isFabVisible

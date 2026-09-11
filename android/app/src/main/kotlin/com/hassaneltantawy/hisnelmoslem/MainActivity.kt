@@ -89,6 +89,20 @@ class MainActivity : AudioServiceActivity() {
                             action = CountdownForegroundService.ACTION_STOP
                         }
                         startService(intent)
+                        CountdownAlarmReceiver.cancel(this@MainActivity)
+                        result.success(true)
+                    }
+                    "scheduleStart" -> {
+                        val args = call.arguments as Map<*, *>
+                        CountdownAlarmReceiver.schedule(
+                            this@MainActivity,
+                            timestamp = (args["timestamp"] as Number).toLong(),
+                            prayerTimeMillis = (args["prayerTimeMillis"] as Number).toLong(),
+                            prayerName = args["prayerName"] as? String ?: "",
+                            isPre = args["isPre"] as? Boolean ?: true,
+                            city = args["city"] as? String ?: "",
+                            country = args["country"] as? String ?: "",
+                        )
                         result.success(true)
                     }
                     "isRunning" -> {

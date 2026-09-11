@@ -1,4 +1,5 @@
 // ignore_for_file: unreachable_from_main
+import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -23,6 +24,8 @@ import 'package:muslim/src/features/themes/data/repository/theme_repo.dart';
 import 'package:muslim/src/features/ui/data/repository/local_repo.dart';
 import 'package:quran_library/quran_library.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:window_manager/window_manager.dart';
 
 @pragma('vm:entry-point')
@@ -42,6 +45,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 @pragma('vm:entry-point')
 Future<void> prayerMaintenanceMain() async {
   WidgetsFlutterBinding.ensureInitialized();
+  bool storageOk = false;
+  bool tzOk = false;
+  bool scheduledOk = false;
   try {
     service_locator.initSL();
 
@@ -49,20 +55,52 @@ Future<void> prayerMaintenanceMain() async {
 
     try {
       await GetStorage.init(kAppStorageKey);
-      await sl<LocalNotificationManager>().init();
+      storageOk = true;
     } catch (e) {
-      hisnPrint(e);
+      hisnPrint("Prayer maintenance storage init failed: $e");
     }
 
-    final repo = sl<PrayerTimesRepo>();
-    final settings = repo.getSettings();
-    await repo.schedulePrayerNotifications(settings);
-    hisnPrint("Daily prayer times reschedule completed in background.");
+    try {
+      await sl<LocalNotificationManager>().init();
+      tzOk = true;
+    } catch (e) {
+      hisnPrint("Prayer maintenance notification init failed: $e, trying tz UTC fallback.");
+      try {
+        tz.initializeTimeZones();
+        tz.setLocalLocation(tz.getLocation('UTC'));
+        tzOk = true;
+        hisnPrint("Prayer maintenance tz fallback to UTC initialized.");
+      } catch (e2) {
+        hisnPrint("Prayer maintenance tz UTC fallback failed: $e2");
+      }
+    }
+
+    try {
+      final repo = sl<PrayerTimesRepo>();
+      final settings = repo.getSettings();
+      if (settings.latitude == 0 && settings.longitude == 0) {
+        hisnPrint("Prayer maintenance skipped: lat/lng not set (0,0), no empty schedule.");
+      } else {
+        await repo.schedulePrayerNotifications(settings);
+        scheduledOk = true;
+        hisnPrint("Daily prayer times reschedule completed in background.");
+      }
+    } catch (e) {
+      hisnPrint("Prayer maintenance schedule failed: $e");
+    }
   } catch (e) {
     hisnPrint("Prayer maintenance error: $e");
   }
   try {
-    await const MethodChannel('prayer_maintenance').invokeMethod('done');
+    if (scheduledOk) {
+      await const MethodChannel('prayer_maintenance').invokeMethod('done');
+    } else {
+      hisnPrint(
+        "Prayer maintenance reporting failed "
+        "(storageOk=$storageOk, tzOk=$tzOk, scheduledOk=$scheduledOk).",
+      );
+      await const MethodChannel('prayer_maintenance').invokeMethod('failed');
+    }
   } catch (_) {}
 }
 
@@ -70,26 +108,46 @@ Future<void> prayerMaintenanceMain() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  Bloc.observer = AppBlocObserver();
+
+  // GetX يحتاج مفتاح التنقل قبل أي استخدام لـ Get.context داخل quran_library.
+  Get.addKey(App.navigatorKey);
+
+  // تسجيل الاعتماديات — ننتظره لضمان sl<PackageInfo>() جاهز في app.dart.
+  // التكلفة ~50ms فقط؛ الثقيل الحقيقي (قرآن/إشعارات) أصبح في الخلفية.
+  await service_locator.initSL();
+
+  // الترتيب الصحيح: التخزين أولاً، ثم الترجمات التي تقرأ منه.
+  try {
+    await GetStorage.init(kAppStorageKey);
+  } catch (e) {
+    hisnPrint(e);
+  }
+
+  await loadLocalizations();
+
+  // كل ما هو ثقيل يعمل في الخلفية بدون حجب أول فريم.
+  _initHeavyInBackground();
+
+  unawaited(phoneDeviceBars());
+
+  if (PlatformExtension.isDesktopOrWeb) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+
+  await initWindowsManager();
+}
+
+/// تهيئة ثقيلة غير حاجبة: قرآن + إشعارات + أذان + Firebase + جدولة الصلوات.
+Future<void> _initHeavyInBackground() async {
   try {
     await QuranLibrary.init();
   } catch (e) {
     hisnPrint("Error initializing QuranLibrary: $e");
   }
 
-  // quran_library تعتمد على GetX داخليًا (Get.context / Get.overlayContext)
-  // والتطبيق يستخدم MaterialApp عادية وليس GetMaterialApp، لذلك نربط مفتاح
-  // التنقل الخاص بالتطبيق بـ GetX لتفادي انهيار "Null check operator" في
-  // مسارات المكتبة التي تستخدم Get.context! (مثل صوت الكلمات بدون إنترنت).
-  Get.addKey(App.navigatorKey);
-
-  Bloc.observer = AppBlocObserver();
-
-  service_locator.initSL();
-  
-  await loadLocalizations();
-  
   try {
-    await GetStorage.init(kAppStorageKey);
     await sl<LocalNotificationManager>().init();
     await sl<AdhanAudioService>().init();
   } catch (e) {
@@ -111,15 +169,6 @@ Future<void> initServices() async {
 
   // تشغيل إعدادات Firebase في الخلفية بدون تعطيل تشغيل التطبيق
   _setupFirebase();
-
-  await phoneDeviceBars();
-
-  if (PlatformExtension.isDesktopOrWeb) {
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
-  }
-
-  await initWindowsManager();
 }
 
 Future<void> _setupFirebase() async {

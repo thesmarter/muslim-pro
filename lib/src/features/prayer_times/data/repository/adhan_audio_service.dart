@@ -59,8 +59,8 @@ class AdhanAudioService {
         contentType: AndroidAudioContentType.music,
         usage: AndroidAudioUsage.alarm,
       ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gainTransientMayDuck,
-      androidWillPauseWhenDucked: true,
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gainTransientExclusive,
+      androidWillPauseWhenDucked: false,
     ));
     await session.setActive(true);
 
@@ -90,16 +90,23 @@ class AdhanAudioService {
     hisnPrint("Adhan audio player initialized");
   }
 
-  bool _isLoading = false;
+  int _playToken = 0;
+  Timer? _previewStopTimer;
 
-  Future<void> playAdhan(String muadhinId) async {
-    if (_isLoading) {
-      hisnPrint("Playback request ignored: Already loading an asset");
-      return;
+  Future<void> playAdhan(String muadhinId, {double? volumeOverride}) async {
+    final int token = ++_playToken;
+    _previewStopTimer?.cancel();
+
+    if (!_isInitialized) {
+      try {
+        await init();
+      } catch (e) {
+        hisnPrint("Adhan player init failed: $e");
+      }
     }
+    if (token != _playToken) return;
 
     try {
-      _isLoading = true;
       hisnPrint("playAdhan requested for: $muadhinId");
       final soundPath = muadhins[muadhinId] ?? muadhins['wadie_alyamani']!;
       hisnPrint("Resolved sound path: $soundPath");
@@ -108,44 +115,49 @@ class AdhanAudioService {
         hisnPrint("Stopping current playback/loading before new request");
         await _player.stop();
       }
+      if (token != _playToken) return;
 
       _currentPlayingMuadhinId = muadhinId;
       _currentMuadhinSubject.add(muadhinId);
 
       hisnPrint("Setting asset: $soundPath");
       await _player.setAsset(soundPath);
+      if (token != _playToken) return;
 
       final settings = sl<PrayerTimesRepo>().getSettings();
-      await _player.setVolume(settings.adhanVolume);
-      hisnPrint("Volume confirmed at: ${settings.adhanVolume}");
+      final double volume = volumeOverride ?? settings.adhanVolume;
+      await _player.setVolume(volume);
+      hisnPrint("Volume confirmed at: $volume");
 
       hisnPrint("Starting playback");
       await _player.play();
 
       hisnPrint("Successfully playing Adhan: $muadhinId");
     } on PlayerException catch (e) {
+      if (token != _playToken) return;
       _currentPlayingMuadhinId = null;
       _currentMuadhinSubject.add(null);
       hisnPrint("PlayerException ($muadhinId): ${e.code} - ${e.message}");
       if (muadhinId != 'wadie_alyamani') {
         hisnPrint("Attempting fallback to default muadhin...");
-        _isLoading = false;
-        await playAdhan('wadie_alyamani');
+        await playAdhan('wadie_alyamani', volumeOverride: volumeOverride);
       }
     } on PlayerInterruptedException catch (e) {
+      hisnPrint("Playback interrupted (superseded?): ${e.message}");
+      if (token != _playToken) return;
       _currentPlayingMuadhinId = null;
       _currentMuadhinSubject.add(null);
-      hisnPrint("Connection interrupted: ${e.message}");
     } catch (e) {
+      if (token != _playToken) return;
       _currentPlayingMuadhinId = null;
       _currentMuadhinSubject.add(null);
       hisnPrint("Unexpected error playing adhan: $e");
-    } finally {
-      _isLoading = false;
     }
   }
 
   Future<void> stopAdhan() async {
+    ++_playToken;
+    _previewStopTimer?.cancel();
     try {
       if (_player.processingState != ProcessingState.idle) {
         await _player.stop();
@@ -161,8 +173,14 @@ class AdhanAudioService {
 
   Future<void> previewAdhan(String muadhinId) async {
     await stopAdhan();
-    await playAdhan(muadhinId);
-    Future.delayed(const Duration(seconds: 10), () {
+    double? override;
+    try {
+      final settings = sl<PrayerTimesRepo>().getSettings();
+      if (settings.adhanVolume <= 0) override = 0.5;
+    } catch (_) {}
+    await playAdhan(muadhinId, volumeOverride: override);
+    _previewStopTimer?.cancel();
+    _previewStopTimer = Timer(const Duration(seconds: 10), () {
       if (_player.playing) {
         stopAdhan();
       }

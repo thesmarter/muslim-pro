@@ -45,6 +45,9 @@ class AppState extends State<App> {
   void initState() {
     super.initState();
     _initNotifications();
+    Future.delayed(const Duration(seconds: 6), () {
+      try { App.navigatorKey.currentContext?.read<UpdateCubit>().checkForUpdate(); } catch (_) {}
+    });
   }
 
   Future<void> _initNotifications() async {
@@ -74,7 +77,7 @@ class AppState extends State<App> {
         BlocProvider(create: (context) => sl<SearchCubit>()..start()),
         BlocProvider(create: (_) => sl<ZikrAudioPlayerCubit>()),
         BlocProvider(create: (_) => sl<BackupRestoreCubit>()),
-        BlocProvider(create: (_) => sl<UpdateCubit>()..checkForUpdate()),
+        BlocProvider(create: (_) => sl<UpdateCubit>()),
         BlocProvider(create: (_) => sl<PrayerTimesBloc>()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(

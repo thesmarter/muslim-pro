@@ -11,7 +11,9 @@ import org.json.JSONArray
 class AdhanBootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED ||
-            intent.action == Intent.ACTION_MY_PACKAGE_REPLACED
+            intent.action == Intent.ACTION_MY_PACKAGE_REPLACED ||
+            intent.action == "android.intent.action.QUICKBOOT_POWERON" ||
+            intent.action == "com.htc.intent.action.QUICKBOOT_POWERON"
         ) {
             rescheduleAll(context)
             // AlarmManager alarms do not survive power-off, so re-arm the
@@ -43,8 +45,13 @@ class AdhanBootReceiver : BroadcastReceiver() {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
                 try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                        !alarmManager.canScheduleExactAlarms()
+                    ) {
+                        throw SecurityException("Exact alarms not allowed")
+                    }
                     alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timestamp, pending)
-                } catch (_: SecurityException) {
+                } catch (_: Exception) {
                     try {
                         alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timestamp, pending)
                     } catch (_: Exception) {}

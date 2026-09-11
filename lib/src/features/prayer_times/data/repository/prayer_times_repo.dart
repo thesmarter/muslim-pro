@@ -20,7 +20,7 @@ class PrayerTimesRepo {
   static const String defaultMuadhin = 'wadie_alyamani';
 
   static const int _adhanIdBase = 3000;
-  static const int _adhanScheduleDays = 30;
+  static const int _adhanScheduleDays = 7;
 
   static const int _sunriseScheduleBaseId = 2000;
   static const int _preAdhanScheduledBaseId = 7000;
@@ -73,7 +73,7 @@ class PrayerTimesRepo {
         : defaultMuadhin;
 
     // ─────────────────────────────────────────────────────
-    // 1. ADHAN PRAYERS: Schedule 30 days ahead via native AlarmManager
+    // 1. ADHAN PRAYERS: Schedule 7 days ahead via native AlarmManager
     //    فجر, ظهر, عصر, مغرب, عشاء
     // ─────────────────────────────────────────────────────
     final adhanPrayers = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
@@ -155,7 +155,7 @@ class PrayerTimesRepo {
 
     // ─────────────────────────────────────────────────────
     // 4. DAILY MAINTENANCE (Android): recompute everything tomorrow
-    //    after midnight so the 30-day window never lapses and all
+    //    after midnight so the 7-day window never lapses and all
     //    times stay accurate as they drift through the year.
     // ─────────────────────────────────────────────────────
     if (Platform.isAndroid) {
@@ -178,7 +178,7 @@ class PrayerTimesRepo {
     final adhanPrayers = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
 
     // ─────────────────────────────────────────────────────
-    // Schedule pre-adhan and post-adhan notifications for ALL 30 days
+    // Schedule pre-adhan and post-adhan notifications for ALL 7 days
     // using zonedSchedule (persists across app restarts)
     // ─────────────────────────────────────────────────────
     for (int dayOffset = 0; dayOffset < _adhanScheduleDays; dayOffset++) {
@@ -287,6 +287,14 @@ class PrayerTimesRepo {
       final prayerName = SX.current.getValue(prayerKey);
 
       if (now.isBefore(prayerTime)) {
+        final windowStart =
+            prayerTime.subtract(const Duration(minutes: _preAdhanMinutes));
+        await countdownService.scheduleNativeCountdownStart(
+          windowStart: windowStart,
+          prayerName: prayerName,
+          prayerTime: prayerTime,
+          isPre: true,
+        );
         await countdownService.startPreAdhanCountdown(
           prayerIndex: pIndex,
           prayerName: prayerName,

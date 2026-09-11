@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
 import 'package:muslim/src/features/home/presentation/components/side_menu/shared.dart';
@@ -23,6 +24,7 @@ class QuranSection extends StatelessWidget {
               leading: const Icon(Icons.menu_book),
               title: Text(S.of(context).sourceQuran),
               onTap: () {
+                ZoomDrawer.of(context)?.close();
                 context.push(const QuranReadScreen());
               },
             ),
@@ -31,6 +33,7 @@ class QuranSection extends StatelessWidget {
               leading: const Icon(Icons.auto_stories),
               title: Text(S.of(context).endSuraAliImran),
               onTap: () {
+                ZoomDrawer.of(context)?.close();
                 context.push(const QuranReadScreen(startPage: 75));
               },
             ),
@@ -38,6 +41,7 @@ class QuranSection extends StatelessWidget {
               leading: const Icon(Icons.auto_stories),
               title: Text(S.of(context).suraAlKahf),
               onTap: () {
+                ZoomDrawer.of(context)?.close();
                 context.push(const QuranReadScreen(startPage: 293));
               },
             ),
@@ -45,6 +49,7 @@ class QuranSection extends StatelessWidget {
               leading: const Icon(Icons.auto_stories),
               title: Text(S.of(context).suraAsSajdah),
               onTap: () {
+                ZoomDrawer.of(context)?.close();
                 context.push(const QuranReadScreen(startPage: 415));
               },
             ),
@@ -52,6 +57,7 @@ class QuranSection extends StatelessWidget {
               leading: const Icon(Icons.auto_stories),
               title: Text(S.of(context).suraAlMulk),
               onTap: () {
+                ZoomDrawer.of(context)?.close();
                 context.push(const QuranReadScreen(startPage: 562));
               },
             ),

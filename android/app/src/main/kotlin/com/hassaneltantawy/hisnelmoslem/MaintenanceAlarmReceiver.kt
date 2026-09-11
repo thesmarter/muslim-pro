@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -41,8 +42,13 @@ class MaintenanceAlarmReceiver : BroadcastReceiver() {
             val am = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val pi = pendingIntent(context)
             try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                    !am.canScheduleExactAlarms()
+                ) {
+                    throw SecurityException("Exact alarms not allowed")
+                }
                 am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, trigger, pi)
-            } catch (_: SecurityException) {
+            } catch (_: Exception) {
                 try {
                     am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, trigger, pi)
                 } catch (_: Exception) {}

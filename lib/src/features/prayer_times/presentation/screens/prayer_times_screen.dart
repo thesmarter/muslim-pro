@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
@@ -35,6 +37,63 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         });
       }
     });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _requestNotificationPermissions();
+    });
+  }
+
+  Future<void> _requestNotificationPermissions() async {
+    try {
+      final plugin = FlutterLocalNotificationsPlugin();
+      try {
+        if (Platform.isAndroid) {
+          final android = plugin
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>();
+          await android?.requestNotificationsPermission();
+        } else if (Platform.isIOS) {
+          final ios = plugin.resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>();
+          await ios?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+        }
+      } catch (_) {}
+
+      bool canScheduleExact = true;
+      try {
+        if (Platform.isAndroid) {
+          final android = plugin
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>();
+          canScheduleExact =
+              await android?.canScheduleExactNotifications() ?? true;
+          if (!canScheduleExact) {
+            await android?.requestExactAlarmsPermission();
+            canScheduleExact =
+                await android?.canScheduleExactNotifications() ?? false;
+          }
+        }
+      } catch (_) {
+        return;
+      }
+
+      if (!mounted || canScheduleExact) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text(
+            'تعذّر منح إذن التنبيه الدقيق — قد تتأخر الإشعارات دقائق. افتح الإعدادات للسماح.',
+          ),
+          duration: const Duration(seconds: 6),
+          action: SnackBarAction(
+            label: 'إغلاق',
+            onPressed: () {},
+          ),
+        ),
+      );
+    } catch (_) {}
   }
 
   void _showPermissionExplanationDialog() {

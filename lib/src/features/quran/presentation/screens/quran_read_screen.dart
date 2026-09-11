@@ -72,7 +72,7 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
           topBarStyle:
               QuranTopBarStyle.defaults(isDark: isDark, context: context)
                   .copyWith(
-            showBackButton: isPushedRoute,
+            showBackButton: true,
             showAudioButton: true,
             showFontsButton: true,
             tabBookmarksLabel: S.of(context).favoritesContent,

@@ -20,6 +20,10 @@ class CountdownNotificationService {
 
   static const int _postAdhanDurationMinutes = 10;
 
+  /// Foreground-only entry point: starts the native countdown immediately
+  /// when its window is already active. Future windows must NOT rely on a
+  /// Dart [Timer] (dies in background/Doze) — they go through
+  /// [scheduleNativeCountdownStart] which arms a native alarm instead.
   Future<void> startPreAdhanCountdown({
     required int prayerIndex,
     required String prayerName,
@@ -45,18 +49,17 @@ class CountdownNotificationService {
     }
 
     if (now.isBefore(countdownStartTime)) {
-      final delay = countdownStartTime.difference(now);
-      _chainingTimers[_preAdhanCountdownBaseId + prayerIndex] = Timer(delay, () {
-        _startNativeCountdown(
-          id: _preAdhanCountdownBaseId + prayerIndex,
-          targetTime: adhanTime,
-          prayerName: prayerName,
-          title: SX.current.adhanCountdownTitle(prayerName),
-          cityName: cityName,
-          countryName: countryName,
-          onComplete: onAdhanReached,
-        );
-      });
+      // Background-safe path: a Dart Timer(delay) dies in background/Doze,
+      // so plant a native alarm that starts CountdownForegroundService at
+      // windowStart even if the app is dead.
+      await scheduleNativeCountdownStart(
+        windowStart: countdownStartTime,
+        prayerName: prayerName,
+        prayerTime: adhanTime,
+        isPre: true,
+        cityName: cityName,
+        countryName: countryName,
+      );
     } else if (now.isBefore(adhanTime)) {
       _startNativeCountdown(
         id: _preAdhanCountdownBaseId + prayerIndex,
@@ -67,6 +70,37 @@ class CountdownNotificationService {
         countryName: countryName,
         onComplete: onAdhanReached,
       );
+    }
+  }
+
+  /// Background-safe starter: arms a native alarm via
+  /// MethodChannel('countdown_service') event `scheduleStart` carrying the
+  /// window timestamp, so the OS starts CountdownForegroundService at
+  /// [windowStart] even if the app is dead or the device is in Doze.
+  /// Native: MainActivity → CountdownAlarmReceiver (exact/inexact alarm) →
+  /// CountdownForegroundService. Same fire-and-forget pattern as
+  /// AdhanAudioService.scheduleMaintenanceAlarm.
+  Future<void> scheduleNativeCountdownStart({
+    required DateTime windowStart,
+    required String prayerName,
+    required DateTime prayerTime,
+    required bool isPre,
+    String? cityName,
+    String? countryName,
+  }) async {
+    try {
+      await _channel.invokeMethod('scheduleStart', {
+        'timestamp': windowStart.millisecondsSinceEpoch,
+        'windowStartMillis': windowStart.millisecondsSinceEpoch,
+        'prayerTimeMillis': prayerTime.millisecondsSinceEpoch,
+        'prayerName': prayerName,
+        'isPre': isPre,
+        'city': cityName ?? '',
+        'country': countryName ?? '',
+      });
+      hisnPrint("Scheduled native countdown start for $prayerName at $windowStart");
+    } catch (e) {
+      hisnPrint("Error scheduling native countdown start: $e");
     }
   }
 
@@ -174,13 +208,16 @@ class CountdownNotificationService {
     });
 
     if (onComplete != null) {
-      final remaining = targetTime.difference(DateTime.now());
-      if (remaining.inMilliseconds > 0) {
-        _chainingTimers[id] = Timer(remaining, () {
-          _chainingTimers.remove(id);
-          onComplete.call();
-        });
-      }
+      // Background-safe chaining: Timer(remaining) dies in background/Doze,
+      // so hand the post-adhan window to the OS via a native alarm instead.
+      unawaited(scheduleNativeCountdownStart(
+        windowStart: targetTime,
+        prayerName: prayerName,
+        prayerTime: targetTime,
+        isPre: false,
+        cityName: cityName,
+        countryName: countryName,
+      ));
     }
   }
 

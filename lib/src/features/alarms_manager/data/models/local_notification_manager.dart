@@ -62,17 +62,7 @@ Future<void> onDidReceiveNotificationResponse(
   }
 
   if (payload != null && payload.isNotEmpty) {
-    if (payload.startsWith('adhan_') || payload.startsWith('test_adhan_')) {
-      try {
-        await sl<AdhanAudioService>().stopAdhan();
-        await sl<AdhanAudioService>().stopNativeAdhan();
-      } catch (e) {
-        log("Error stopping adhan on tap: $e");
-      }
-      LocalNotificationManager.onNotificationClick(payload);
-    } else {
-      LocalNotificationManager.onNotificationClick(payload);
-    }
+    LocalNotificationManager.onNotificationClick(payload);
   }
 }
 
