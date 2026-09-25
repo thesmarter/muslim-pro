@@ -50,6 +50,7 @@ app.*.map.json
 # Signing secrets — never commit (see .github/workflows/SETUP-GUIDE.md)
 /android/key.properties
 /android/*.jks
+/android/app/*.jks
 /android/local.properties
 /android/app/google-services.json
 
