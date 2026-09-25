@@ -12,6 +12,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.IBinder
 import android.os.PowerManager
+import android.util.Log
 import androidx.core.app.NotificationCompat
 
 class AdhanForegroundService : Service() {
@@ -27,10 +28,12 @@ class AdhanForegroundService : Service() {
 
         private var mediaPlayer: MediaPlayer? = null
         private var wakeLock: PowerManager.WakeLock? = null
+        private const val TAG = "AdhanAudio"
 
-        fun stopAndRelease() {
+        fun stopAndRelease(reason: String = "unspecified") {
             try {
                 mediaPlayer?.apply {
+                    Log.i(TAG, "stopAndRelease(reason=$reason, pos=${currentPosition}ms, dur=${duration}ms, playing=$isPlaying)")
                     if (isPlaying) stop()
                     release()
                 }
@@ -66,6 +69,7 @@ class AdhanForegroundService : Service() {
                 val repeat = intent?.getBooleanExtra(EXTRA_REPEAT, false) ?: false
 
                 val notification = buildNotification(prayerName)
+                Log.i(TAG, "onStartCommand(muadhin=$muadhin, prayer=$prayerName, playSound=$playSound, repeat=$repeat)")
                 startForeground(NOTIFICATION_ID, notification)
                 if (playSound) {
                     playAdhan(muadhin, volume, repeat)
@@ -78,7 +82,8 @@ class AdhanForegroundService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onDestroy() {
-        stopAndRelease()
+        Log.i(TAG, "onDestroy")
+        stopAndRelease("onDestroy")
         super.onDestroy()
     }
 
@@ -143,7 +148,7 @@ class AdhanForegroundService : Service() {
     }
 
     private fun playResource(resId: Int, volume: Float, repeat: Boolean) {
-        stopAndRelease()
+        stopAndRelease("new-playback")
 
         val player = MediaPlayer().apply {
             setAudioAttributes(
@@ -160,6 +165,9 @@ class AdhanForegroundService : Service() {
             // "تكرار الأذان حتى الإيقاف اليدوي": أعد التشغيل من البداية
             // بدل الإيقاف، ويبقى زر الإيقاف في الإشعار هو المخرج الوحيد.
             setOnCompletionListener {
+                val pos = try { currentPosition } catch (_: Exception) { -1 }
+                val dur = try { duration } catch (_: Exception) { -1 }
+                Log.i(TAG, "onCompletion(pos=${pos}ms, dur=${dur}ms, repeat=$repeat)")
                 if (repeat) {
                     try {
                         seekTo(0)
@@ -171,7 +179,10 @@ class AdhanForegroundService : Service() {
                     stopSelf()
                 }
             }
-            setOnErrorListener { _, _, _ -> stopSelf(); true }
+            setOnErrorListener { what, extra, _ ->
+                Log.e(TAG, "onError(what=$what, extra=$extra)")
+                stopSelf(); true
+            }
 
             start()
         }
