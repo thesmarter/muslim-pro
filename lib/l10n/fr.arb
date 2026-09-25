@@ -409,5 +409,14 @@
   "calcMethod_qatar": "Qatar",
   "calcMethod_singapore": "Singapour",
   "calcMethod_tehran": "Institut de Géophysique, Université de Téhéran",
-  "calcMethod_turkey": "Turquie"
+  "calcMethod_turkey": "Turquie",
+  "countdownTestStarted": "Compte à rebours lancé pour deux minutes",
+  "countdownTestPrayerName": "Test",
+  "countdownTestTitle": "Compte à rebours",
+  "countdownTestCity": "Riyad",
+  "countdownTestCountry": "Arabie Saoudite",
+  "countdownTestHeader": "Riyad - Test du compte à rebours",
+  "shareImageFadl": "🏆 Mérite : {value}",
+  "shareImageSource": "📚 Source : {source}",
+  "shareImageCount": "🔢 Nombre de dhikr : {count}"
 }

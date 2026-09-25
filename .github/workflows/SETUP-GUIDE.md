@@ -24,7 +24,7 @@ Copy the output and add it as a secret named `KEYSTORE_BASE64`.
 The password for your keystore.
 
 ```
-***REMOVED***
+<your-keystore-password - set your own value in GitHub Secrets>
 ```
 
 ### 3. KEY_ALIAS
@@ -40,7 +40,7 @@ DetaTech
 The password for your key.
 
 ```
-***REMOVED***
+<your-key-password - set your own value in GitHub Secrets>
 ```
 
 ### 5. GOOGLE_PLAY_SERVICE_ACCOUNT_JSON

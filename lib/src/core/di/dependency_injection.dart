@@ -89,6 +89,7 @@ Future<void> initSL() async {
       tallyDatabaseHelper: sl(),
       alarmDatabaseHelper: sl(),
       fakeHadithDBHelper: sl(),
+      box: sl(),
     ),
   );
 

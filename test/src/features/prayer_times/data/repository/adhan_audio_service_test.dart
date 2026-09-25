@@ -1,29 +1,66 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:muslim/src/features/prayer_times/data/repository/adhan_audio_service.dart';
 
 void main() {
+  // just_audio / audio_session create a MethodChannel handler in their
+  // constructors, which requires a binding. Without this the service
+  // singleton throws "Cannot set the method call handler before the binary
+  // messenger has been initialized".
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUpAll(() {
+    // Headless note: there is no native audio implementation in `flutter test`.
+    // AudioSession.instance catches MissingPluginException internally, but we
+    // still install no-op handlers so constructing AdhanAudioService (which
+    // creates an AudioPlayer) never surfaces unhandled channel errors.
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+      const MethodChannel('adhan_scheduler'),
+      (MethodCall call) async => null,
+    );
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+      const MethodChannel('com.ryanheise.audio_session'),
+      (MethodCall call) async => null,
+    );
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+      const MethodChannel('com.ryanheise.just_audio.methods'),
+      (MethodCall call) async => <String, dynamic>{},
+    );
+  });
+
   late AdhanAudioService adhanService;
 
   setUp(() {
     adhanService = AdhanAudioService();
-    // Since it's a singleton, we might need a way to inject the player for testing
-    // or just test the logic that doesn't strictly depend on the internal player instance
-    // but for a better test, I'll assume I can access the player if I modify the service slightly
-    // or I'll just test the public interface.
   });
 
   group('AdhanAudioService Tests', () {
     test('muadhins map contains expected keys', () {
-      expect(adhanService.muadhins.containsKey('mishary'), true);
-      expect(adhanService.muadhins.containsKey('abdulbasit'), true);
-      expect(adhanService.muadhins.containsKey('nasser'), true);
+      for (final id in <String>[
+        'siddiq_hamdoun',
+        'abdul_basit',
+        'farooq_hadrawi',
+        'noreen_mohammed',
+        'wadie_alyamani',
+        'yasser_alhouri',
+      ]) {
+        expect(adhanService.muadhins.containsKey(id), true, reason: 'missing $id');
+      }
+      expect(adhanService.muadhins.length, 6);
     });
 
     test('muadhins paths are correct', () {
-      expect(adhanService.muadhins['mishary'], 'assets/sounds/adhan_mishary.mp3');
+      expect(adhanService.muadhins['wadie_alyamani'],
+          'assets/sounds/azhan/wadie_alyamani.mp3');
+      expect(adhanService.muadhins['abdul_basit'],
+          'assets/sounds/azhan/abdul_basit.mp3');
+      // Every entry follows assets/sounds/azhan/<id>.mp3.
+      for (final entry in adhanService.muadhins.entries) {
+        expect(entry.value, 'assets/sounds/azhan/${entry.key}.mp3');
+      }
     });
-    
-    // Additional tests would go here, potentially mocking the player internals
-    // if the service allowed dependency injection of the player.
   });
 }

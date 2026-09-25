@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -169,13 +168,18 @@ class _PrayerAdjustmentsScreenState extends State<PrayerAdjustmentsScreen> {
       opacity: soundEnabled ? 1.0 : 0.5,
       child: IgnorePointer(
         ignoring: !soundEnabled,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Text(S.of(context).chooseMuadhin, style: Theme.of(context).textTheme.bodyMedium),
-            ),
+        child: RadioGroup<String>(
+          groupValue: state.settings.muadhin,
+          onChanged: (value) {
+            if (value != null) selectMuadhin(value);
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Text(S.of(context).chooseMuadhin, style: Theme.of(context).textTheme.bodyMedium),
+              ),
             ...adhanService.muadhins.entries.map((e) {
               final isSelected = e.key == state.settings.muadhin;
               return StreamBuilder<String?>(
@@ -204,10 +208,6 @@ class _PrayerAdjustmentsScreenState extends State<PrayerAdjustmentsScreen> {
                           ),
                           leading: Radio<String>(
                             value: e.key,
-                            groupValue: state.settings.muadhin,
-                            onChanged: (value) {
-                              if (value != null) selectMuadhin(value);
-                            },
                           ),
                           onTap: () => selectMuadhin(e.key),
                           trailing: Row(
@@ -256,7 +256,8 @@ class _PrayerAdjustmentsScreenState extends State<PrayerAdjustmentsScreen> {
                 },
               );
             }),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -307,33 +308,34 @@ class _PrayerAdjustmentsScreenState extends State<PrayerAdjustmentsScreen> {
   }
 
   Widget _buildCountdownTestButton(BuildContext context) {
+    final s = S.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
       child: ElevatedButton.icon(
         icon: const Icon(Icons.timer),
-        label: Text(S.of(context).testCountdown),
+        label: Text(s.testCountdown),
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFFE53935),
-          foregroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.error,
+          foregroundColor: Theme.of(context).colorScheme.onError,
         ),
         onPressed: () async {
           final targetTime = DateTime.now().add(const Duration(minutes: 2));
 
           await PrayerAdjustmentsScreen._countdownChannel.invokeMethod('startCountdown', {
             'targetTimeMillis': targetTime.millisecondsSinceEpoch,
-            'prayerName': 'اختبار',
-            'title': 'عد تنازلي',
-            'city': 'الرياض',
-            'country': 'السعودية',
+            'prayerName': s.countdownTestPrayerName,
+            'title': s.countdownTestTitle,
+            'city': s.countdownTestCity,
+            'country': s.countdownTestCountry,
             'type': 'test',
-            'header': 'الرياض - اختبار العد التنازلي',
+            'header': s.countdownTestHeader,
           });
 
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('بدأ العد التنازلي لمدة دقيقتين'),
-                duration: Duration(seconds: 3),
+              SnackBar(
+                content: Text(s.countdownTestStarted),
+                duration: const Duration(seconds: 3),
               ),
             );
           }

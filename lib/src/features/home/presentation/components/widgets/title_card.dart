@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:muslim/src/core/extensions/extension.dart';
 import 'package:muslim/src/features/alarms_manager/presentation/components/title_card_alarm_button.dart';

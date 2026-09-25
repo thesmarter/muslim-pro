@@ -6,7 +6,6 @@ import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:muslim/src/core/functions/print.dart';
-import 'package:muslim/src/core/values/constant.dart';
 import 'package:muslim/src/features/alarms_manager/data/repository/alarm_database_helper.dart';
 import 'package:muslim/src/features/fake_hadith/data/repository/fake_hadith_database_helper.dart';
 import 'package:muslim/src/features/home/data/repository/data_database_helper.dart';
@@ -21,12 +20,14 @@ class BackupRestoreRepo {
   final TallyDatabaseHelper tallyDatabaseHelper;
   final AlarmDatabaseHelper alarmDatabaseHelper;
   final FakeHadithDBHelper fakeHadithDBHelper;
+  final GetStorage box;
 
   BackupRestoreRepo({
     required this.userDataDBHelper,
     required this.tallyDatabaseHelper,
     required this.alarmDatabaseHelper,
     required this.fakeHadithDBHelper,
+    required this.box,
   });
 
   Future<List<String>> _getDbPaths() async {
@@ -52,7 +53,6 @@ class BackupRestoreRepo {
       final archive = Archive();
 
       // Gather GetStorage preferences
-      final box = GetStorage(kAppStorageKey);
       final keys = box.getKeys<Iterable<String>>();
       final Map<String, dynamic> prefsMap = {};
       for (final key in keys) {
@@ -142,7 +142,6 @@ class BackupRestoreRepo {
           if (fileName == 'preferences.json') {
             final jsonStr = utf8.decode(data);
             final Map<String, dynamic> prefsMap = jsonDecode(jsonStr) as Map<String, dynamic>;
-            final box = GetStorage(kAppStorageKey);
             for (final entry in prefsMap.entries) {
               await box.write(entry.key, entry.value);
             }

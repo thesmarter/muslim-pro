@@ -374,8 +374,6 @@ class ShareImageCubit extends Cubit<ShareImageState> {
       await file.writeAsBytes(filesData[i].buffer.asUint8List());
       xFiles.add(XFile(file.path));
     }
-    // print file size
-    // hisnPrint(await objectSize(xFiles));
 
     try {
       if (!context.mounted) return;

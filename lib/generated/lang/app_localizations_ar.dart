@@ -1306,4 +1306,37 @@ class SAr extends S {
 
   @override
   String get calcMethod_turkey => 'تركيا';
+
+  @override
+  String get countdownTestStarted => 'بدأ العد التنازلي لمدة دقيقتين';
+
+  @override
+  String get countdownTestPrayerName => 'اختبار';
+
+  @override
+  String get countdownTestTitle => 'عد تنازلي';
+
+  @override
+  String get countdownTestCity => 'الرياض';
+
+  @override
+  String get countdownTestCountry => 'السعودية';
+
+  @override
+  String get countdownTestHeader => 'الرياض - اختبار العد التنازلي';
+
+  @override
+  String shareImageFadl(Object value) {
+    return '🏆 الفضل: $value';
+  }
+
+  @override
+  String shareImageSource(Object source) {
+    return '📚 المصدر: $source';
+  }
+
+  @override
+  String shareImageCount(Object count) {
+    return '🔢 عدد مرات الذكر: $count';
+  }
 }

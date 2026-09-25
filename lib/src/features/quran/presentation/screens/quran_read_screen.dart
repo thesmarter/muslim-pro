@@ -5,9 +5,8 @@ import 'package:quran_library/quran_library.dart';
 
 class QuranReadScreen extends StatefulWidget {
   final int? startPage;
-  final VoidCallback? onBack;
 
-  const QuranReadScreen({super.key, this.startPage, this.onBack});
+  const QuranReadScreen({super.key, this.startPage});
 
   @override
   State<QuranReadScreen> createState() => _QuranReadScreenState();
@@ -36,15 +35,8 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final isPushedRoute = widget.onBack == null;
 
-    return PopScope(
-      canPop: isPushedRoute,
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop) return;
-        widget.onBack?.call();
-      },
-      child: Theme(
+    return Theme(
         data: ThemeData(
           brightness: Theme.of(context).brightness,
           colorScheme: Theme.of(context).colorScheme,
@@ -72,6 +64,9 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
           topBarStyle:
               QuranTopBarStyle.defaults(isDark: isDark, context: context)
                   .copyWith(
+            // زر العودة الخاص بالمكتبة ظاهر دائماً. داخل التاب إذا فُرّغ
+            // Navigator التاب الداخلي يلتقطه الحارس في home_screen ويقفز
+            // للتب الرئيسي (بدل الشاشة الفارغة). في وضع الدفع يغلق المسار.
             showBackButton: true,
             showAudioButton: true,
             showFontsButton: true,
@@ -118,7 +113,6 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
             sajdaName: S.of(context).sajda,
           ),
         ),
-      ),
-    );
+      );
   }
 }

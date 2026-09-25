@@ -52,6 +52,36 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+class _QuranTabUnderflowGuard extends NavigatorObserver {
+  _QuranTabUnderflowGuard({required this.onTabNavigatorEmptied});
+
+  /// يُستدعى عندما يُفرَّغ Navigator التاب الداخلي للقرآن (pop زر المكتبة
+  /// على الجذر). نعيد بناء جذر التاب فوراً حتى لا يبقى فارغاً عند العودة،
+  /// ثم نقفز للتب الرئيسي بدل بقاء شاشة فارغة.
+  final VoidCallback onTabNavigatorEmptied;
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didPop(route, previousRoute);
+    if (previousRoute != null) return;
+    final currentNavigator = navigator;
+    if (currentNavigator == null) return;
+    // أثناء didPop يكون الـ Navigator مقفلاً (_debugLocked) — لا يجوز
+    // push/pop هنا. نؤجل ما بعد الإطار.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      onTabNavigatorEmptied();
+      if (!currentNavigator.mounted) return;
+      currentNavigator.push(
+        PageRouteBuilder(
+          settings: const RouteSettings(name: Navigator.defaultRouteName),
+          pageBuilder: (_, _, _) => const QuranReadScreen(),
+          transitionsBuilder: (_, _, _, child) => child,
+        ),
+      );
+    });
+  }
+}
+
 class _TabWithAppBar extends StatelessWidget {
   final Widget child;
   const _TabWithAppBar({required this.child});
@@ -81,6 +111,10 @@ class _DashboardScreenState extends State<DashboardScreen>
   late final PersistentTabController _navController;
   final themeCubit = sl<ThemeCubit>();
   late Brightness _brightness;
+  // التابات تُبنى مرة واحدة لكل ترتيب — إعادة إنشائها مع كل إشعار
+  // من الـ controller كانت تدمّر Navigators التابات الداخلية (انهيار _history).
+  List<PersistentTabConfig>? _tabsCache;
+  String _tabsCacheKey = '';
 
   @override
   void initState() {
@@ -156,6 +190,15 @@ class _DashboardScreenState extends State<DashboardScreen>
     super.dispose();
   }
 
+  List<PersistentTabConfig> _cachedTabs(List<int> arrangement) {
+    final key = arrangement.join(',');
+    if (_tabsCache == null || _tabsCacheKey != key) {
+      _tabsCache = _buildTabs(arrangement);
+      _tabsCacheKey = key;
+    }
+    return _tabsCache!;
+  }
+
   List<PersistentTabConfig> _buildTabs(List<int> arrangement) {
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -182,9 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
       Widget screen;
       if (isQuranTab) {
-        screen = QuranReadScreen(
-          onBack: () => _navController.jumpToTab(0),
-        );
+        screen = const QuranReadScreen();
       } else if (isPrayerTab) {
         screen = const PrayerTimesScreen();
       } else {
@@ -205,8 +246,34 @@ class _DashboardScreenState extends State<DashboardScreen>
           activeForegroundColor: colorScheme.primary,
           inactiveForegroundColor: colorScheme.onSurface.withValues(alpha: 0.5),
         ),
+        // حارس لمتابعة Navigator التاب الداخلي للقرآن: زر المكتبة يعمل
+        // Navigator.pop صريحاً، وعند فَراغ الجذر نقفز للتب الرئيسي فوراً.
+        navigatorConfig: isQuranTab
+            ? NavigatorConfig(
+                navigatorObservers: [
+                  _QuranTabUnderflowGuard(
+                    onTabNavigatorEmptied: () {
+                      if (!mounted) return;
+                      final int homeIndex = arrangement.indexWhere(
+                        (idx) => appDashboardTabs[idx].widget is TitlesScreen,
+                      );
+                      if (homeIndex != -1) {
+                        _navController.jumpToTab(homeIndex);
+                      }
+                    },
+                  ),
+                ],
+              )
+            : null,
       );
     });
+  }
+
+  bool _isQuranSelected(List<int> arrangement) {
+    final selectedIndex = _navController.index;
+    if (selectedIndex < 0 || selectedIndex >= arrangement.length) return false;
+    final component = appDashboardTabs[arrangement[selectedIndex]];
+    return component.widget is QuranReadScreen;
   }
 
   bool _isFabVisible(List<int> arrangement) {
@@ -240,54 +307,58 @@ class _DashboardScreenState extends State<DashboardScreen>
             final int mainTabIndex = arrangement.indexWhere(
               (idx) => appDashboardTabs[idx].widget is TitlesScreen,
             );
-            final int defaultIndex = mainTabIndex != -1 ? mainTabIndex : 0;
-
-            return PopScope(
-              canPop: _navController.index == defaultIndex,
-              onPopInvokedWithResult: (didPop, result) {
-                if (didPop) return;
-                if (_navController.index != defaultIndex) {
-                  _navController.jumpToTab(defaultIndex);
-                }
-              },
-              child: PersistentTabView(
-                controller: _navController,
-                tabs: _buildTabs(arrangement),
-                navBarBuilder: (navBarConfig) => MuslimBottomNavBar(
-                  navBarConfig: navBarConfig,
-                ),
-                hideOnScrollVelocity: 10,
-                backgroundColor: colorScheme.surface,
-                floatingActionButton: AnimatedBuilder(
-                  animation: _navController,
-                  builder: (context, child) {
-                    final isFabVisible = _isFabVisible(arrangement) &&
-                        (ModalRoute.of(context)?.isCurrent ?? true);
-                    return AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      child: isFabVisible
-                          ? Showcase(
-                              key: ShowcaseTourKeys.fabTally,
-                              title: S.of(context).showcaseTourTallyFabTitle,
-                              description:
-                                  S.of(context).showcaseTourTallyFabDesc,
-                              targetShapeBorder: const CircleBorder(),
-                              child: FloatingActionButton(
-                                tooltip: S.of(context).tally,
-                                backgroundColor: colorScheme.primary,
-                                foregroundColor: colorScheme.onPrimary,
-                                child: const Icon(Icons.onetwothree, size: 35),
-                                onPressed: () {
-                                  context.push(const TallyDashboardScreen());
-                                },
-                              ),
-                            )
-                          : const SizedBox.shrink(),
-                    );
-                  },
-                ),
-              ),
-            );
+            if (mainTabIndex < 0) {
+              return const Loading();
+            }
+            // ملاحظة: لا نضيف PopScope هنا — معالجة رجوع النظام تتم داخل
+            // PersistentTabView نفسها (handleAndroidBackButtonPress):
+            // في تاب القرآن يغلق الصفحات الداخلية للمكتبة أولاً ثم يقفز
+            // للتب السابق. إضافة PopScope خارجي كانت تتعارض (jumpToTab
+            // ثم jumpToPreviousTab) فتبدو الرجوع معطّلة.
+            return AnimatedBuilder(
+              animation: _navController,
+              builder: (context, child) {
+                return PersistentTabView(
+                    controller: _navController,
+                    tabs: _cachedTabs(arrangement),
+                    navBarBuilder: (navBarConfig) => MuslimBottomNavBar(
+                      navBarConfig: navBarConfig,
+                    ),
+                    hideOnScrollVelocity: _isQuranSelected(arrangement) ? 0 : 10,
+                    // اختفاء شريط التاب نهائياً عندما تكون شاشة القرآن نشطة.
+                    hideNavigationBar: _isQuranSelected(arrangement),
+                    backgroundColor: colorScheme.surface,
+                    floatingActionButton: AnimatedBuilder(
+                      animation: _navController,
+                      builder: (context, child) {
+                        final isFabVisible = _isFabVisible(arrangement) &&
+                            (ModalRoute.of(context)?.isCurrent ?? true);
+                        return AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          child: isFabVisible
+                              ? Showcase(
+                                  key: ShowcaseTourKeys.fabTally,
+                                  title: S.of(context).showcaseTourTallyFabTitle,
+                                  description:
+                                      S.of(context).showcaseTourTallyFabDesc,
+                                  targetShapeBorder: const CircleBorder(),
+                                  child: FloatingActionButton(
+                                    tooltip: S.of(context).tally,
+                                    backgroundColor: colorScheme.primary,
+                                    foregroundColor: colorScheme.onPrimary,
+                                    child: const Icon(Icons.onetwothree, size: 35),
+                                    onPressed: () {
+                                      context.push(const TallyDashboardScreen());
+                                    },
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                        );
+                      },
+                    ),
+                  );
+                },
+              );
           },
         );
       },

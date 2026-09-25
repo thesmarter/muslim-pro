@@ -2565,6 +2565,60 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Turkey'**
   String get calcMethod_turkey;
+
+  /// No description provided for @countdownTestStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Countdown started for two minutes'**
+  String get countdownTestStarted;
+
+  /// No description provided for @countdownTestPrayerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Test'**
+  String get countdownTestPrayerName;
+
+  /// No description provided for @countdownTestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Countdown'**
+  String get countdownTestTitle;
+
+  /// No description provided for @countdownTestCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Riyadh'**
+  String get countdownTestCity;
+
+  /// No description provided for @countdownTestCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Saudi Arabia'**
+  String get countdownTestCountry;
+
+  /// No description provided for @countdownTestHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Riyadh - Countdown test'**
+  String get countdownTestHeader;
+
+  /// No description provided for @shareImageFadl.
+  ///
+  /// In en, this message translates to:
+  /// **'🏆 Fadl: {value}'**
+  String shareImageFadl(Object value);
+
+  /// No description provided for @shareImageSource.
+  ///
+  /// In en, this message translates to:
+  /// **'📚 Source: {source}'**
+  String shareImageSource(Object source);
+
+  /// No description provided for @shareImageCount.
+  ///
+  /// In en, this message translates to:
+  /// **'🔢 Dhikr count: {count}'**
+  String shareImageCount(Object count);
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

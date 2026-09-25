@@ -9,13 +9,11 @@ class AppBlocObserver extends BlocObserver {
     if (bloc is Cubit) {
       if (detailed) {
         printColor(
-          // ignore: avoid_dynamic_calls
           '[Cubit] currentState: ${change.currentState} | nextState: ${change.nextState}',
           color: PrintColors.red,
         );
       } else {
         printColor(
-          // ignore: avoid_dynamic_calls
           '[Cubit] currentState: ${change.currentState.runtimeType} | nextState: ${change.nextState.runtimeType}',
           color: PrintColors.red,
         );
@@ -27,17 +25,15 @@ class AppBlocObserver extends BlocObserver {
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
     if (detailed) {
-      printColor(
-        // ignore: avoid_dynamic_calls
-        '[Bloc] event: ${transition.event} | currentState: ${transition.currentState} | nextState: ${transition.nextState}',
-        color: PrintColors.magenta,
-      );
-    } else {
-      printColor(
-        // ignore: avoid_dynamic_calls
-        '[Bloc] event: ${transition.event.runtimeType} | currentState: ${transition.currentState.runtimeType} | nextState: ${transition.nextState.runtimeType}',
-        color: PrintColors.magenta,
-      );
+        printColor(
+          '[Bloc] event: ${transition.event} | currentState: ${transition.currentState} | nextState: ${transition.nextState}',
+          color: PrintColors.magenta,
+        );
+      } else {
+        printColor(
+          '[Bloc] event: ${transition.event.runtimeType} | currentState: ${transition.currentState.runtimeType} | nextState: ${transition.nextState.runtimeType}',
+          color: PrintColors.magenta,
+        );
     }
   }
 }

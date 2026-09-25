@@ -1,7 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/src/core/extensions/extension_color.dart';
 import 'package:muslim/src/core/extensions/string_extension.dart';
 import 'package:muslim/src/features/home/data/models/zikr_title.dart';
@@ -140,18 +139,18 @@ class ShareableImageCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 65),
                     child: Text(
-                      zikrTitle.id < 0 ? zikr.fadl : "🏆 الفضل: ${zikr.fadl}",
+                      zikrTitle.id < 0 ? zikr.fadl : S.of(context).shareImageFadl(zikr.fadl),
                       style: secondaryTextStyle,
                     ),
                   ),
                 ],
 
                 if (whetherShowSource) ...[
-                  Text("📚 المصدر: ${zikr.source}", style: secondaryTextStyle),
+                  Text(S.of(context).shareImageSource(zikr.source), style: secondaryTextStyle),
                 ],
                 if (whetherShowCount) ...[
                   Text(
-                    "🔢 عدد مرات الذكر: ${zikr.count}",
+                    S.of(context).shareImageCount(zikr.count),
                     style: secondaryTextStyle,
                   ),
                 ],

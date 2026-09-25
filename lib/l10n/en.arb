@@ -411,5 +411,14 @@
   "calcMethod_qatar": "Qatar",
   "calcMethod_singapore": "Singapore",
   "calcMethod_tehran": "Institute of Geophysics, University of Tehran",
-  "calcMethod_turkey": "Turkey"
+  "calcMethod_turkey": "Turkey",
+  "countdownTestStarted": "Countdown started for two minutes",
+  "countdownTestPrayerName": "Test",
+  "countdownTestTitle": "Countdown",
+  "countdownTestCity": "Riyadh",
+  "countdownTestCountry": "Saudi Arabia",
+  "countdownTestHeader": "Riyadh - Countdown test",
+  "shareImageFadl": "🏆 Fadl: {value}",
+  "shareImageSource": "📚 Source: {source}",
+  "shareImageCount": "🔢 Dhikr count: {count}"
 }

@@ -28,5 +28,8 @@ linter:
     # Util classes are awesome!
     avoid_classes_with_only_static_members: false
 
-    # Make constructors the first thing in every class
-    # sort_constructors_first: true
+    # Centrally disabled: previously suppressed via ~50 mass file-level
+    # `ignore_for_file` comments. Keeping them disabled here avoids noise
+    # while preserving generated-file ignores (type=lint) elsewhere.
+    public_member_api_docs: false
+    sort_constructors_first: false

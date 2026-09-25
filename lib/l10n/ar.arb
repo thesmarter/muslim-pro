@@ -412,5 +412,14 @@
   "calcMethod_qatar": "قطر",
   "calcMethod_singapore": "سنغافورة",
   "calcMethod_tehran": "معهد الجيوفيزياء، جامعة طهران",
-  "calcMethod_turkey": "تركيا"
+  "calcMethod_turkey": "تركيا",
+  "countdownTestStarted": "بدأ العد التنازلي لمدة دقيقتين",
+  "countdownTestPrayerName": "اختبار",
+  "countdownTestTitle": "عد تنازلي",
+  "countdownTestCity": "الرياض",
+  "countdownTestCountry": "السعودية",
+  "countdownTestHeader": "الرياض - اختبار العد التنازلي",
+  "shareImageFadl": "🏆 الفضل: {value}",
+  "shareImageSource": "📚 المصدر: {source}",
+  "shareImageCount": "🔢 عدد مرات الذكر: {count}"
 }

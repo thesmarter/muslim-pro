@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'share_image_cubit.dart';
 
 sealed class ShareImageState extends Equatable {

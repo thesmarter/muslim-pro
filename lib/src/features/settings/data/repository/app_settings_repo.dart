@@ -17,6 +17,14 @@ class AppSettingsRepo {
     await box.write(_currentVersion, value);
   }
 
+  ///MARK:Language Chosen
+  /* ******* Language Chosen ******* */
+  static const _languageChosenKey = 'language_chosen';
+
+  bool get isLanguageChosen => box.read(_languageChosenKey) == true;
+
+  Future<void> changeLanguageChosen({required bool value}) => box.write(_languageChosenKey, value);
+
   ///MARK:Azkar Read Mode
   /* ******* Azkar Read Mode ******* */
   static const isCardReadModeKey = 'is_card_read_mode';

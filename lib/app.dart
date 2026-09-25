@@ -2,7 +2,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
 import 'package:muslim/scroll_behavior.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
@@ -147,7 +146,7 @@ class AppState extends State<App> {
                 },
               );
             },
-            home: sl<GetStorage>().read('language_chosen') != true
+            home: !sl<AppSettingsRepo>().isLanguageChosen
                 ? const LanguageSelectionScreen()
                 : sl<AppSettingsRepo>().currentVersion != sl<PackageInfo>().version
                     ? const OnBoardingScreen()

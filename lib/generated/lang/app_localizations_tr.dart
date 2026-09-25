@@ -1309,4 +1309,37 @@ class STr extends S {
 
   @override
   String get calcMethod_turkey => 'Türkiye';
+
+  @override
+  String get countdownTestStarted => 'İki dakikalık geri sayım başladı';
+
+  @override
+  String get countdownTestPrayerName => 'Test';
+
+  @override
+  String get countdownTestTitle => 'Geri sayım';
+
+  @override
+  String get countdownTestCity => 'Riyad';
+
+  @override
+  String get countdownTestCountry => 'Suudi Arabistan';
+
+  @override
+  String get countdownTestHeader => 'Riyad - Geri sayım testi';
+
+  @override
+  String shareImageFadl(Object value) {
+    return '🏆 Fazilet: $value';
+  }
+
+  @override
+  String shareImageSource(Object source) {
+    return '📚 Kaynak: $source';
+  }
+
+  @override
+  String shareImageCount(Object count) {
+    return '🔢 Zikir sayısı: $count';
+  }
 }

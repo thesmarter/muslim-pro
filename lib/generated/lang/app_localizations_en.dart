@@ -1308,4 +1308,37 @@ class SEn extends S {
 
   @override
   String get calcMethod_turkey => 'Turkey';
+
+  @override
+  String get countdownTestStarted => 'Countdown started for two minutes';
+
+  @override
+  String get countdownTestPrayerName => 'Test';
+
+  @override
+  String get countdownTestTitle => 'Countdown';
+
+  @override
+  String get countdownTestCity => 'Riyadh';
+
+  @override
+  String get countdownTestCountry => 'Saudi Arabia';
+
+  @override
+  String get countdownTestHeader => 'Riyadh - Countdown test';
+
+  @override
+  String shareImageFadl(Object value) {
+    return '🏆 Fadl: $value';
+  }
+
+  @override
+  String shareImageSource(Object source) {
+    return '📚 Source: $source';
+  }
+
+  @override
+  String shareImageCount(Object count) {
+    return '🔢 Dhikr count: $count';
+  }
 }

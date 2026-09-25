@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/features/home/presentation/screens/home_screen.dart';
 import 'package:muslim/src/features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -96,10 +95,11 @@ class LanguageSelectionScreen extends StatelessWidget {
     );
   }
 
-  void _onLanguageSelected(BuildContext context, _LanguageOption lang) {
+  Future<void> _onLanguageSelected(BuildContext context, _LanguageOption lang) async {
     sl<ThemeCubit>().changeAppLocale(lang.code);
-    sl<GetStorage>().write('language_chosen', true);
+    await sl<AppSettingsRepo>().changeLanguageChosen(value: true);
 
+    if (!context.mounted) return;
     final version = sl<PackageInfo>().version;
     final currentVersion = sl<AppSettingsRepo>().currentVersion;
     final nextScreen = currentVersion != version ? const OnBoardingScreen() : const HomeScreen();

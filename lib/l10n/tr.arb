@@ -410,5 +410,14 @@
   "calcMethod_qatar": "Katar",
   "calcMethod_singapore": "Singapur",
   "calcMethod_tehran": "Jeofizik Enstitüsü, Tahran Üniversitesi",
-  "calcMethod_turkey": "Türkiye"
+  "calcMethod_turkey": "Türkiye",
+  "countdownTestStarted": "İki dakikalık geri sayım başladı",
+  "countdownTestPrayerName": "Test",
+  "countdownTestTitle": "Geri sayım",
+  "countdownTestCity": "Riyad",
+  "countdownTestCountry": "Suudi Arabistan",
+  "countdownTestHeader": "Riyad - Geri sayım testi",
+  "shareImageFadl": "🏆 Fazilet: {value}",
+  "shareImageSource": "📚 Kaynak: {source}",
+  "shareImageCount": "🔢 Zikir sayısı: {count}"
 }

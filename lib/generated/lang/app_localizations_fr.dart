@@ -1317,4 +1317,37 @@ class SFr extends S {
 
   @override
   String get calcMethod_turkey => 'Turquie';
+
+  @override
+  String get countdownTestStarted => 'Compte à rebours lancé pour deux minutes';
+
+  @override
+  String get countdownTestPrayerName => 'Test';
+
+  @override
+  String get countdownTestTitle => 'Compte à rebours';
+
+  @override
+  String get countdownTestCity => 'Riyad';
+
+  @override
+  String get countdownTestCountry => 'Arabie Saoudite';
+
+  @override
+  String get countdownTestHeader => 'Riyad - Test du compte à rebours';
+
+  @override
+  String shareImageFadl(Object value) {
+    return '🏆 Mérite : $value';
+  }
+
+  @override
+  String shareImageSource(Object source) {
+    return '📚 Source : $source';
+  }
+
+  @override
+  String shareImageCount(Object count) {
+    return '🔢 Nombre de dhikr : $count';
+  }
 }
