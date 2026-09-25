@@ -23,6 +23,7 @@ class AdhanForegroundService : Service() {
         const val EXTRA_PRAYER_NAME = "extra_prayer_name"
         const val EXTRA_VOLUME = "extra_volume"
         const val EXTRA_PLAY_SOUND = "extra_play_sound"
+        const val EXTRA_REPEAT = "extra_repeat"
 
         private var mediaPlayer: MediaPlayer? = null
         private var wakeLock: PowerManager.WakeLock? = null
@@ -62,11 +63,12 @@ class AdhanForegroundService : Service() {
                 val prayerName = intent?.getStringExtra(EXTRA_PRAYER_NAME) ?: ""
                 val volume = intent?.getFloatExtra(EXTRA_VOLUME, 0.5f) ?: 0.5f
                 val playSound = intent?.getBooleanExtra(EXTRA_PLAY_SOUND, true) ?: true
+                val repeat = intent?.getBooleanExtra(EXTRA_REPEAT, false) ?: false
 
                 val notification = buildNotification(prayerName)
                 startForeground(NOTIFICATION_ID, notification)
                 if (playSound) {
-                    playAdhan(muadhin, volume)
+                    playAdhan(muadhin, volume, repeat)
                 }
             }
         }
@@ -120,7 +122,7 @@ class AdhanForegroundService : Service() {
             .build()
     }
 
-    private fun playAdhan(muadhinId: String, volume: Float) {
+    private fun playAdhan(muadhinId: String, volume: Float, repeat: Boolean) {
         try {
             val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
             wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Adhan:AudioLock")
@@ -130,9 +132,9 @@ class AdhanForegroundService : Service() {
             if (resId == 0) {
                 val fallback = resources.getIdentifier("wadie_alyamani", "raw", packageName)
                 if (fallback == 0) { stopSelf(); return }
-                playResource(fallback, volume)
+                playResource(fallback, volume, repeat)
             } else {
-                playResource(resId, volume)
+                playResource(resId, volume, repeat)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -140,7 +142,7 @@ class AdhanForegroundService : Service() {
         }
     }
 
-    private fun playResource(resId: Int, volume: Float) {
+    private fun playResource(resId: Int, volume: Float, repeat: Boolean) {
         stopAndRelease()
 
         val player = MediaPlayer().apply {
@@ -155,7 +157,20 @@ class AdhanForegroundService : Service() {
             prepare()
             setVolume(volume, volume)
 
-            setOnCompletionListener { stopSelf() }
+            // "تكرار الأذان حتى الإيقاف اليدوي": أعد التشغيل من البداية
+            // بدل الإيقاف، ويبقى زر الإيقاف في الإشعار هو المخرج الوحيد.
+            setOnCompletionListener {
+                if (repeat) {
+                    try {
+                        seekTo(0)
+                        start()
+                    } catch (_: Exception) {
+                        stopSelf()
+                    }
+                } else {
+                    stopSelf()
+                }
+            }
             setOnErrorListener { _, _, _ -> stopSelf(); true }
 
             start()

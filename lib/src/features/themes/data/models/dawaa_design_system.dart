@@ -60,6 +60,7 @@ class DawaaDesignSystem {
         foregroundColor: scheme.onSurface,
         titleTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: Color(0xFF005662),
@@ -86,6 +87,7 @@ class DawaaDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -101,6 +103,7 @@ class DawaaDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -115,6 +118,7 @@ class DawaaDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -149,11 +153,13 @@ class DawaaDesignSystem {
         indicatorColor: accent,
         labelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.w700,
           fontSize: 14,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 14,
         ),
       ),
@@ -165,11 +171,13 @@ class DawaaDesignSystem {
         elevation: 8,
         selectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.w700,
           fontSize: 12,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 12,
         ),
       ),
@@ -189,12 +197,14 @@ class DawaaDesignSystem {
         ),
         titleTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: Color(0xFF005662),
         ),
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 16,
           color: Color(0xFF1A2C2E),
         ),
@@ -209,6 +219,7 @@ class DawaaDesignSystem {
         backgroundColor: const Color(0xFF005662),
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           color: white,
           fontSize: 14,
         ),
@@ -220,7 +231,7 @@ class DawaaDesignSystem {
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFFE0F7FA),
         selectedColor: primary,
-        labelStyle: const TextStyle(fontFamily: _fontFamily),
+        labelStyle: const TextStyle(fontFamily: _fontFamily, inherit: false),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -279,6 +290,7 @@ class DawaaDesignSystem {
         foregroundColor: scheme.onSurface,
         titleTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: Color(0xFF80DEEA),
@@ -305,6 +317,7 @@ class DawaaDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -320,6 +333,7 @@ class DawaaDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -334,6 +348,7 @@ class DawaaDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -368,11 +383,13 @@ class DawaaDesignSystem {
         indicatorColor: Color(0xFFFFCC80),
         labelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.w700,
           fontSize: 14,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 14,
         ),
       ),
@@ -384,11 +401,13 @@ class DawaaDesignSystem {
         elevation: 8,
         selectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.w700,
           fontSize: 12,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 12,
         ),
       ),
@@ -408,12 +427,14 @@ class DawaaDesignSystem {
         ),
         titleTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: Color(0xFF80DEEA),
         ),
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 16,
           color: Color(0xFFDDE4E5),
         ),
@@ -428,6 +449,7 @@ class DawaaDesignSystem {
         backgroundColor: const Color(0xFF80DEEA),
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           color: Color(0xFF00363D),
           fontSize: 14,
         ),
@@ -439,7 +461,7 @@ class DawaaDesignSystem {
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFF1A3A3C),
         selectedColor: const Color(0xFF80DEEA),
-        labelStyle: const TextStyle(fontFamily: _fontFamily),
+        labelStyle: const TextStyle(fontFamily: _fontFamily, inherit: false),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

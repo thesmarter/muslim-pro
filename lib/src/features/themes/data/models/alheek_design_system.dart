@@ -59,6 +59,7 @@ class AlHeekDesignSystem {
         foregroundColor: onPrimary,
         titleTextStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 22,
           fontWeight: FontWeight.bold,
           color: onPrimary,
@@ -86,6 +87,7 @@ class AlHeekDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -101,6 +103,7 @@ class AlHeekDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -115,6 +118,7 @@ class AlHeekDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -149,11 +153,13 @@ class AlHeekDesignSystem {
         indicatorColor: secondary,
         labelStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
         unselectedLabelStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 14,
         ),
       ),
@@ -165,11 +171,13 @@ class AlHeekDesignSystem {
         elevation: 8,
         selectedLabelStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.bold,
           fontSize: 12,
         ),
         unselectedLabelStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 12,
         ),
       ),
@@ -189,12 +197,14 @@ class AlHeekDesignSystem {
         ),
         titleTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 22,
           fontWeight: FontWeight.bold,
           color: primary,
         ),
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 16,
           color: onSurface,
         ),
@@ -209,6 +219,7 @@ class AlHeekDesignSystem {
         backgroundColor: primary,
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           color: onPrimary,
           fontSize: 14,
         ),
@@ -220,7 +231,7 @@ class AlHeekDesignSystem {
       chipTheme: ChipThemeData(
         backgroundColor: surface,
         selectedColor: primary,
-        labelStyle: const TextStyle(fontFamily: _fontFamily),
+        labelStyle: const TextStyle(fontFamily: _fontFamily, inherit: false),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -279,6 +290,7 @@ class AlHeekDesignSystem {
         foregroundColor: scheme.onSurface,
         titleTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 22,
           fontWeight: FontWeight.bold,
           color: Color(0xFFF6F6EE),
@@ -306,6 +318,7 @@ class AlHeekDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -321,6 +334,7 @@ class AlHeekDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -335,6 +349,7 @@ class AlHeekDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -369,11 +384,13 @@ class AlHeekDesignSystem {
         indicatorColor: Color(0xFFbc8a5f),
         labelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 14,
         ),
       ),
@@ -385,11 +402,13 @@ class AlHeekDesignSystem {
         elevation: 8,
         selectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.bold,
           fontSize: 12,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 12,
         ),
       ),
@@ -409,12 +428,14 @@ class AlHeekDesignSystem {
         ),
         titleTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 22,
           fontWeight: FontWeight.bold,
           color: Color(0xFFbc8a5f),
         ),
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 16,
           color: Color(0xFFF6F6EE),
         ),
@@ -429,6 +450,7 @@ class AlHeekDesignSystem {
         backgroundColor: const Color(0xFFbc8a5f),
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           color: Color(0xFF1A1A1A),
           fontSize: 14,
         ),
@@ -440,7 +462,7 @@ class AlHeekDesignSystem {
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFF3A3A3A),
         selectedColor: const Color(0xFFbc8a5f),
-        labelStyle: const TextStyle(fontFamily: _fontFamily),
+        labelStyle: const TextStyle(fontFamily: _fontFamily, inherit: false),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

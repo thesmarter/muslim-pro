@@ -60,6 +60,7 @@ class EmanDesignSystem {
         foregroundColor: scheme.onSurface,
         titleTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: Color(0xFF1A1A2E),
@@ -87,6 +88,7 @@ class EmanDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -102,6 +104,7 @@ class EmanDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -116,6 +119,7 @@ class EmanDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -150,11 +154,13 @@ class EmanDesignSystem {
         indicatorColor: accent,
         labelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.w700,
           fontSize: 14,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 14,
         ),
       ),
@@ -166,11 +172,13 @@ class EmanDesignSystem {
         elevation: 8,
         selectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.w700,
           fontSize: 12,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 12,
         ),
       ),
@@ -190,12 +198,14 @@ class EmanDesignSystem {
         ),
         titleTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: Color(0xFF1A1A2E),
         ),
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 16,
           color: Color(0xFF1A1A2E),
         ),
@@ -210,6 +220,7 @@ class EmanDesignSystem {
         backgroundColor: const Color(0xFF1A1A2E),
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           color: white,
           fontSize: 14,
         ),
@@ -221,7 +232,7 @@ class EmanDesignSystem {
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFFE8EAF6),
         selectedColor: primary,
-        labelStyle: const TextStyle(fontFamily: _fontFamily),
+        labelStyle: const TextStyle(fontFamily: _fontFamily, inherit: false),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -280,6 +291,7 @@ class EmanDesignSystem {
         foregroundColor: scheme.onSurface,
         titleTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: Color(0xFFA8B4FF),
@@ -307,6 +319,7 @@ class EmanDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -322,6 +335,7 @@ class EmanDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -336,6 +350,7 @@ class EmanDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -370,11 +385,13 @@ class EmanDesignSystem {
         indicatorColor: Color(0xFFFFD54F),
         labelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.w700,
           fontSize: 14,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 14,
         ),
       ),
@@ -386,11 +403,13 @@ class EmanDesignSystem {
         elevation: 8,
         selectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.w700,
           fontSize: 12,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 12,
         ),
       ),
@@ -410,12 +429,14 @@ class EmanDesignSystem {
         ),
         titleTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: Color(0xFFA8B4FF),
         ),
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 16,
           color: Color(0xFFE2E1F0),
         ),
@@ -430,6 +451,7 @@ class EmanDesignSystem {
         backgroundColor: const Color(0xFFA8B4FF),
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           color: Color(0xFF002079),
           fontSize: 14,
         ),
@@ -441,7 +463,7 @@ class EmanDesignSystem {
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFF1E1E42),
         selectedColor: const Color(0xFFA8B4FF),
-        labelStyle: const TextStyle(fontFamily: _fontFamily),
+        labelStyle: const TextStyle(fontFamily: _fontFamily, inherit: false),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

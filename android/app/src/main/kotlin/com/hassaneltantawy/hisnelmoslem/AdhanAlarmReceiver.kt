@@ -11,12 +11,14 @@ class AdhanAlarmReceiver : BroadcastReceiver() {
         val prayerName = intent.getStringExtra(AdhanForegroundService.EXTRA_PRAYER_NAME) ?: ""
         val volume = intent.getFloatExtra(AdhanForegroundService.EXTRA_VOLUME, 0.5f)
         val playSound = intent.getBooleanExtra(AdhanForegroundService.EXTRA_PLAY_SOUND, true)
+        val repeat = intent.getBooleanExtra(AdhanForegroundService.EXTRA_REPEAT, false)
 
         val serviceIntent = Intent(context, AdhanForegroundService::class.java).apply {
             putExtra(AdhanForegroundService.EXTRA_MUADHIN, muadhin)
             putExtra(AdhanForegroundService.EXTRA_PRAYER_NAME, prayerName)
             putExtra(AdhanForegroundService.EXTRA_VOLUME, volume)
             putExtra(AdhanForegroundService.EXTRA_PLAY_SOUND, playSound)
+            putExtra(AdhanForegroundService.EXTRA_REPEAT, repeat)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

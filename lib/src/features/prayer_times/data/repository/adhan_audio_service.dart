@@ -247,6 +247,7 @@ class AdhanAudioService {
     required double volume,
     required int id,
     required bool playSound,
+    required bool repeat,
   }) async {
     try {
       await _adhanChannel.invokeMethod('schedule', {
@@ -256,6 +257,7 @@ class AdhanAudioService {
         'volume': volume,
         'id': id,
         'playSound': playSound,
+        'repeat': repeat,
       });
     } catch (e) {
       hisnPrint('Error scheduling adhan alarm: $e');

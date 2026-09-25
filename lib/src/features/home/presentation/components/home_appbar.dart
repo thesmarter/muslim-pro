@@ -14,7 +14,7 @@ class HomeAppBar extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state is! HomeLoadedState) {
-          return const SizedBox();
+          return const SliverToBoxAdapter(child: SizedBox());
         }
 
         return SliverAppBar(

@@ -59,6 +59,7 @@ class RawhDesignSystem {
         foregroundColor: scheme.onSurface,
         titleTextStyle: const TextStyle(
           fontFamily: _headingFont,
+          inherit: false,
           fontSize: 22,
           fontWeight: FontWeight.bold,
           color: black,
@@ -86,6 +87,7 @@ class RawhDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -101,6 +103,7 @@ class RawhDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -115,6 +118,7 @@ class RawhDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -149,11 +153,13 @@ class RawhDesignSystem {
         indicatorColor: gold,
         labelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 14,
         ),
       ),
@@ -165,11 +171,13 @@ class RawhDesignSystem {
         elevation: 8,
         selectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.bold,
           fontSize: 12,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 12,
         ),
       ),
@@ -189,12 +197,14 @@ class RawhDesignSystem {
         ),
         titleTextStyle: const TextStyle(
           fontFamily: _headingFont,
+          inherit: false,
           fontSize: 22,
           fontWeight: FontWeight.bold,
           color: black,
         ),
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 16,
           color: black,
         ),
@@ -209,6 +219,7 @@ class RawhDesignSystem {
         backgroundColor: black,
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           color: white,
           fontSize: 14,
         ),
@@ -220,7 +231,7 @@ class RawhDesignSystem {
       chipTheme: ChipThemeData(
         backgroundColor: offWhite,
         selectedColor: brown,
-        labelStyle: const TextStyle(fontFamily: _fontFamily),
+        labelStyle: const TextStyle(fontFamily: _fontFamily, inherit: false),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -279,6 +290,7 @@ class RawhDesignSystem {
         foregroundColor: scheme.onSurface,
         titleTextStyle: const TextStyle(
           fontFamily: _headingFont,
+          inherit: false,
           fontSize: 22,
           fontWeight: FontWeight.bold,
           color: offWhite,
@@ -306,6 +318,7 @@ class RawhDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -321,6 +334,7 @@ class RawhDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -335,6 +349,7 @@ class RawhDesignSystem {
           ),
           textStyle: const TextStyle(
             fontFamily: _fontFamily,
+            inherit: false,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -369,11 +384,13 @@ class RawhDesignSystem {
         indicatorColor: gold,
         labelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.bold,
           fontSize: 14,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 14,
         ),
       ),
@@ -385,11 +402,13 @@ class RawhDesignSystem {
         elevation: 8,
         selectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontWeight: FontWeight.bold,
           fontSize: 12,
         ),
         unselectedLabelStyle: TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 12,
         ),
       ),
@@ -409,12 +428,14 @@ class RawhDesignSystem {
         ),
         titleTextStyle: const TextStyle(
           fontFamily: _headingFont,
+          inherit: false,
           fontSize: 22,
           fontWeight: FontWeight.bold,
           color: offWhite,
         ),
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           fontSize: 16,
           color: offWhite,
         ),
@@ -429,6 +450,7 @@ class RawhDesignSystem {
         backgroundColor: offWhite,
         contentTextStyle: const TextStyle(
           fontFamily: _fontFamily,
+          inherit: false,
           color: black,
           fontSize: 14,
         ),
@@ -440,7 +462,7 @@ class RawhDesignSystem {
       chipTheme: ChipThemeData(
         backgroundColor: const Color(0xFF3A3A3A),
         selectedColor: gold,
-        labelStyle: const TextStyle(fontFamily: _fontFamily),
+        labelStyle: const TextStyle(fontFamily: _fontFamily, inherit: false),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),

@@ -14,6 +14,7 @@ class ThemeSelectionDialog extends StatefulWidget {
 class _ThemeSelectionDialogState extends State<ThemeSelectionDialog> {
   AppThemePreset? _selectedPreset;
   bool _hasChanged = false;
+  bool _confirming = false;
 
   @override
   void initState() {
@@ -30,15 +31,18 @@ class _ThemeSelectionDialogState extends State<ThemeSelectionDialog> {
   }
 
   void _confirmSelection() {
-    if (_selectedPreset != null) {
-      final cubit = context.read<ThemeCubit>();
-      cubit.changePreset(_selectedPreset!);
-      cubit.markThemeSelectionShown();
-    }
+    if (_confirming || _selectedPreset == null) return;
+    final cubit = context.read<ThemeCubit>();
+    final preset = _selectedPreset!;
+    setState(() => _confirming = true);
     Navigator.of(context).pop(true);
+    cubit.changePreset(preset);
+    cubit.markThemeSelectionShown();
   }
 
   void _keepCurrent() {
+    if (_confirming) return;
+    setState(() => _confirming = true);
     context.read<ThemeCubit>().markThemeSelectionShown();
     Navigator.of(context).pop(false);
   }
@@ -137,7 +141,7 @@ class _ThemeSelectionDialogState extends State<ThemeSelectionDialog> {
                         children: [
                           Expanded(
                             child: OutlinedButton(
-                              onPressed: _keepCurrent,
+                              onPressed: _confirming ? null : _keepCurrent,
                               style: OutlinedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(vertical: 14),
                                 shape: RoundedRectangleBorder(
@@ -150,7 +154,9 @@ class _ThemeSelectionDialogState extends State<ThemeSelectionDialog> {
                           const SizedBox(width: 12),
                           Expanded(
                             child: FilledButton(
-                              onPressed: _hasChanged ? _confirmSelection : null,
+                              onPressed: (_hasChanged && !_confirming)
+                                  ? _confirmSelection
+                                  : null,
                               style: FilledButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(vertical: 14),
                                 shape: RoundedRectangleBorder(

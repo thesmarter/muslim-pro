@@ -34,6 +34,7 @@ class MainActivity : AudioServiceActivity() {
                             timestamp = (args["timestamp"] as Number).toLong(),
                             volume = (args["volume"] as Number).toFloat(),
                             id = (args["id"] as Number).toInt(),
+                            repeat = args["repeat"] as? Boolean ?: false,
                         )
                         result.success(true)
                     }
