@@ -27,7 +27,7 @@ concurrency:
 
 env:
   JAVA_VERSION: "17"
-  FLUTTER_VERSION: "stable"
+  FLUTTER_VERSION: "3.47.4"
 
 jobs:
   build-and-publish:
@@ -91,10 +91,13 @@ jobs:
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
 
-      # ── Analyze (non-blocking) ──────────────────
+      # ── Analyze (blocking: errors fail the build) ─
       - name: Analyze code
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
-        continue-on-error: true
+
+      # ── Tests (blocking) ──────────────────────────
+      - name: Run tests
+        run: flutter test --no-pub
 
       # ── Extract version ────────────────────────
       - name: Extract version info

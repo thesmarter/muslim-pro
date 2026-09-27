@@ -139,4 +139,40 @@ void main() {
     // Should be back at tab 0.
     expect(navController.index, 0);
   });
+
+  testWidgets('Tally FAB shows only on the main azkar tab', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: S.localizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: const Locale('en'),
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<HomeBloc>.value(value: mockHomeBloc),
+            BlocProvider<AlarmsBloc>.value(value: mockAlarmsBloc),
+            BlocProvider<ThemeCubit>.value(value: mockThemeCubit),
+            BlocProvider<PrayerTimesBloc>.value(value: mockPrayerTimesBloc),
+          ],
+          child: const DashboardScreen(),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    final navController =
+        tester.widget<PersistentTabView>(find.byType(PersistentTabView)).controller!;
+    expect(navController.index, 0);
+    expect(find.byType(FloatingActionButton), findsOneWidget);
+
+    navController.jumpToTab(1);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.byType(FloatingActionButton), findsNothing);
+
+    navController.jumpToTab(0);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.byType(FloatingActionButton), findsOneWidget);
+  });
 }

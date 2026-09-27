@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:intl/intl.dart';
@@ -45,6 +46,7 @@ class HomeScreen extends StatelessWidget {
             angle: 0.0,
             drawerShadowsBackgroundColor: Theme.of(context).colorScheme.primary,
             slideWidth: 270,
+            androidCloseOnBackTap: true,
           ),
         );
       },
@@ -55,9 +57,6 @@ class HomeScreen extends StatelessWidget {
 class _QuranTabUnderflowGuard extends NavigatorObserver {
   _QuranTabUnderflowGuard({required this.onTabNavigatorEmptied});
 
-  /// يُستدعى عندما يُفرَّغ Navigator التاب الداخلي للقرآن (pop زر المكتبة
-  /// على الجذر). نعيد بناء جذر التاب فوراً حتى لا يبقى فارغاً عند العودة،
-  /// ثم نقفز للتب الرئيسي بدل بقاء شاشة فارغة.
   final VoidCallback onTabNavigatorEmptied;
 
   @override
@@ -66,8 +65,6 @@ class _QuranTabUnderflowGuard extends NavigatorObserver {
     if (previousRoute != null) return;
     final currentNavigator = navigator;
     if (currentNavigator == null) return;
-    // أثناء didPop يكون الـ Navigator مقفلاً (_debugLocked) — لا يجوز
-    // push/pop هنا. نؤجل ما بعد الإطار.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       onTabNavigatorEmptied();
       if (!currentNavigator.mounted) return;
@@ -111,8 +108,6 @@ class _DashboardScreenState extends State<DashboardScreen>
   late final PersistentTabController _navController;
   final themeCubit = sl<ThemeCubit>();
   late Brightness _brightness;
-  // التابات تُبنى مرة واحدة لكل ترتيب — إعادة إنشائها مع كل إشعار
-  // من الـ controller كانت تدمّر Navigators التابات الداخلية (انهيار _history).
   List<PersistentTabConfig>? _tabsCache;
   String _tabsCacheKey = '';
 
@@ -190,6 +185,15 @@ class _DashboardScreenState extends State<DashboardScreen>
     super.dispose();
   }
 
+  void _handleSystemBack() {
+    final drawer = ZoomDrawer.of(context);
+    if (drawer != null && drawer.isOpen()) {
+      drawer.close();
+      return;
+    }
+    SystemNavigator.pop();
+  }
+
   List<PersistentTabConfig> _cachedTabs(List<int> arrangement) {
     final key = arrangement.join(',');
     if (_tabsCache == null || _tabsCacheKey != key) {
@@ -246,8 +250,6 @@ class _DashboardScreenState extends State<DashboardScreen>
           activeForegroundColor: colorScheme.primary,
           inactiveForegroundColor: colorScheme.onSurface.withValues(alpha: 0.5),
         ),
-        // حارس لمتابعة Navigator التاب الداخلي للقرآن: زر المكتبة يعمل
-        // Navigator.pop صريحاً، وعند فَراغ الجذر نقفز للتب الرئيسي فوراً.
         navigatorConfig: isQuranTab
             ? NavigatorConfig(
                 navigatorObservers: [
@@ -276,12 +278,13 @@ class _DashboardScreenState extends State<DashboardScreen>
     return component.widget is QuranReadScreen;
   }
 
+
   bool _isFabVisible(List<int> arrangement) {
     final selectedIndex = _navController.index;
-    if (selectedIndex < 0 || selectedIndex >= arrangement.length) return true;
+    if (selectedIndex < 0 || selectedIndex >= arrangement.length) return false;
     final component = appDashboardTabs[arrangement[selectedIndex]];
-    return component.widget is! QuranReadScreen &&
-        component.widget is! PrayerTimesScreen;
+    return component.widget is TitlesScreen &&
+        (ModalRoute.of(context)?.isCurrent ?? true);
   }
 
   @override
@@ -310,12 +313,13 @@ class _DashboardScreenState extends State<DashboardScreen>
             if (mainTabIndex < 0) {
               return const Loading();
             }
-            // ملاحظة: لا نضيف PopScope هنا — معالجة رجوع النظام تتم داخل
-            // PersistentTabView نفسها (handleAndroidBackButtonPress):
-            // في تاب القرآن يغلق الصفحات الداخلية للمكتبة أولاً ثم يقفز
-            // للتب السابق. إضافة PopScope خارجي كانت تتعارض (jumpToTab
-            // ثم jumpToPreviousTab) فتبدو الرجوع معطّلة.
-            return AnimatedBuilder(
+            return PopScope(
+              canPop: false,
+              onPopInvokedWithResult: (didPop, _) {
+                if (didPop) return;
+                _handleSystemBack();
+              },
+              child: AnimatedBuilder(
               animation: _navController,
               builder: (context, child) {
                 return PersistentTabView(
@@ -325,14 +329,13 @@ class _DashboardScreenState extends State<DashboardScreen>
                       navBarConfig: navBarConfig,
                     ),
                     hideOnScrollVelocity: _isQuranSelected(arrangement) ? 0 : 10,
-                    // اختفاء شريط التاب نهائياً عندما تكون شاشة القرآن نشطة.
+
                     hideNavigationBar: _isQuranSelected(arrangement),
                     backgroundColor: colorScheme.surface,
                     floatingActionButton: AnimatedBuilder(
                       animation: _navController,
                       builder: (context, child) {
-                        final isFabVisible = _isFabVisible(arrangement) &&
-                            (ModalRoute.of(context)?.isCurrent ?? true);
+                        final isFabVisible = _isFabVisible(arrangement);
                         return AnimatedSwitcher(
                           duration: const Duration(milliseconds: 300),
                           child: isFabVisible
@@ -358,7 +361,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                     ),
                   );
                 },
-              );
+              ),
+            );
           },
         );
       },
