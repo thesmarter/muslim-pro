@@ -348,20 +348,15 @@ class LocalNotificationManager {
     );
   }
 
-  /// صورة المؤذن من `assets/images/muadhins/<id>.png` — تُستخدم كأيقونة
-  /// كبيرة في إشعار الأذان. تُرجع null عند غياب الصورة فيُستخدم الأيقونة.
+  /// شعار التطبيق كصورة ثابتة لإشعار الأذان (صورة واحدة للجميع).
+  /// تُرجع null عند غياب الصورة فيُستخدم الأيقونة.
   Future<ByteArrayAndroidBitmap?> loadMuadhinImage(String muadhinId) async {
-    for (final path in [
-      'assets/images/muadhins/$muadhinId.png',
-      'assets/images/muadhins/$muadhinId.jpg',
-      'assets/images/app_icon.png',
-    ]) {
-      try {
-        final data = await rootBundle.load(path);
-        return ByteArrayAndroidBitmap(data.buffer.asUint8List());
-      } catch (_) {/* جرّب البديل التالي */}
+    try {
+      final data = await rootBundle.load('assets/images/app_icon.png');
+      return ByteArrayAndroidBitmap(data.buffer.asUint8List());
+    } catch (_) {
+      return null;
     }
-    return null;
   }
 
   Future<void> scheduleAdhanNotification({

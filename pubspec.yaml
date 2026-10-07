@@ -84,7 +84,6 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/images/muadhins/
     - assets/sounds/
     - assets/sounds/azkar/
     - assets/sounds/azhan/

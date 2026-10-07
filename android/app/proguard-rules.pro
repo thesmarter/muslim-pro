@@ -32,8 +32,8 @@
 }
 
 # App native adhan receivers/services (referenced from Manifest + via
-# MethodChannel "adhan_scheduler"/"countdown_service" + dynamic
-# resources.getIdentifier() lookups — must survive minify/obfuscation)
+# MethodChannel "adhan_scheduler"/"countdown_service" — must survive
+# minify/obfuscation; audio/images load from flutter_assets, not res/)
 -keep class com.detatech.Azkar.** { *; }
 
 # Google Play Core (Flutter internal references)

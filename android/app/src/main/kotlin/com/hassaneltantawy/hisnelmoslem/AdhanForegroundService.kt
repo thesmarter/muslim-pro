@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.IBinder
 import android.os.PowerManager
 import android.util.Log
@@ -101,27 +100,16 @@ class AdhanForegroundService : Service() {
         manager.createNotificationChannel(channel)
     }
 
-    private fun loadMuadhinBitmap(muadhinId: String): android.graphics.Bitmap? {
-        // Single source of truth: flutter_assets bundled PNGs
-        // (flutter_assets are never touched by shrinkResources).
-        val candidates = listOf(
-            "flutter_assets/assets/images/muadhins/$muadhinId.png",
-            "flutter_assets/assets/images/muadhins/$muadhinId.jpg",
-            "flutter_assets/assets/images/app_icon.png"
-        )
-        for (path in candidates) {
-            try {
-                assets.open(path).use { stream ->
-                    val bitmap = android.graphics.BitmapFactory.decodeStream(stream)
-                    if (bitmap != null) {
-                        Log.i(TAG, "Muadhin image loaded: $path")
-                        return bitmap
-                    }
-                }
-            } catch (_: Exception) { /* try next candidate */ }
+    private fun loadMuadhinBitmap(@Suppress("UNUSED_PARAMETER") muadhinId: String): android.graphics.Bitmap? {
+        // صورة واحدة ثابتة للجميع: شعار التطبيق من flutter_assets.
+        return try {
+            assets.open("flutter_assets/assets/images/app_icon.png").use { stream ->
+                android.graphics.BitmapFactory.decodeStream(stream)
+            }
+        } catch (_: Exception) {
+            Log.w(TAG, "App logo not found in flutter_assets")
+            null
         }
-        Log.w(TAG, "Muadhin image not found for $muadhinId, using launcher icon")
-        return null
     }
 
     private fun buildNotification(prayerName: String, muadhinId: String): Notification {
@@ -167,21 +155,29 @@ class AdhanForegroundService : Service() {
             wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Adhan:AudioLock")
             wakeLock?.acquire(10 * 60 * 1000L)
 
-            val resId = resources.getIdentifier(muadhinId, "raw", packageName)
-            if (resId == 0) {
-                val fallback = resources.getIdentifier("wadie_alyamani", "raw", packageName)
-                if (fallback == 0) { stopSelf(); return }
-                playResource(fallback, volume, repeat)
-            } else {
-                playResource(resId, volume, repeat)
-            }
+            // مصدر واحد فقط: flutter_assets — لا تكرار في res/raw.
+            val assetPath = resolveAdhanAsset(muadhinId)
+            if (assetPath == null) { stopSelf(); return }
+            playAsset(assetPath, volume, repeat)
         } catch (e: Exception) {
             e.printStackTrace()
             stopSelf()
         }
     }
 
-    private fun playResource(resId: Int, volume: Float, repeat: Boolean) {
+    private fun resolveAdhanAsset(muadhinId: String): String? {
+        for (id in listOf(muadhinId, "wadie_alyamani")) {
+            val path = "flutter_assets/assets/sounds/azhan/$id.mp3"
+            try {
+                assets.openFd(path).close()
+                return path
+            } catch (_: Exception) { /* جرّب البديل التالي */ }
+        }
+        Log.e(TAG, "No adhan asset found for $muadhinId")
+        return null
+    }
+
+    private fun playAsset(assetPath: String, volume: Float, repeat: Boolean) {
         stopAndRelease("new-playback")
 
         val player = MediaPlayer().apply {
@@ -192,7 +188,18 @@ class AdhanForegroundService : Service() {
                     .build()
             )
 
-            setDataSource(applicationContext, Uri.parse("android.resource://$packageName/$resId"))
+            try {
+                val afd = assets.openFd(assetPath)
+                setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+                afd.close()
+            } catch (_: Exception) {
+                // احتياط للأصول المضغوطة: انسخ لملف كاش ثم شغّل بالمسار.
+                val outFile = java.io.File(cacheDir, "adhan_playback.mp3")
+                assets.open(assetPath).use { input ->
+                    outFile.outputStream().use { output -> input.copyTo(output) }
+                }
+                setDataSource(outFile.absolutePath)
+            }
             prepare()
             setVolume(volume, volume)
 
