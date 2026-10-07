@@ -68,7 +68,7 @@ class AdhanForegroundService : Service() {
                 val playSound = intent?.getBooleanExtra(EXTRA_PLAY_SOUND, true) ?: true
                 val repeat = intent?.getBooleanExtra(EXTRA_REPEAT, false) ?: false
 
-                val notification = buildNotification(prayerName)
+                val notification = buildNotification(prayerName, muadhin)
                 Log.i(TAG, "onStartCommand(muadhin=$muadhin, prayer=$prayerName, playSound=$playSound, repeat=$repeat)")
                 startForeground(NOTIFICATION_ID, notification)
                 if (playSound) {
@@ -101,7 +101,30 @@ class AdhanForegroundService : Service() {
         manager.createNotificationChannel(channel)
     }
 
-    private fun buildNotification(prayerName: String): Notification {
+    private fun loadMuadhinBitmap(muadhinId: String): android.graphics.Bitmap? {
+        // Single source of truth: flutter_assets bundled PNGs
+        // (flutter_assets are never touched by shrinkResources).
+        val candidates = listOf(
+            "flutter_assets/assets/images/muadhins/$muadhinId.png",
+            "flutter_assets/assets/images/muadhins/$muadhinId.jpg",
+            "flutter_assets/assets/images/app_icon.png"
+        )
+        for (path in candidates) {
+            try {
+                assets.open(path).use { stream ->
+                    val bitmap = android.graphics.BitmapFactory.decodeStream(stream)
+                    if (bitmap != null) {
+                        Log.i(TAG, "Muadhin image loaded: $path")
+                        return bitmap
+                    }
+                }
+            } catch (_: Exception) { /* try next candidate */ }
+        }
+        Log.w(TAG, "Muadhin image not found for $muadhinId, using launcher icon")
+        return null
+    }
+
+    private fun buildNotification(prayerName: String, muadhinId: String): Notification {
         val stopIntent = Intent(this, AdhanForegroundService::class.java).apply { action = ACTION_STOP }
         val stopPending = PendingIntent.getService(
             this, 0, stopIntent,
@@ -114,7 +137,7 @@ class AdhanForegroundService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        return NotificationCompat.Builder(this, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("الأذان")
             .setContentText("وقت صلاة $prayerName")
             .setSmallIcon(android.R.drawable.ic_media_play)
@@ -124,7 +147,18 @@ class AdhanForegroundService : Service() {
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setContentIntent(openPending)
             .addAction(android.R.drawable.ic_media_pause, "إيقاف", stopPending)
-            .build()
+
+        // صورة المؤذن: أيقونة كبيرة + صورة موسعة عند سحب الإشعار.
+        try {
+            loadMuadhinBitmap(muadhinId)?.let { bitmap ->
+                builder.setLargeIcon(bitmap)
+                builder.setStyle(NotificationCompat.BigPictureStyle()
+                    .bigPicture(bitmap)
+                    .setSummaryText("وقت صلاة $prayerName"))
+            }
+        } catch (_: Exception) { /* الإشعار يعمل بدون صورة */ }
+
+        return builder.build()
     }
 
     private fun playAdhan(muadhinId: String, volume: Float, repeat: Boolean) {

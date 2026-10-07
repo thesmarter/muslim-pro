@@ -60,6 +60,7 @@ class _PrayerAdjustmentsScreenState extends State<PrayerAdjustmentsScreen> {
                   _buildVolumeSlider(context, state),
                   _buildMuadhinSelection(context, state),
                   if (kDebugMode) _buildFullAdhanTestButton(context, state),
+                  if (kDebugMode) _buildNativeAdhanTestButton(context, state),
                   if (kDebugMode) _buildCountdownTestButton(context),
                 ],
               ),
@@ -303,6 +304,39 @@ class _PrayerAdjustmentsScreenState extends State<PrayerAdjustmentsScreen> {
           }
         }
         : null,
+      ),
+    );
+  }
+
+  Widget _buildNativeAdhanTestButton(BuildContext context, PrayerTimesState state) {
+    final s = S.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+      child: ElevatedButton.icon(
+        icon: const Icon(Icons.alarm_add),
+        label: const Text('تجربة الأذان الأصلي بعد دقيقة (والتطبيق مغلق)'),
+        onPressed: () async {
+          final adhanService = AdhanAudioService();
+          final settings = state.settings;
+          final fireTime = DateTime.now().add(const Duration(seconds: 60));
+          await adhanService.scheduleAdhanAlarm(
+            muadhin: settings.muadhin,
+            prayerName: s.getValue('asr'),
+            time: fireTime,
+            volume: settings.adhanVolume,
+            id: 9999,
+            playSound: settings.playAdhanSound,
+            repeat: settings.repeatAdhan,
+          );
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('تمت جدولة أذان تجريبي بعد دقيقة — أغلق التطبيق الآن وراقب الإشعار والصورة والصوت'),
+                duration: Duration(seconds: 5),
+              ),
+            );
+          }
+        },
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'dart:io';
 // ignore_for_file: unreachable_from_main
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:muslim/app.dart';
@@ -260,6 +261,7 @@ class LocalNotificationManager {
     required String title,
     String? body,
     required String soundFileName,
+    ByteArrayAndroidBitmap? muadhinImage,
   }) {
     final BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
       body ?? '',
@@ -278,7 +280,7 @@ class LocalNotificationManager {
       priority: Priority.max,
       styleInformation: bigTextStyleInformation,
       icon: '@mipmap/ic_launcher',
-      largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+      largeIcon: muadhinImage ?? const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
       color: const Color(0xFF1B5E20),
       ledColor: const Color(0xFF1B5E20),
       ledOnMs: 1000,
@@ -346,6 +348,22 @@ class LocalNotificationManager {
     );
   }
 
+  /// صورة المؤذن من `assets/images/muadhins/<id>.png` — تُستخدم كأيقونة
+  /// كبيرة في إشعار الأذان. تُرجع null عند غياب الصورة فيُستخدم الأيقونة.
+  Future<ByteArrayAndroidBitmap?> loadMuadhinImage(String muadhinId) async {
+    for (final path in [
+      'assets/images/muadhins/$muadhinId.png',
+      'assets/images/muadhins/$muadhinId.jpg',
+      'assets/images/app_icon.png',
+    ]) {
+      try {
+        final data = await rootBundle.load(path);
+        return ByteArrayAndroidBitmap(data.buffer.asUint8List());
+      } catch (_) {/* جرّب البديل التالي */}
+    }
+    return null;
+  }
+
   Future<void> scheduleAdhanNotification({
     required int id,
     required String title,
@@ -368,6 +386,7 @@ class LocalNotificationManager {
         title: title,
         body: body,
         soundFileName: soundFileName,
+        muadhinImage: await loadMuadhinImage(soundFileName),
       ),
       payload: payload,
     );
@@ -391,6 +410,7 @@ class LocalNotificationManager {
         title: title,
         body: body,
         soundFileName: soundFileName,
+        muadhinImage: await loadMuadhinImage(muadhinId),
       ),
       payload: payload,
     );

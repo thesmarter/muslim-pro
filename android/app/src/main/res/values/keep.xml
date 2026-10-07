@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@raw/abdul_basit,@raw/farooq_hadrawi,@raw/noreen_mohammed,@raw/siddiq_hamdoun,@raw/wadie_alyamani,@raw/yasser_alhouri" />

@@ -3,7 +3,7 @@ description: muslim-pro start kit app.
 
 publish_to: "none"
 
-version: 3.3.5+41
+version: 3.3.6+42
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
@@ -84,6 +84,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/muadhins/
     - assets/sounds/
     - assets/sounds/azkar/
     - assets/sounds/azhan/

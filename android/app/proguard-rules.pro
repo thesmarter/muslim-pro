@@ -31,8 +31,10 @@
     java.lang.Object readResolve();
 }
 
-# General project models
--keep class com.hassaneltantawy.hisnelmoslem.models.** { *; }
+# App native adhan receivers/services (referenced from Manifest + via
+# MethodChannel "adhan_scheduler"/"countdown_service" + dynamic
+# resources.getIdentifier() lookups — must survive minify/obfuscation)
+-keep class com.detatech.Azkar.** { *; }
 
 # Google Play Core (Flutter internal references)
 -dontwarn com.google.android.play.core.**
