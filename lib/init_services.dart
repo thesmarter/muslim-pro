@@ -15,6 +15,7 @@ import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/extensions/extension_platform.dart';
 import 'package:muslim/src/core/extensions/localization_extension.dart';
 import 'package:muslim/src/core/functions/print.dart';
+import 'package:muslim/src/core/utils/app_audio_coordinator.dart';
 import 'package:muslim/src/core/utils/app_bloc_observer.dart';
 import 'package:muslim/src/core/values/constant.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/local_notification_manager.dart';
@@ -152,6 +153,14 @@ Future<void> _initHeavyInBackground() async {
     await sl<AdhanAudioService>().init();
   } catch (e) {
     hisnPrint(e);
+  }
+
+  // Audio routing last: pins Quran to the media stream and locks the
+  // headset/Bluetooth media-button receiver down until Quran UI opens.
+  try {
+    await sl<AppAudioCoordinator>().init();
+  } catch (e) {
+    hisnPrint("Error initializing AppAudioCoordinator: $e");
   }
 
   // Auto-sync prayer times and reschedule notifications on app start

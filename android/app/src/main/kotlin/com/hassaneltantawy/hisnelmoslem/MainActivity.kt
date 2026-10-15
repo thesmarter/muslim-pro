@@ -1,7 +1,9 @@
 package com.detatech.Azkar
 
 import com.ryanheise.audioservice.AudioServiceActivity
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.view.KeyEvent
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -43,6 +45,34 @@ class MainActivity : AudioServiceActivity() {
                 activateVolumeDispatch = call.arguments as Boolean
             }
         }
+
+        // Enables/disables the audio_service MediaButtonReceiver at runtime so
+        // headset/Bluetooth media buttons only control recitation while the
+        // Quran UI is open (or recitation is playing) and can never wake it up.
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "audio_routing")
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "setMediaButtonReceiverEnabled" -> {
+                        try {
+                            val enabled = call.arguments as Boolean
+                            val component = ComponentName(
+                                this@MainActivity,
+                                "com.ryanheise.audioservice.MediaButtonReceiver"
+                            )
+                            packageManager.setComponentEnabledSetting(
+                                component,
+                                if (enabled) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                                else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                                PackageManager.DONT_KILL_APP
+                            )
+                            result.success(true)
+                        } catch (e: Exception) {
+                            result.error("ROUTING_ERROR", e.message, null)
+                        }
+                    }
+                    else -> result.notImplemented()
+                }
+            }
 
         adhanScheduler = AdhanScheduler(this)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "adhan_scheduler")

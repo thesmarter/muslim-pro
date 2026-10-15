@@ -9,6 +9,7 @@ import 'package:muslim/src/core/extensions/localization_extension.dart';
 import 'package:muslim/src/core/functions/print.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/local_notification_manager.dart';
 import 'package:muslim/src/features/prayer_times/data/repository/prayer_times_repo.dart';
+import 'package:quran_library/quran_library.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AdhanAudioService {
@@ -48,20 +49,12 @@ class AdhanAudioService {
       return;
     }
 
+    // Baseline: neutral media configuration. The alarm stream is claimed
+    // only for the duration of an actual adhan playback (see playAdhan) so
+    // it never leaks into the Quran recitation player, which shares the
+    // process-wide AudioSession singleton.
     final session = await AudioSession.instance;
-    await session.configure(const AudioSessionConfiguration(
-      avAudioSessionCategory: AVAudioSessionCategory.playback,
-      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.duckOthers,
-      avAudioSessionMode: AVAudioSessionMode.defaultMode,
-      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
-      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidAudioAttributes: AndroidAudioAttributes(
-        contentType: AndroidAudioContentType.music,
-        usage: AndroidAudioUsage.alarm,
-      ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gainTransientExclusive,
-      androidWillPauseWhenDucked: false,
-    ));
+    await session.configure(const AudioSessionConfiguration.music());
     await session.setActive(true);
 
     await _stateSubscription?.cancel();
@@ -90,12 +83,56 @@ class AdhanAudioService {
     hisnPrint("Adhan audio player initialized");
   }
 
+  /// Claims the alarm stream for the duration of an adhan playback only.
+  Future<void> _configureAlarmSession() async {
+    try {
+      final session = await AudioSession.instance;
+      await session.configure(const AudioSessionConfiguration(
+        avAudioSessionCategory: AVAudioSessionCategory.playback,
+        avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.duckOthers,
+        avAudioSessionMode: AVAudioSessionMode.defaultMode,
+        avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+        avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+        androidAudioAttributes: AndroidAudioAttributes(
+          contentType: AndroidAudioContentType.music,
+          usage: AndroidAudioUsage.alarm,
+        ),
+        androidAudioFocusGainType: AndroidAudioFocusGainType.gainTransientExclusive,
+        androidWillPauseWhenDucked: false,
+      ));
+      await session.setActive(true);
+    } catch (e) {
+      hisnPrint("Error configuring alarm audio session: $e");
+    }
+  }
+
+  /// Hands the shared audio session back to the neutral media configuration.
+  Future<void> _restoreMusicSession() async {
+    try {
+      final session = await AudioSession.instance;
+      await session.configure(const AudioSessionConfiguration.music());
+    } catch (e) {
+      hisnPrint("Error restoring music audio session: $e");
+    }
+  }
+
+  /// Pins the Quran recitation player back to the media stream explicitly.
+  Future<void> _pinQuranToMedia() async {
+    try {
+      await AudioCtrl.instance.state.audioPlayer.setAndroidAudioAttributes(
+        const AndroidAudioAttributes(
+          contentType: AndroidAudioContentType.music,
+          usage: AndroidAudioUsage.media,
+        ),
+      );
+    } catch (e) {
+      hisnPrint("Error pinning Quran player to media stream: $e");
+    }
+  }
+
   int _playToken = 0;
   Timer? _previewStopTimer;
   bool _isPreview = false;
-
-  /// true أثناء معاينة 10 ثوانٍ من الشاشة — تُستخدم لإيقاف المعاينة
-  /// فقط عند مغادرة الشاشة دون المساس بأذان حقيقي.
   bool get isPreview => _isPreview;
 
   Future<void> playAdhan(String muadhinId, {double? volumeOverride}) async {
@@ -113,6 +150,23 @@ class AdhanAudioService {
 
     try {
       hisnPrint("playAdhan requested for: $muadhinId");
+
+      // The adhan owns the alarm stream only while it is actually playing.
+      await _configureAlarmSession();
+      if (token != _playToken) return;
+
+      // Mutual exclusion: never mix Quran recitation with adhan audio.
+      try {
+        final quranPlayer = AudioCtrl.instance.state.audioPlayer;
+        if (quranPlayer.playing) {
+          hisnPrint("Pausing Quran recitation for adhan playback");
+          await quranPlayer.pause();
+        }
+      } catch (e) {
+        hisnPrint("Could not pause Quran player: $e");
+      }
+      if (token != _playToken) return;
+
       final soundPath = muadhins[muadhinId] ?? muadhins['wadie_alyamani']!;
       hisnPrint("Resolved sound path: $soundPath");
 
@@ -174,6 +228,9 @@ class AdhanAudioService {
     } catch (e) {
       hisnPrint("Error stopping adhan: $e");
     }
+    // Release the alarm stream and hand the media stream back to recitation.
+    await _restoreMusicSession();
+    await _pinQuranToMedia();
     await stopNativeAdhan();
   }
 

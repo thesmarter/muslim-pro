@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:audio_session/audio_session.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -23,6 +24,7 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
   StreamSubscription<void>? _completionSub;
   StreamSubscription<Duration>? _positionSub;
   StreamSubscription<Duration>? _durationSub;
+  StreamSubscription<void>? _noisySub;
 
   Future<void> init({
     Function(DbContent zikr)? onDonePlaying,
@@ -51,7 +53,9 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
       await _player.setAudioContext(
         AudioContext(
           android: const AudioContextAndroid(
-            isSpeakerphoneOn: true,
+            // Respect connected headphones/Bluetooth instead of forcing the
+            // loudspeaker; falls back to it only when nothing is connected.
+            isSpeakerphoneOn: false,
             stayAwake: true,
             contentType: AndroidContentType.speech,
           ),
@@ -76,6 +80,7 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
     _completionSub?.cancel();
     _positionSub?.cancel();
     _durationSub?.cancel();
+    _noisySub?.cancel();
 
     _completionSub = _player.onPlayerComplete.listen((_) async {
       await _onPlaybackCompleted();
@@ -88,6 +93,15 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
     _durationSub = _player.onDurationChanged.listen((d) {
       if (!isClosed) emit(state.copyWith(totalDuration: d));
     });
+
+    // audioplayers does not pause on headset/Bluetooth disconnect by itself.
+    try {
+      _noisySub = (await AudioSession.instance)
+          .becomingNoisyEventStream
+          .listen((_) => pause());
+    } catch (e) {
+      hisnPrint('AudioPlayer Error subscribing to noisy events: $e');
+    }
   }
 
   Future<void> saveSettings({
@@ -311,6 +325,7 @@ class ZikrAudioPlayerCubit extends Cubit<ZikrAudioPlayerState> {
     await _completionSub?.cancel();
     await _positionSub?.cancel();
     await _durationSub?.cancel();
+    await _noisySub?.cancel();
     await _player.dispose();
     await Future.delayed(const Duration(milliseconds: 100));
     return super.close();

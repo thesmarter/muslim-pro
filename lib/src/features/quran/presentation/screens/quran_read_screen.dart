@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:muslim/generated/lang/app_localizations.dart';
+import 'package:muslim/src/core/di/dependency_injection.dart';
 import 'package:muslim/src/core/functions/print.dart';
+import 'package:muslim/src/core/utils/app_audio_coordinator.dart';
 import 'package:quran_library/quran_library.dart';
 
 class QuranReadScreen extends StatefulWidget {
@@ -16,10 +18,22 @@ class _QuranReadScreenState extends State<QuranReadScreen> {
   @override
   void initState() {
     super.initState();
+    // Media buttons control recitation only while this screen is open.
+    try {
+      sl<AppAudioCoordinator>().setQuranScreenVisible(true);
+    } catch (_) {}
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       _jumpToStartPage();
     });
+  }
+
+  @override
+  void dispose() {
+    try {
+      sl<AppAudioCoordinator>().setQuranScreenVisible(false);
+    } catch (_) {}
+    super.dispose();
   }
 
   Future<void> _jumpToStartPage() async {

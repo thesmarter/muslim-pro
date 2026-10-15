@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:muslim/src/core/utils/app_audio_coordinator.dart';
 import 'package:muslim/src/core/utils/volume_button_manager.dart';
 import 'package:muslim/src/core/values/constant.dart';
 import 'package:muslim/src/features/alarms_manager/data/models/alarm_manager.dart';
@@ -98,6 +99,7 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => LocalNotificationManager());
   sl.registerFactory(() => AlarmManager(sl()));
   sl.registerLazySingleton(() => VolumeButtonManager());
+  sl.registerLazySingleton(() => AppAudioCoordinator());
   final PackageInfo packageInfo = await PackageInfo.fromPlatform();
   sl.registerFactory<PackageInfo>(() => packageInfo);
 
