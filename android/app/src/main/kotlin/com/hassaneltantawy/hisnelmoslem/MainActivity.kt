@@ -11,9 +11,31 @@ class MainActivity : AudioServiceActivity() {
     private lateinit var volumeChannel: MethodChannel
     private var activateVolumeDispatch: Boolean = false
     private var adhanScheduler: AdhanScheduler? = null
+    private var notificationChannel: MethodChannel? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+
+        notificationChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "notification_navigation")
+        notificationChannel?.setMethodCallHandler { call, result ->
+            when (call.method) {
+                "getInitialPayload" -> {
+                    var payload = intent?.getStringExtra(AdhanForegroundService.EXTRA_OPEN_PAYLOAD)
+                    // Cold-start tap on a flutter_local_notifications notification: the
+                    // plugin does not dispatch the launch intent itself, so read it here
+                    // and clear the action so the same launch is not reported twice.
+                    if (payload.isNullOrEmpty() && intent?.action == "SELECT_NOTIFICATION") {
+                        payload = intent?.getStringExtra("payload")
+                        if (!payload.isNullOrEmpty()) {
+                            intent?.setAction(null)
+                        }
+                    }
+                    intent?.removeExtra(AdhanForegroundService.EXTRA_OPEN_PAYLOAD)
+                    result.success(payload)
+                }
+                else -> result.notImplemented()
+            }
+        }
 
         volumeChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "volume_button_channel")
         volumeChannel.setMethodCallHandler { call, _ ->
@@ -113,6 +135,16 @@ class MainActivity : AudioServiceActivity() {
                     else -> result.notImplemented()
                 }
             }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        val payload = intent.getStringExtra(AdhanForegroundService.EXTRA_OPEN_PAYLOAD)
+        if (payload != null) {
+            intent.removeExtra(AdhanForegroundService.EXTRA_OPEN_PAYLOAD)
+            notificationChannel?.invokeMethod("onNotificationPayload", payload)
+        }
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {

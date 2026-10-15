@@ -137,7 +137,17 @@ class CountdownForegroundService : Service() {
     }
 
     private fun buildNotification(remainingMillis: Long): Notification {
-        val contentIntent = packageManager.getLaunchIntentForPackage(packageName)
+        val contentIntent = Intent(this, MainActivity::class.java).apply {
+            addFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK or
+                    Intent.FLAG_ACTIVITY_SINGLE_TOP or
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP
+            )
+            putExtra(
+                AdhanForegroundService.EXTRA_OPEN_PAYLOAD,
+                AdhanForegroundService.OPEN_PAYLOAD_PRAYER_TIMES
+            )
+        }
         val pendingContent = PendingIntent.getActivity(
             this, 0, contentIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE

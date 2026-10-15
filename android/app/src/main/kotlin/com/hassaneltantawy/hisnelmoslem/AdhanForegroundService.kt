@@ -25,6 +25,10 @@ class AdhanForegroundService : Service() {
         const val EXTRA_PLAY_SOUND = "extra_play_sound"
         const val EXTRA_REPEAT = "extra_repeat"
 
+        // payload مرسل إلى Flutter عند الضغط على إشعار الأذان لفتح شاشة مواقيت الصلاة
+        const val EXTRA_OPEN_PAYLOAD = "notification_payload"
+        const val OPEN_PAYLOAD_PRAYER_TIMES = "adhan_native"
+
         private var mediaPlayer: MediaPlayer? = null
         private var wakeLock: PowerManager.WakeLock? = null
         private const val TAG = "AdhanAudio"
@@ -119,7 +123,14 @@ class AdhanForegroundService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val openIntent = packageManager.getLaunchIntentForPackage(packageName)
+        val openIntent = Intent(this, MainActivity::class.java).apply {
+            addFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK or
+                    Intent.FLAG_ACTIVITY_SINGLE_TOP or
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP
+            )
+            putExtra(EXTRA_OPEN_PAYLOAD, OPEN_PAYLOAD_PRAYER_TIMES)
+        }
         val openPending = PendingIntent.getActivity(
             this, 1, openIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE

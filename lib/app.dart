@@ -51,11 +51,30 @@ class AppState extends State<App> {
 
   Future<void> _initNotifications() async {
     try {
-      final isAllowed = await sl<LocalNotificationManager>().isPermissionGranted();
-      if (isAllowed) {
-        await sl<LocalNotificationManager>().appOpenNotification();
+      final notificationManager = sl<LocalNotificationManager>();
+      notificationManager.initNavigationChannel();
+
+      // Handle a notification tap that cold-started the app as early as
+      // possible, before any other work that could delay or fail.
+      try {
+        final initialPayload = await notificationManager.getInitialNotificationPayload();
+        if (initialPayload != null && initialPayload.isNotEmpty) {
+          notificationManager.handleNativePayload(initialPayload);
+        }
+      } catch (e) {
+        hisnPrint(e);
       }
-      sl<LocalNotificationManager>().handleLaunchNotification();
+
+      notificationManager.handleLaunchNotification();
+
+      try {
+        final isAllowed = await notificationManager.isPermissionGranted();
+        if (isAllowed) {
+          await notificationManager.appOpenNotification();
+        }
+      } catch (e) {
+        hisnPrint(e);
+      }
     } catch (e) {
       hisnPrint(e);
     }

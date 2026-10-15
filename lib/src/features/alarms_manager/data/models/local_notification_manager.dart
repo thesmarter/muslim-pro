@@ -63,7 +63,11 @@ Future<void> onDidReceiveNotificationResponse(
   }
 
   if (payload != null && payload.isNotEmpty) {
-    LocalNotificationManager.onNotificationClick(payload);
+    try {
+      sl<LocalNotificationManager>().handleNativePayload(payload);
+    } catch (_) {
+      LocalNotificationManager.onNotificationClick(payload);
+    }
   }
 }
 
@@ -168,6 +172,7 @@ class LocalNotificationManager {
           await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
       if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
         launchNotificationResponse = notificationAppLaunchDetails!.notificationResponse;
+        handleLaunchNotification();
       }
     } catch (e) {
       hisnPrint(e);
@@ -627,9 +632,23 @@ class LocalNotificationManager {
     }
   }
 
+  static String? _lastNavigatedPayload;
+  static DateTime? _lastNavigationTime;
+
   static void onNotificationClick(String payload) {
     final context = App.navigatorKey.currentState?.context;
     if (context == null) return;
+
+    // A cold start can deliver the same payload through both the native channel
+    // and the plugin launch details; ignore the duplicate within a short window.
+    final now = DateTime.now();
+    if (_lastNavigatedPayload == payload &&
+        _lastNavigationTime != null &&
+        now.difference(_lastNavigationTime!) < const Duration(seconds: 3)) {
+      return;
+    }
+    _lastNavigatedPayload = payload;
+    _lastNavigationTime = now;
 
     if (payload.startsWith('adhan_') || payload.startsWith('test_adhan_')) {
       context.push(const PrayerTimesScreen());
@@ -646,11 +665,46 @@ class LocalNotificationManager {
     }
   }
 
+  static const MethodChannel _navigationChannel = MethodChannel('notification_navigation');
+
+  void initNavigationChannel() {
+    _navigationChannel.setMethodCallHandler((call) async {
+      if (call.method == 'onNotificationPayload') {
+        final payload = call.arguments as String?;
+        if (payload != null && payload.isNotEmpty) {
+          handleNativePayload(payload);
+        }
+      }
+    });
+  }
+
+
+  Future<String?> getInitialNotificationPayload() async {
+    try {
+      return await _navigationChannel.invokeMethod<String>('getInitialPayload');
+    } catch (e) {
+      hisnPrint('Error reading initial notification payload: $e');
+      return null;
+    }
+  }
+
+ void handleNativePayload(String payload, [int attempts = 0]) {
+    if (App.navigatorKey.currentState?.context != null) {
+      onNotificationClick(payload);
+      return;
+    }
+    if (attempts >= 20) return;
+    Future.delayed(
+      const Duration(milliseconds: 250),
+      () => handleNativePayload(payload, attempts + 1),
+    );
+  }
+
   void handleLaunchNotification() {
     if (launchNotificationResponse != null) {
       final String? payload = launchNotificationResponse!.payload;
       if (payload != null && payload.isNotEmpty) {
-        onNotificationClick(payload);
+        handleNativePayload(payload);
       }
       launchNotificationResponse = null;
     }
