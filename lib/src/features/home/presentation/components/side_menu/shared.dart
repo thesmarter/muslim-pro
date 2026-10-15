@@ -7,7 +7,10 @@ class DrawerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return child ?? const SizedBox();
+    return Material(
+      type: MaterialType.transparency,
+      child: child ?? const SizedBox(),
+    );
   }
 }
 
