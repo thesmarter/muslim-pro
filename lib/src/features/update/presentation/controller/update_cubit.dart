@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muslim/src/features/update/data/models/update_info_model.dart';
 import 'package:muslim/src/features/update/data/repository/update_repo.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 abstract class UpdateState {}
 
@@ -18,8 +19,9 @@ class OptionalUpdateAvailable extends UpdateState {
 
 class UpdateCubit extends Cubit<UpdateState> {
   final UpdateRepo _repo;
+  final PackageInfo _packageInfo;
 
-  UpdateCubit(this._repo) : super(UpdateInitial());
+  UpdateCubit(this._repo, this._packageInfo) : super(UpdateInitial());
 
   Future<void> checkForUpdate() async {
     emit(UpdateLoading());
@@ -27,8 +29,7 @@ class UpdateCubit extends Cubit<UpdateState> {
     final updateInfo = await _repo.fetchUpdateInfo();
     
     if (updateInfo != null) {
-      //todo: ⚠️ رقم الإصدار الحالي للتطبيق - يتم تغييره يدوياً قبل أي تحديث
-      const int currentAppVersion = 2; 
+      final int currentAppVersion = int.tryParse(_packageInfo.buildNumber) ?? 0;
       
       if (_isUpdateRequired(currentAppVersion, updateInfo.latestVersion)) {
         if (updateInfo.forceUpdate) {
@@ -49,11 +50,9 @@ class UpdateCubit extends Cubit<UpdateState> {
 
   bool _isUpdateRequired(int currentVersion, String latestVersionStr) {
     try {
-      // تحويل رقم الإصدار القادم من السيرفر إلى رقم صحيح للمقارنة
       final int latestVersion = int.parse(latestVersionStr);
       return latestVersion > currentVersion;
     } catch (e) {
-      // في حالة وجود خطأ في التحويل (مثلاً لو كان النص 1.0 بدلاً من 1)
       return false;
     }
   }

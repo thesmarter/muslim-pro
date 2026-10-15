@@ -114,7 +114,7 @@ Future<void> initSL() async {
   sl.registerLazySingleton(() => ZikrAudioPlayerCubit(sl()));
   sl.registerLazySingleton(() => PrayerTimesBloc(sl()));
   sl.registerLazySingleton(() => BackupRestoreCubit(repo: sl()));
-  sl.registerLazySingleton(() => UpdateCubit(sl()));
+  sl.registerLazySingleton(() => UpdateCubit(sl(), sl()));
 
   /// Factory BLoC
   sl.registerFactory(() => OnboardCubit(sl(), sl()));
